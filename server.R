@@ -1,13 +1,12 @@
 shinyServer(function(input, output,session) {
-  
-  ## Selection méthode de choix de blanc
+  ## Selection mÃ©thode de choix de blanc
   observe({
     if(input$Blanc == "blanc pre-sample"){output$MethodeBlanc <- renderUI({return()})}          
     if(input$Blanc == "un seul standardise"){output$MethodeBlanc <- renderUI({actionButton("Cherche","Blanc")})
     }
   })
   
-  # Si l'utilisateur à choisit le blanc standardisé (i.e. un blanc pour toute la session) alors :
+  # Si l'utilisateur Ã  choisit le blanc standardisÃ© (i.e. un blanc pour toute la session) alors :
   BlancAUtiliser <- reactiveValues(N = NULL) # Tableau du blanc (Mean et LOD)
   BLancNom <- reactiveValues(N1 = NULL) # Nom du dossier de blanc
   
@@ -29,18 +28,18 @@ shinyServer(function(input, output,session) {
         
         directGen <- choose.dir() # Dossier de travail
         
-        dir.create(paste(directGen,"/","Traités", sep = ""))
-        dir.create(paste(directGen,"/","Traités/NISTs", sep = ""))
-        dir.create(paste(directGen,"/","Traités/Samples", sep = ""))
-        dir.create(paste(directGen,"/","Traités/Blanc", sep = ""))
+        dir.create(paste(directGen,"/","TraitÃ©s", sep = ""))
+        dir.create(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""))
+        dir.create(paste(directGen,"/","TraitÃ©s/Samples", sep = ""))
+        dir.create(paste(directGen,"/","TraitÃ©s/Blanc", sep = ""))
         
         NomSample <- dir(paste(directGen, "\\Samples", sep = ""))
         
         for(m in 1:length(NomSample)){
-          dir.create(paste(directGen,"\\Traités\\Samples\\",NomSample[m], sep = ""))
+          dir.create(paste(directGen,"\\TraitÃ©s\\Samples\\",NomSample[m], sep = ""))
         } 
         
-        # Création du tableau des NIST et samples à analyser
+        # CrÃ©ation du tableau des NIST et samples Ã  analyser
         output$dataexploiT = renderTable({
           listNIST <- NIST(directGen)
           listSamples <- Sample(directGen)
@@ -53,21 +52,21 @@ shinyServer(function(input, output,session) {
           return(as.data.frame(M))
         })
         
-        # verification des NISTs déjà traités
-        wholeNIST <- reactiveValues(V = NIST(directGen)) # liste des NISTs à traiter
-        done <- reactiveValues(vect = str_replace(dir(paste(directGen,"/","Traités/NISTs", sep = ""), pattern="\\.RData$"),".RData","")) # Liste des NISTs déjà traités
+        # verification des NISTs dÃ©jÃ  traitÃ©s
+        wholeNIST <- reactiveValues(V = NIST(directGen)) # liste des NISTs Ã  traiter
+        done <- reactiveValues(vect = str_replace(dir(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""), pattern="\\.RData$"),".RData","")) # Liste des NISTs dÃ©jÃ  traitÃ©s
         
-        Temoin = reactiveValues(valeur= NULL) # Témoin permettant de savoir si tous les NISTs ont été traités 1 tous les NISTs sont traités - 0 il y en a au moins un qui n'est pas traité
+        Temoin = reactiveValues(valeur= NULL) # TÃ©moin permettant de savoir si tous les NISTs ont Ã©tÃ© traitÃ©s 1 tous les NISTs sont traitÃ©s - 0 il y en a au moins un qui n'est pas traitÃ©
                     
         #mettre un observe ?
         if(isolate(done$vect) == isolate(wholeNIST$V)){Temoin$valeur <- 1}
         else {Temoin$valeur <- 0}  
 
-        # fin de la vérification des NISTs déjà traités
+        # fin de la vÃ©rification des NISTs dÃ©jÃ  traitÃ©s
 
-        # Vérification des Samples déjà traités
+        # VÃ©rification des Samples dÃ©jÃ  traitÃ©s
         
-        listeAfaire <- reactiveValues(Liste = list()) # liste des Samples à traiter  
+        listeAfaire <- reactiveValues(Liste = list()) # liste des Samples Ã  traiter  
         isolate({
           for(m in 1:length(NomSample)){
             listeAfaire$Liste[[m]] <- dir(paste(directGen, "\\Samples\\",NomSample[m], sep = ""), pattern = "\\.csv$")
@@ -76,17 +75,17 @@ shinyServer(function(input, output,session) {
         })
         
         
-        listedone <- reactiveValues(Liste2 = list()) # liste des Samples traités
+        listedone <- reactiveValues(Liste2 = list()) # liste des Samples traitÃ©s
         isolate({        
           for(m in 1:length(NomSample)){
-            listedone$Liste2[[m]] <- str_replace(dir(paste(directGen, "\\Traités\\Samples\\",NomSample[m], sep = ""),pattern = "\\.RData$"),".RData","") 
+            listedone$Liste2[[m]] <- str_replace(dir(paste(directGen, "\\TraitÃ©s\\Samples\\",NomSample[m], sep = ""),pattern = "\\.RData$"),".RData","") 
           }
           names(listedone$Liste2) <- dir(paste(directGen, "\\Samples", sep = ""))
         })
         
-        listeTemoin <- reactiveValues(Liste3 = lapply(1:length(listeAfaire$Liste),function(x){ identical(listeAfaire$Liste[[x]],listedone$Liste2[[x]])})) # Témoin permettant de savoir si tous les Samples ont été traités
+        listeTemoin <- reactiveValues(Liste3 = lapply(1:length(listeAfaire$Liste),function(x){ identical(listeAfaire$Liste[[x]],listedone$Liste2[[x]])})) # TÃ©moin permettant de savoir si tous les Samples ont Ã©tÃ© traitÃ©s
         
-        # fin de la vérification des Samples déjà traités
+        # fin de la vÃ©rification des Samples dÃ©jÃ  traitÃ©s
         
         output$GeneralNISTelemchoiceMenu = renderUI({
           if(is.null(NIST(directGen))) return()
@@ -172,7 +171,7 @@ shinyServer(function(input, output,session) {
                   preuve = input$Blanc,
                   Fichier = Fichier
                 )           
-                setwd(paste(directGen,"/","Traités/NISTs", sep = ""))
+                setwd(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""))
                 save(Asauver, file = paste(input$NistFileSelection,".RData", sep=""))
                 write.csv(tableauBlancNIST,file = paste(input$NistFileSelection,"_tableauBlanc.csv", sep = ""))
                 write.csv(donne6,file = paste(input$NistFileSelection,".csv", sep = ""))
@@ -180,7 +179,7 @@ shinyServer(function(input, output,session) {
                 #plot(donne[,1], donne[,2])
                 #dev.off()
                 setwd(directGen)
-                done$vect <- str_replace(dir(paste(directGen,"/","Traités/NISTs", sep = ""), pattern="\\.RData$"),".RData","")
+                done$vect <- str_replace(dir(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""), pattern="\\.RData$"),".RData","")
                 if(length(done$vect) == length(wholeNIST$V)){
                   if(length(done$vect == wholeNIST$V) == length(done$vect)){Temoin$valeur <- 1}
                   else{Temoin$valeur <- 0}}
@@ -188,22 +187,22 @@ shinyServer(function(input, output,session) {
               })
             }
           } 
-        }) ## Sauvegarde données -> Temoin$valeur = 1 (ssi tous les nists sont traités)
+        }) ## Sauvegarde donnÃ©es -> Temoin$valeur = 1 (ssi tous les nists sont traitÃ©s)
         
         observe({
           if(is.null(input$supprimerNIST)){}
           else {
             if(input$supprimerNIST > 0){
               isolate({
-                setwd(paste(directGen,"/","Traités/NISTs", sep = ""))
+                setwd(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""))
                 unlink(paste(input$NistFileSelection,".RData", sep=""))
                 setwd(getwd())
-                done$vect = str_replace(dir(paste(directGen,"/","Traités/NISTs", sep = ""), pattern="\\.RData$"),".RData","")
+                done$vect = str_replace(dir(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""), pattern="\\.RData$"),".RData","")
                 Temoin$valeur = 0
               })
             }
           }
-        }) ## Suppression données -> Temoin$valeur = 0
+        }) ## Suppression donnÃ©es -> Temoin$valeur = 0
         
         observe({
           if(length(which(done$vect == input$NistFileSelection)) != 0){
@@ -256,7 +255,7 @@ shinyServer(function(input, output,session) {
             output$retour2 = renderUI({
               wellPanel(
                 selectInput("type_de_donne","Choose data to show",choices = c("raw","Blanc","Centred","- LOD","> LOD","normalized","de-anomalized"),selected = "Centred", multiple= F),
-                selectInput("Elemchoisi","Element à visualiser", choices = input$GeneralElementChoice,selected = "Ca43")
+                selectInput("Elemchoisi","Element Ã  visualiser", choices = input$GeneralElementChoice,selected = "Ca43")
               )
             })                        
             output$NISTTableau = renderTable({
@@ -378,7 +377,7 @@ shinyServer(function(input, output,session) {
           else{
             if(Temoin$valeur == 1){
               
-              setwd(paste(directGen,"/","Traités/NISTs", sep = ""))
+              setwd(paste(directGen,"/","TraitÃ©s/NISTs", sep = ""))
               
               Afaire <-dir(, pattern="\\.RData$")
               AfaireNom <- sapply(strsplit(Afaire,".", fixed = T),function(x){x[1]})
@@ -405,7 +404,7 @@ shinyServer(function(input, output,session) {
                 
               }   
               
-              #pb ici à remplacer directement par la réactiveValues --> à voir
+              #pb ici Ã  remplacer directement par la rÃ©activeValues --> Ã  voir
               tableauMoyenne <- do.call(rbind, Moyenne)
               colnames(tableauMoyenne) <- names(Moyenne[[1]])
               rownames(tableauMoyenne) <- paste("Moy",AfaireNom)
@@ -421,8 +420,8 @@ shinyServer(function(input, output,session) {
               BlancSD <- 3*apply(tableauBlancResumeSession[,2:dim(tableauBlancResumeSession)[2]], 2, sd, na.rm = T)
               BlancAsauver <- rbind(BlancMoyenne,BlancSD)
               
-              write.csv(tableauBlancResumeSession,file = paste(directGen,"/","Traités/Blanc/Blancs session.csv",sep = ""))
-              write.csv(BlancAsauver,file = paste(directGen,"/","Traités/Blanc/Blanc moyenne session.csv",sep = ""))
+              write.csv(tableauBlancResumeSession,file = paste(directGen,"/","TraitÃ©s/Blanc/Blancs session.csv",sep = ""))
+              write.csv(BlancAsauver,file = paste(directGen,"/","TraitÃ©s/Blanc/Blanc moyenne session.csv",sep = ""))
               
               TableauMeanTotNISTs$name <- tableauMoyenne
               TableauSDTotNISTs$name <- tableauSD
@@ -443,22 +442,22 @@ shinyServer(function(input, output,session) {
                 return(rbind(tableauMoyenne, tableauSD))
               })          
               output$etalon = renderUI({
-                actionButton("FichierEtalon","Fichier étalon")})
+                actionButton("FichierEtalon","Fichier Ã©talon")})
               
-              # que veut dire cette réctive value ??
+              # que veut dire cette rÃ©ctive value ??
               bouton = reactiveValues(Val = 0)
                                           
-              # Sauvegarde plots et du tableau des moyennes des NISTs (Normalisé)
+              # Sauvegarde plots et du tableau des moyennes des NISTs (NormalisÃ©)
               
               
               Min1 <- apply(TableauMeanTotNISTs$name, 2, min, na.rm = T) - 1.10*apply(TableauSDTotNISTs$name,2, max, na.rm = T)
               Max1 <- apply(TableauMeanTotNISTs$name, 2, max, na.rm = T) - 1.10*apply(TableauSDTotNISTs$name,2, max, na.rm = T)
               
-              jpeg(file = paste(directGen,"/","Traités/Moyenne NISTs.jpg",sep = ""), width = 1500, height =1000, quality = 100)
+              jpeg(file = paste(directGen,"/","TraitÃ©s/Moyenne NISTs.jpg",sep = ""), width = 1500, height =1000, quality = 100)
               par(mfrow = c(round(sqrt(dim(TableauMeanTotNISTs$name)[2])),round(sqrt(dim(TableauMeanTotNISTs$name)[2]))))
               lapply(2:ncol(TableauMeanTotNISTs$name), function(x){
                 plot(1,1)
-                #niceplot(limX=c(0,dim(TableauMeanTotNISTs$name)[1]+1),limY=c(Min1[x] , Max1[x]), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(TableauMeanTotNISTs$name)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="N°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(TableauMeanTotNISTs$name)[x], lineXt = 2, lineYt = 4)
+                #niceplot(limX=c(0,dim(TableauMeanTotNISTs$name)[1]+1),limY=c(Min1[x] , Max1[x]), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(TableauMeanTotNISTs$name)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="NÂ°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(TableauMeanTotNISTs$name)[x], lineXt = 2, lineYt = 4)
                 #meansey(1:dim(TableauMeanTotNISTs$name)[1],TableauMeanTotNISTs$name[,x],TableauSDTotNISTs$name[,x],pchp=22,colp="black",bgp="black",cexp=1.5,colb="black",lgt=0.01)
                 #lapply(1:dim(TableauMeanTotNISTs$name)[1], function(k){ abline(v = k,lty = 3) })
               })
@@ -469,7 +468,7 @@ shinyServer(function(input, output,session) {
                # min <- min(TableauMeanTotNISTs$name[,z], na.rm = T) - 1.10*max(TableauSDTotNISTs$name[,z], na.rm = T)
               #  max <- max(TableauMeanTotNISTs$name[,z], na.rm = T) + 1.10*max(TableauSDTotNISTs$name[,z], na.rm = T)
                 
-              #  niceplot(limX=c(0,dim(TableauMeanTotNISTs$name)[1]+1),limY=c(min , max), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(TableauMeanTotNISTs$name)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="N°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(TableauMeanTotNISTs$name)[z], lineXt = 2, lineYt = 4)
+              #  niceplot(limX=c(0,dim(TableauMeanTotNISTs$name)[1]+1),limY=c(min , max), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(TableauMeanTotNISTs$name)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="NÂ°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(TableauMeanTotNISTs$name)[z], lineXt = 2, lineYt = 4)
               #  meansey(1:dim(TableauMeanTotNISTs$name)[1],TableauMeanTotNISTs$name[,z],TableauSDTotNISTs$name[,z],pchp=22,colp="black",bgp="black",cexp=1.5,colb="black",lgt=0.01)
               #  for(j in 1:dim(TableauMeanTotNISTs$name)[1]){
               #    abline(v = j, lty = 3)
@@ -479,9 +478,9 @@ shinyServer(function(input, output,session) {
               
              
               
-              write.csv(rbind(TableauMeanTotNISTs$name,TableauSDTotNISTs$name),file = paste(directGen,"/","Traités/TableauTotalitéNISTs.csv",sep = ""))
+              write.csv(rbind(TableauMeanTotNISTs$name,TableauSDTotNISTs$name),file = paste(directGen,"/","TraitÃ©s/TableauTotalitÃ©NISTs.csv",sep = ""))
               
-              # Sauvegarde plots et du tableau des moyennes des NISTs (Non normalisé)
+              # Sauvegarde plots et du tableau des moyennes des NISTs (Non normalisÃ©)
               
               matrixMean <- do.call(rbind,lapply(ListeMoyenneNonNormalise, function(x){apply(x,2,mean, na.rm = T)}))
               colnames(matrixMean) = colnames(TableauMeanTotNISTs$name)
@@ -489,20 +488,20 @@ shinyServer(function(input, output,session) {
               matrixSD <- do.call(rbind,lapply(ListeMoyenneNonNormalise, function(x){apply(x,2,sd, na.rm = T)}))
               colnames(matrixSD) = colnames(TableauMeanTotNISTs$name)
                       
-              jpeg(file = paste(directGen,"/","Traités/Moyenne NISTs non normalisé.jpg",sep = ""),width = 1500, height =1000, quality = 100)
+              jpeg(file = paste(directGen,"/","TraitÃ©s/Moyenne NISTs non normalisÃ©.jpg",sep = ""),width = 1500, height =1000, quality = 100)
               par(mfrow = c(round(sqrt(dim(ListeMoyenneNonNormalise[[1]])[2])),round(sqrt(dim(ListeMoyenneNonNormalise[[1]])[2]))))
               for(z in 2:dim(ListeMoyenneNonNormalise[[1]])[2]){
                 min = min(matrixMean[,z], na.rm = T) - 1.10*max(matrixSD[,z], na.rm = T)
                 max = max(matrixMean[,z], na.rm = T) + 1.10*max(matrixSD[,z], na.rm = T)
                 
-                niceplot(limX=c(0,dim(matrixMean)[1]+1),limY=c(min , max), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(matrixMean)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="N°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(matrixMean)[z], lineXt = 2, lineYt = 4)
+                niceplot(limX=c(0,dim(matrixMean)[1]+1),limY=c(min , max), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(matrixMean)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="NÂ°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(matrixMean)[z], lineXt = 2, lineYt = 4)
                 meansey(1:dim(matrixMean)[1],matrixMean[,z],matrixSD[,z],pchp=22,colp="black",bgp="black",cexp=1.5,colb="black",lgt=0.01)
                 for(j in 1:dim(matrixMean)[1]){
                   abline(v = j, lty = 3)
                 }    
               }
               dev.off()
-              write.csv(rbind(matrixMean,matrixSD),file = paste(directGen,"/","Traités/TableauTotalitéNISTs Non normalisé.csv",sep = ""))
+              write.csv(rbind(matrixMean,matrixSD),file = paste(directGen,"/","TraitÃ©s/TableauTotalitÃ©NISTs Non normalisÃ©.csv",sep = ""))
               
               
               
@@ -514,14 +513,14 @@ shinyServer(function(input, output,session) {
               matrixSDBlanc <- do.call(rbind,lapply(ListBlanc, function(x){apply(x,2,sd, na.rm = T)}))
               colnames(matrixSD) = colnames(TableauMeanTotNISTs$name)
               
-              jpeg(file = paste(directGen,"/","Traités/Moyenne blanc NISTs.jpg",sep = ""),width = 1500, height =1000, quality = 100)
+              jpeg(file = paste(directGen,"/","TraitÃ©s/Moyenne blanc NISTs.jpg",sep = ""),width = 1500, height =1000, quality = 100)
               par(mfrow = c(round(sqrt(dim(ListBlanc[[1]])[2])),round(sqrt(dim(ListBlanc[[1]])[2]))))
               
               for(z in 2:dim(ListBlanc[[1]])[2]){
                 min = min(matrixMeanBlanc[,z], na.rm = T) - 1.10*max(matrixSDBlanc[,z], na.rm = T)
                 max = max(matrixMeanBlanc[,z], na.rm = T) + 1.10*max(matrixSDBlanc[,z], na.rm = T)
                 
-                niceplot(limX=c(0,dim(matrixMeanBlanc)[1]+1),limY=c(min , max), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(matrixMeanBlanc)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="N°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(matrixMeanBlanc)[z], lineXt = 2, lineYt = 4)
+                niceplot(limX=c(0,dim(matrixMeanBlanc)[1]+1),limY=c(min , max), marg=c(4.5,5.5,2,0.5),tick=-0.4,nlabX=dim(matrixMeanBlanc)[1]+2,nlabY = 5,  labX=c(),labY=c(),nmlabX=c(),nmlabY=c(),lasX=1,lasY=1,    lineX=-0.1, lineY=0.1,   cexX=0.9, cexY=0.9,nmX="NÂ°NIST",nmY="Moyenne",   cexXt=1, cexYt=1 , main = colnames(matrixMeanBlanc)[z], lineXt = 2, lineYt = 4)
                 meansey(1:dim(matrixMeanBlanc)[1],matrixMeanBlanc[,z],matrixSDBlanc[,z],pchp=22,colp="black",bgp="black",cexp=1.5,colb="black",lgt=0.01)
                 for(j in 1:dim(matrixMeanBlanc)[1]){
                   abline(v = j, lty = 3)
@@ -540,7 +539,7 @@ shinyServer(function(input, output,session) {
                     }
                     if(input$FichierEtalon > 0){EtalonFile = file.choose()
                                                   output$valeur4 = renderUI({
-                                                    h4(paste(paste("Votre fichier étalon est :","\n",EtalonFile)))
+                                                    h4(paste(paste("Votre fichier Ã©talon est :","\n",EtalonFile)))
                                                   })
                                                   setwd(RecupererDir(EtalonFile))
                                                   TableEtalon$et = read.csv(EtalonFile, header = T, sep = ";", dec = ".")
@@ -595,11 +594,11 @@ shinyServer(function(input, output,session) {
     return(myTabs)
   }
   choixdossier <- function(x,Y){
-    NUM = intersect(which(str_detect(list.dirs(x),Y) == T),which(str_detect(list.dirs(x),"Traités") == F))
+    NUM = intersect(which(str_detect(list.dirs(x),Y) == T),which(str_detect(list.dirs(x),"TraitÃ©s") == F))
     NIST = list.dirs(x)[NUM]
     return(NIST)
   }
-  ### verification du caractère numeric des valeurs du tableau
+  ### verification du caractÃ¨re numeric des valeurs du tableau
   checkTab <- function(X){
     
     types <- sapply(X,class)
@@ -619,7 +618,7 @@ shinyServer(function(input, output,session) {
     tableau = checkTab(tableauP)
     return(tableau)
   }
-  ###### data pour les samples (car il faut rentrer dans le repertoire pour le charger) k = repertoire géné; x = nom de fichier csv; y = nom du dossier
+  ###### data pour les samples (car il faut rentrer dans le repertoire pour le charger) k = repertoire gÃ©nÃ©; x = nom de fichier csv; y = nom du dossier
   datS = function(x,y,k){
     setwd(paste(k,"\\Samples\\", y, sep = ""))
     tableauP = read.csv(paste(k,"//Samples//", y,"//",x, sep = ""),header=T, sep=";",dec=".")
@@ -664,7 +663,7 @@ shinyServer(function(input, output,session) {
     
     return(cbind(x[,1],z))
   }
-  #Tableau où sont supprimer les valeurs < LOD
+  #Tableau oÃ¹ sont supprimer les valeurs < LOD
   TableauSupprLOD = function(x,y) {
     
     do.call(rbind,lapply(1:dim(x)[1], function(k){
@@ -675,7 +674,7 @@ shinyServer(function(input, output,session) {
       
     }))
   }
-  #Tableau où sont supprimer les anomalies
+  #Tableau oÃ¹ sont supprimer les anomalies
   TableauDesanomalise = function(x){
     
     ValMax <- apply(x, 2, function(k){mean(k, na.rm = T) + 2*sd(k,na.rm = T)})
@@ -699,7 +698,7 @@ shinyServer(function(input, output,session) {
     colnames(tableauNorm)[1] = "Temps"
     return(tableauNorm)
   }
-  ###### ici x = vecteur de donnees, y = elements à rechercher ######
+  ###### ici x = vecteur de donnees, y = elements Ã  rechercher ######
   recherche = function(x, y){
     vect = NULL
     for(i in 1: length(y)){
@@ -707,7 +706,7 @@ shinyServer(function(input, output,session) {
     }
     return(vect)
   }
-  ###### ici x = vecteur de donnees, y = elements à rechercher, return  = list(l'élement le plus proche, place)######
+  ###### ici x = vecteur de donnees, y = elements Ã  rechercher, return  = list(l'Ã©lement le plus proche, place)######
   lePlusProche = function(x,y){
     LIST = list()
     LIST[[2]]= which(abs(x-y) == min(abs(x-y), na.rm = T))
@@ -717,7 +716,7 @@ shinyServer(function(input, output,session) {
     }
     return(LIST)
   }
-  #### RecupererDir recupère le dossier dans lequel est le fichier x
+  #### RecupererDir recupÃ¨re le dossier dans lequel est le fichier x
   RecupererDir = function(x){
     A = strsplit(x, split = "\\", fixed  =T)
     B = A[[1]][-length(A[[1]])]
