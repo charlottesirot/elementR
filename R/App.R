@@ -100,7 +100,7 @@ runElementR <- function(){
                 div(style = "height: 30px",
                     div(imageOutput("myImage1"), style = "padding-left: 100px; padding-top: 5px")
                 ),
-                menuItem("Step 2. Filtering standart data", tabName = "Standards", icon = icon("flask")),
+                menuItem("Step 2. Filtering standard data", tabName = "Standards", icon = icon("flask")),
                 uiOutput("renderProgress2"),
                 div(style = "height: 30px",
                     div(imageOutput("myImage2"), style = "padding-left: 100px; padding-top: 5px")
@@ -114,7 +114,7 @@ runElementR <- function(){
                 div(style = "height: 30px",
                     div(imageOutput("myImage4"), style = "padding-left: 100px; padding-top: 5px")
                 ),
-                menuItem("Step 5. Sample Repl. averaging", tabName = "realign", icon = icon("flask")),
+                menuItem("Step 5. Averaging sample repl.", tabName = "realign", icon = icon("flask")),
                 uiOutput("renderProgress5"),
                 hr(style ="width: 70%; color: white; align: center"),
                 menuItem("Configuration", icon = icon("sliders"), tabName = "Config"),
@@ -462,6 +462,7 @@ runElementR <- function(){
                       ),
                       column(12,
                              uiOutput("Sample5"))
+                      
               ), #eo tab Samples
               
               tabItem("realign",
@@ -510,7 +511,7 @@ runElementR <- function(){
         if(input$tab == "MachDrift" | input$tab == "Samples" | input$tab == "realign"){
           
           updateTabItems(session, "tab", selected = "Standards")
-          tkmessageBox(message = "You need to finish filtering standarts for continuing the filtration procedure!", icon = "error", type = "ok")
+          tkmessageBox(message = "You need to finish filtering standards for continuing the filtration procedure!", icon = "error", type = "ok")
         } else {}
         
       } else if(currentProject()$flagMachineCorrection != 1){
@@ -762,12 +763,12 @@ runElementR <- function(){
       else{
         if(input$tab == "Standards"){
           div(class = "progress", style = "overflow: auto;",
-              p(paste0("Standard(s) filtred: ", sum(currentProject()$flag_stand), " / ", length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
+              p(paste0("Standard(s) filtered: ", sum(currentProject()$flag_stand), " / ", length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
               
           )
         } else {
           div(class = "progressActive", style = "overflow: auto;",
-              p(paste0("Standard(s) filtred: ", sum(currentProject()$flag_stand), " / ", length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
+              p(paste0("Standard(s) filtered: ", sum(currentProject()$flag_stand), " / ", length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
               
           )
         }
@@ -886,11 +887,11 @@ runElementR <- function(){
         }
       } else if(input$tab == "Samples"){
         div(class = "progress", style = "overflow: auto;",
-            p(paste0("Sample repl. filtred: ", do.call(sum, currentProject()$flag_Sample), " / ", length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")            
+            p(paste0("Sample repl. filtered: ", do.call(sum, currentProject()$flag_Sample), " / ", length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")            
         )
       } else {
         div(class = "progressActive", style = "overflow: auto;",
-            p(paste0("Sample repl. filtred: ", do.call(sum, currentProject()$flag_Sample), " / ", length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")        
+            p(paste0("Sample repl. filtered: ", do.call(sum, currentProject()$flag_Sample), " / ", length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")        
         )
       }
       
@@ -992,11 +993,17 @@ runElementR <- function(){
           )
         } else{
           
-          temp <- sum(sapply(1:length(flagRealign$temp), function(x){
-            if(flagRealign$temp[[x]][1] == 1 | flagRealign$temp[[x]][2] == 3){
-              return(1)
-            } else{return(0)}
-          }))
+          if(is.null(flagRealign$temp)){
+            temp <- 0
+          } else {
+            temp <- sum(sapply(1:length(flagRealign$temp), function(x){
+              if(flagRealign$temp[[x]][1] == 1 | flagRealign$temp[[x]][2] == 3){
+                return(1)
+              } else{return(0)}
+              
+            }))
+          }
+
           
           div(class = "progressActive", style = "overflow: auto;",
               p(paste0("Samples handled: ", temp, " / ", length(flagRealign$temp)), style = "line-height:1px; text-align:center")    
@@ -1091,7 +1098,7 @@ runElementR <- function(){
           isolate({
             
             espace1 <- getwd()
-            setwd(paste0(projPath$temp,"/Done"))
+            setwd(paste0(projPath$temp,"/Results"))
             
             pb <- tkProgressBar("Progress bar", "Project export in %",
                                 0, 100, 0)
@@ -1101,9 +1108,9 @@ runElementR <- function(){
             nameToInsert <- temp[length(temp)]
             
             if(input$text == "Name of your project..."){
-              save(myProject, file = paste0(projPath$temp,"/Done/", nameToInsert, ".RData"))
+              save(myProject, file = paste0(projPath$temp,"/Results/", nameToInsert, ".RData"))
             } else {
-              save(myProject, file = paste0(projPath$temp,"/Done/", input$text, ".RData"))
+              save(myProject, file = paste0(projPath$temp,"/Results/", input$text, ".RData"))
             }
             
             
@@ -1145,13 +1152,13 @@ runElementR <- function(){
             setTkProgressBar(pb, 20, sprintf("Export (%s)", info), info)
             
             setwd(espace1)
-            setwd(paste0(projPath$temp,"/Done/standards"))
+            setwd(paste0(projPath$temp,"/Results/standards"))
             
-            lapply(1:length(currentProject()$standards[[1]]$rep_Files), function(x){suppressWarnings(dir.create(paste0(projPath$temp,"/Done/standards/", currentProject()$standards[[1]]$rep_Files[x])))})
+            lapply(1:length(currentProject()$standards[[1]]$rep_Files), function(x){suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards/", currentProject()$standards[[1]]$rep_Files[x])))})
             
             lapply(1:length(currentProject()$standards[[1]]$rep_Files),function(x){
               
-              setwd(paste0(projPath$temp,"/Done/standards/", currentProject()$standards[[1]]$rep_Files[x]))
+              setwd(paste0(projPath$temp,"/Results/standards/", currentProject()$standards[[1]]$rep_Files[x]))
               
               info <- sprintf("%d%% done", round(20 + x*10/length(currentProject()$standards[[1]]$rep_Files)))
               setTkProgressBar(pb, round(20 + x*10/length(currentProject()$standards[[1]]$rep_Files)), sprintf("Export (%s)", info), info)
@@ -1192,7 +1199,7 @@ runElementR <- function(){
             lapply(1:length(currentProject()$samplesFiles), function(x){
               
               setwd(espace1)
-              suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/",currentProject()$samplesFiles[x])))
+              suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x])))
               
               lapply(1:length(currentProject()$samples[[x]]$rep_Files), function(y){
                 setwd(espace1)
@@ -1201,8 +1208,8 @@ runElementR <- function(){
                 setTkProgressBar(pb, round(30 + (x*70/length(currentProject()$samplesFiles))*y/length(currentProject()$samples[[x]]$rep_Files)), sprintf("Export (%s)", info), info)
                 
                 temporaire <- currentProject()$samples[[x]]$rep_Files[y]
-                suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/",currentProject()$samplesFiles[x],"/",temporaire)))
-                setwd(paste0(projPath$temp,"/Done/samples/",currentProject()$samplesFiles[x],"/",temporaire))
+                suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x],"/",temporaire)))
+                setwd(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x],"/",temporaire))
                 
                 if(currentProject()$flag_Sample[[x]][y] != 0){
                   if(is.null(input$exportFormatData)){
@@ -1240,7 +1247,7 @@ runElementR <- function(){
                 
               }) #eo lapply
               
-              setwd(paste0(projPath$temp,"/Done/"))
+              setwd(paste0(projPath$temp,"/Results/"))
               
               if(length(currentProject()$machineCorrection) != 1 | (length(currentProject()$machineCorrection) == 1 & !is.na(currentProject()$machineCorrection[1]))){
                 
@@ -1255,7 +1262,7 @@ runElementR <- function(){
                 
               }
               
-              setwd(paste0(projPath$temp,"/Done/samples/",currentProject()$samplesFiles[x]))
+              setwd(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x]))
               
               if(!is.na(currentProject()$samples[[x]]$rep_type2)){
                 if(currentProject()$samples[[x]]$rep_type2 == "spot"){
@@ -1319,9 +1326,9 @@ runElementR <- function(){
             
             temporaire <- input$standardIn
             
-            suppressWarnings(dir.create(paste0(projPath$temp,"/Done/standards/", temporaire, "/graphics")))
+            suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards/", temporaire, "/graphics")))
             
-            setwd(paste0(projPath$temp,"/Done/standards/", temporaire, "/graphics")) 
+            setwd(paste0(projPath$temp,"/Results/standards/", temporaire, "/graphics")) 
             
             if(!is.null(length(input$courveToExport)) & length(input$courveToExport) != 0){
               if(!is.null(length(input$ElementToExport)) & length(input$ElementToExport) != 0){
@@ -1561,9 +1568,9 @@ runElementR <- function(){
                   for(i in 1: length(input$ElementToExport)){
                     for(j in 1: length(input$courveToExport)){
                       
-                      suppressWarnings(dir.create(paste0(projPath$temp,"/Done/standards/", temporaire, "/graphics/", input$ElementToExport[i])))
+                      suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards/", temporaire, "/graphics/", input$ElementToExport[i])))
                       
-                      setwd(paste0(projPath$temp,"/Done/standards/", temporaire, "/graphics/", input$ElementToExport[i]))
+                      setwd(paste0(projPath$temp,"/Results/standards/", temporaire, "/graphics/", input$ElementToExport[i]))
                       
                       if(input$courveToExport[j] == "Blank removed"){tempName <- "Blank_removed"
                       } else if(input$courveToExport[j] == "> LOD"){tempName <- "Supp_LOD"
@@ -1630,7 +1637,7 @@ runElementR <- function(){
                   
                   for(i in 1: length(input$ElementToExport)){
                     
-                    setwd(paste0(projPath$temp,"/Done/standards/", temporaire, "/graphics/", input$ElementToExport[i]))
+                    setwd(paste0(projPath$temp,"/Results/standards/", temporaire, "/graphics/", input$ElementToExport[i]))
                     
                     if(length(input$courveToExport) <= 6) {
                       
@@ -1821,9 +1828,9 @@ runElementR <- function(){
             
             temporaire <- input$SampleIn2
             
-            suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/", input$SampleIn, "/", temporaire, "/graphics")))
+            suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/", input$SampleIn, "/", temporaire, "/graphics")))
             
-            setwd(paste0(projPath$temp,"/Done/samples/", input$SampleIn, "/", temporaire, "/graphics"))                  
+            setwd(paste0(projPath$temp,"/Results/samples/", input$SampleIn, "/", temporaire, "/graphics"))                  
             
             if(!is.null(length(input$courveToExportS)) & length(input$courveToExportS) != 0){
               if(!is.null(length(input$ElementToExportS)) & length(input$ElementToExportS) != 0){
@@ -2042,9 +2049,9 @@ runElementR <- function(){
                 for(i in 1: length(input$ElementToExportS)){
                   for(j in 1: length(input$courveToExportS)){ 
                     
-                    suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/", input$SampleIn, "/", temporaire, "/graphics/", input$ElementToExportS[i])))
+                    suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/", input$SampleIn, "/", temporaire, "/graphics/", input$ElementToExportS[i])))
                     
-                    setwd(paste0(projPath$temp,"/Done/samples/", input$SampleIn, "/", temporaire, "/graphics/", input$ElementToExportS[i]))
+                    setwd(paste0(projPath$temp,"/Results/samples/", input$SampleIn, "/", temporaire, "/graphics/", input$ElementToExportS[i]))
                     
                     if(input$courveToExportS[j] == "Blank removed"){tempNameS <- "Blank_removed"
                     } else if(input$courveToExportS[j] == "> LOD"){tempNameS <- "Supp_LOD"
@@ -2124,7 +2131,7 @@ runElementR <- function(){
                 
                 for(i in 1: length(input$ElementToExportS)){
                   
-                  setwd(paste0(projPath$temp,"/Done/samples/", input$SampleIn, "/", temporaire, "/graphics/", input$ElementToExportS[i]))
+                  setwd(paste0(projPath$temp,"/Results/samples/", input$SampleIn, "/", temporaire, "/graphics/", input$ElementToExportS[i]))
                   
                   if(length(input$courveToExportS) <= 6) {
                     
@@ -2357,7 +2364,7 @@ runElementR <- function(){
           isolate({
             espace1 <- getwd()
             
-            setwd(paste0(projPath$temp,"/Done/"))
+            setwd(paste0(projPath$temp,"/Results/"))
             
             pb <- tkProgressBar("Progress bar", "Graphic export in %",
                                 0, 100, 0)
@@ -2816,9 +2823,9 @@ runElementR <- function(){
           isolate({
             espace1 <- getwd()
             
-            suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/", input$selectRealign, "/graphics")))
+            suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/", input$selectRealign, "/graphics")))
             
-            setwd(paste0(projPath$temp,"/Done/samples/", input$selectRealign, "/graphics"))
+            setwd(paste0(projPath$temp,"/Results/samples/", input$selectRealign, "/graphics"))
             
             if(is.null(length(input$RealignElementToExport)) | length(input$RealignElementToExport) == 0){
               tkmessageBox(message = "You need to finish the first step for handling the rest of the filtration procedure!", icon = "error", type = "ok")
@@ -2828,7 +2835,7 @@ runElementR <- function(){
               
               #### single graphic /elmenet #####
               
-              setwd(paste0(projPath$temp,"/Done/samples/", input$selectRealign, "/graphics"))
+              setwd(paste0(projPath$temp,"/Results/samples/", input$selectRealign, "/graphics"))
               
               if((flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 0){
                 
@@ -2936,7 +2943,7 @@ runElementR <- function(){
               
               #### whole graphic #####
 
-              setwd(paste0(projPath$temp,"/Done/samples/", input$selectRealign, "/graphics"))
+              setwd(paste0(projPath$temp,"/Results/samples/", input$selectRealign, "/graphics"))
 
               nbGraph <- floor(length(input$RealignElementToExport)/5)
 
@@ -3284,11 +3291,14 @@ runElementR <- function(){
         if(input$createProjButton != 0){
           isolate({
             
+            waste$temp <- unlist(c(waste$temp, valeurColor$temp, rankStandard$temp, rankSample$temp, geneRMachineCorr$temp, generRRealign$temp))
+            
             sauvegarde <- getwd() 
             
             projPath$temp <- tk_choose.dir()
             
             runEx$temp <- 0
+            calibFile$temp <- NA
             
             if(is.na(projPath$temp)){
               
@@ -3306,9 +3316,11 @@ runElementR <- function(){
                 flagStart$temp[1] <- 1
                 flagStart$temp[2] <- 0  
                 
+                updateCheckboxGroupInput(session,"checkbox", selected = FALSE)
+
                 tempProj$temp <- elementR_project$new(projPath$temp)
                 
-                projChar$temp <- list(1, "Type of action: Projet creation", projPath$temp, projPath$temp, dir(paste(projPath$temp,"/standards",sep="")), dir(paste(projPath$temp,"/samples",sep="")), tempProj$temp$listeElem)
+                projChar$temp <- list(1, "Type of action: Project creation", projPath$temp, projPath$temp, dir(paste(projPath$temp,"/standards",sep="")), dir(paste(projPath$temp,"/samples",sep="")), tempProj$temp$listeElem)
                 
                 currentProject <- reactive({     
                   tempProj$temp
@@ -3332,6 +3344,9 @@ runElementR <- function(){
                 }
                 
                 colorReplicate$temp <- tempO
+                
+                currentProject()$setRank(type = "sample", value = NA)
+                currentProject()$setRank(type = "standard", value = NA)
               }
             }
           })
@@ -3347,11 +3362,14 @@ runElementR <- function(){
         if(input$runExampleNew != 0){
           isolate({
             
+            waste$temp <- unlist(c(waste$temp, valeurColor$temp, rankStandard$temp, rankSample$temp, geneRMachineCorr$temp, generRRealign$temp))
+            
             sauvegarde <- getwd() 
             
             projPath$temp <- paste0(system.file("", package="elementR"), "Example_Session")
             
             runEx$temp <- 1
+            calibFile$temp <- NA
             
             if(is.na(projPath$temp)){
               
@@ -3365,13 +3383,14 @@ runElementR <- function(){
                 tkmessageBox(message = "A folder should contain two subfolder 'standards' & 'samples' to create an elementR project '[^_-]'", icon = "error", type = "ok")
                 
               } else {
-                
                 flagStart$temp[1] <- 1
                 flagStart$temp[2] <- 0  
                 
+                updateCheckboxGroupInput(session,"checkbox", selected = FALSE)
+                
                 tempProj$temp <- elementR_project$new(projPath$temp)
                 
-                projChar$temp <- list(1, "Type of action: Projet creation", projPath$temp, projPath$temp, dir(paste(projPath$temp,"/standards",sep="")), dir(paste(projPath$temp,"/samples",sep="")), tempProj$temp$listeElem)
+                projChar$temp <- list(1, "Type of action: Project creation", projPath$temp, projPath$temp, dir(paste(projPath$temp,"/standards",sep="")), dir(paste(projPath$temp,"/samples",sep="")), tempProj$temp$listeElem)
                 
                 currentProject <- reactive({     
                   tempProj$temp
@@ -3393,8 +3412,11 @@ runElementR <- function(){
                   tempO[[i]] <- rainbow(length(currentProject()$samples[[i]]$rep_Files))
                   names(tempO[[i]]) <- currentProject()$samples[[i]]$rep_Files
                 }
-                
+
                 colorReplicate$temp <- tempO
+                
+                currentProject()$setRank(type = "sample", value = NA)
+                currentProject()$setRank(type = "standard", value = NA)
               }
             }
           })
@@ -3462,7 +3484,7 @@ runElementR <- function(){
         if(input$runExampleLoad != 0){
           isolate({
             
-            tempoR1 <- paste0(system.file("", package="elementR"), "Done/Example_Session.RData")
+            tempoR1 <- paste0(system.file("", package="elementR"), "Results/Example_Session.RData")
             
             if(length(tempoR1) != 0){
               
@@ -3514,6 +3536,8 @@ runElementR <- function(){
         isolate({
 
           if(input$validDonne != 0){
+            
+            currentProject()$set_ChoiceUserCorr(input$checkbox)
 
             flagStart$temp[1] <- 3
             flagStart$temp[2] <- 0
@@ -3538,20 +3562,20 @@ runElementR <- function(){
             names(color$temp) <- currentProject()$listeElem
 
             espace1 <- getwd()
-            suppressWarnings(dir.create(paste0(projPath$temp,"/Done")))
-            suppressWarnings(dir.create(paste0(projPath$temp,"/Done/standards")))
-            suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples")))
+            suppressWarnings(dir.create(paste0(projPath$temp,"/Results")))
+            suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards")))
+            suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples")))
 
             lapply(1:length(currentProject()$standardsFiles), function(y){
               temporaire <- currentProject()$standardsFiles[y]
-              suppressWarnings(dir.create(paste0(projPath$temp,"/Done/standards/", temporaire)))
+              suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards/", temporaire)))
             })
 
             lapply(1:length(currentProject()$samples), function(y){
-              suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/",currentProject()$samplesFiles[y])))
+              suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[y])))
               lapply(1:length(currentProject()$samples[[y]]$rep_Files), function(x){
                 temporaire <-currentProject()$samples[[y]]$rep_Files[x]
-                suppressWarnings(dir.create(paste0(projPath$temp,"/Done/samples/", currentProject()$samplesFiles[y],"/",temporaire)))
+                suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/", currentProject()$samplesFiles[y],"/",temporaire)))
               })
             })
 
@@ -3654,7 +3678,7 @@ runElementR <- function(){
             two$temp <- 0
             three$temp <- 0
 
-            
+            updateCheckboxGroupInput(session,"checkbox", selected = FALSE)
           })
           
         } else {}
@@ -3682,6 +3706,7 @@ runElementR <- function(){
               } else {
                 currentProject()$setEtalon(x = temp)
               }
+              
             } else {
               
               temp <- paste0(system.file("", package="elementR"), "Example_Session/Calibration_File_NIST612.csv")
@@ -3724,15 +3749,15 @@ runElementR <- function(){
     observe({
       input$calibFile
       calibFile$temp
-      
+      input$checkbox
       if(is.null(rankStandard$temp)){      
       } else if(is.null(rankSample$temp)){      
       } else {
         if(is.na(rankStandard$temp[length(standardFile$temp)]) | is.na(rankSample$temp[length(SampleFile$temp)])){
-          
+
         }else{
           if(is.null(eval(parse(text = paste0("input$",rankStandard$temp[1]))))){
-            
+
           }else{
             
             tempCalib <- sapply(1:length(standardFile$temp), function(x){
@@ -3747,26 +3772,94 @@ runElementR <- function(){
               eval(parse(text = paste0("input$",rankSample$temp[x])))
             })
             names(tempSample) <- SampleFile$temp
-
+            
             isolate({
-              if(length(which(is.na(tempCalib))) == 0 & length(which(is.na(tempSample))) == 0 & length(which(tempCalib == 0)) == 0 & length(which(tempSample == 0)) == 0 & length(which(duplicated(c(tempSample,tempCalib))) == TRUE) == 0 & !is.na(calibFile$temp)){
-                flagStart$temp[1] <- 2
-                currentProject()$setRank(type = "standard", value = tempCalib)
-                currentProject()$setRank(type = "sample",  value = tempSample)
-              }else{
+            
+              if(input$checkbox == T & flagStart$temp[1] > 0 & !is.na(input$calibFile)) {
                 
-                currentProject()$setRank(type= "standard", value = tempCalib)
-                currentProject()$setRank(type = "sample", value = tempSample)
+                if(length(which(is.na(tempCalib))) == 0 & length(which(is.na(tempSample))) == 0 & length(which(tempCalib == 0)) == 0 & length(which(tempSample == 0)) == 0 & length(which(duplicated(c(tempSample,tempCalib))) == TRUE) == 0 & !is.na(calibFile$temp)){
+                  flagStart$temp[1] <- 2.5
+                  currentProject()$setRank(type = "standard", value = tempCalib)
+                  currentProject()$setRank(type = "sample",  value = tempSample)
+                }else{
+                  flagStart$temp[1] <- 1.5
+                  currentProject()$setRank(type= "standard", value = tempCalib)
+                  currentProject()$setRank(type = "sample", value = tempSample)
+                }
+                
+              } else {
+
               }
-            })
+              
+              })
           }
         }
       }
       
     }) #observe
     
+    # choice of user for correcting the machine drift
+    observe({
+      if(is.null(input$checkbox)){
+      } else if(is.null(input$calibFile)){
+      } else {
+        calibFile$temp
+        isolate({
+          
+          if(flagStart$temp[1] > 0) {
+            if(input$checkbox == T){
+              flagStart$temp[1] <- 1.5
+            } else{
+              if(!is.na(currentProject()$EtalonPath)){
+                
+                flagStart$temp[1] <- 2
+                } else {
+                flagStart$temp[1] <- 1
+                }
+            }
+          } else {}
+          
+        })
+      }
+      
+    })
+    
+    # Gives random ranks for samples and standards when correction == F
+    observe({
+      if(is.null(input$validDonne)){
+      } else {
+        
+        isolate({
+          
+          if(input$validDonne != 0){
+            
+          if(input$checkbox == F & flagStart$temp[1] > 0 & !is.na(currentProject()$EtalonPath)) {
+            
+            NB <- length(standardFile$temp)+length(SampleFile$temp)
+            
+            tempCalib <- c((1:NB)[1],sort(sample((1:NB)[-c(1, NB)], (length(standardFile$temp)-2), replace = F)),(1:NB)[NB])
+            names(tempCalib) <- standardFile$temp
+            
+            tempSample <- (1:NB)[-tempCalib] 
+            names(tempSample) <- SampleFile$temp
+            
+            currentProject()$setRank(type= "standard", value = tempCalib)
+            currentProject()$setRank(type = "sample", value = tempSample)
+            
+          }
+        }
+      })
+      }
+      
+      
+    })
+    
     #geneR rankStandard$temp & rankSample$temp
     observe({
+      
+      input$createProjButton
+      input$runExampleNew
+      
       if(flagStart$temp[1] == 1){
         
         isolate({
@@ -3806,7 +3899,6 @@ runElementR <- function(){
 
     # all displayed elements to users
     observe({
-      
       if(flagStart$temp[1] == 0 & flagStart$temp[2] == 0){
         
         output$start1 <-  renderUI({
@@ -3851,6 +3943,7 @@ runElementR <- function(){
           
         })
       } else {}
+      
       if(flagStart$temp[1] == 1){
         
         output$start1 <- renderUI({
@@ -3869,16 +3962,14 @@ runElementR <- function(){
         if(currentProject()$elementChecking[[1]] == 0 & is.null(currentProject()$errorSession)){ 
           
           if(runEx$temp == 0){
+            
             if(is.na(currentProject()$standardRank[1])){
-              
               elem <- colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1]
               if(length(which(str_detect(elem, "Ca") == TRUE)) != 0){ElemStand$temp <- elem[(which(str_detect(elem, "Ca") == TRUE))[1]]} else {}
               if(length(which(str_detect(elem, "Ca") == TRUE)) == 0){ElemStand$temp <- elem[1]}else {}
               
-              
               output$start2 <- renderUI({
-                
-                div(              
+                div(
                   box(
                     title = list(icon("folder-o"),"New Project"),
                     width = 6,
@@ -3889,113 +3980,38 @@ runElementR <- function(){
                     actionButton("runExampleNew", "Run Example"),
                     br(),
                     br(),
-                    p("2. Choose the internal standart element"),
-                    selectInput("internStand", label = "", 
-                                choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1], 
-                                selected = ElemStand$temp),
+                    p("2. Choose the internal standard element"),
+                    selectInput("internStand", label = "",
+                                choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1],
+                                selected = "Ca43"),
                     p("3. Choose the calibration file"),
                     div(
                       div(actionButton("calibFile", "Search"), style = "display:inline-block"),
                       div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
                     ),
                     br(),
-                    p("4. Sort the files in their analyzed rank"),
-                    column(6, 
-                           p("Standard files:"),
-                           lapply(1:length(standardFile$temp), function(i){
-                             div(style="height: 50px;",
-                                 column(8,br(),p(standardFile$temp[i])), 
-                                 column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", 0, min = 0))) 
-                             ) #div
-                           })
-                    ),
-                    column(6, 
-                           p("Samples files:"),
-                           lapply(1:length(SampleFile$temp), function(i){
-                             div(style="height: 50px;",
-                                 column(8,br(),p(SampleFile$temp[i])), 
-                                 column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",0, min = 0))) 
-                             ) 
-                           })
-                    )
-                    
+                    div(style = "display:flex", 
+                        p("4. Do you want to check the machine drift ?"), 
+                        div(checkboxInput("checkbox", label = "Yes", value = FALSE), style="margin-left: 10px")
+                    ), 
+                    p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis")
                   ),
                   box(
                     title = list(icon("folder"),"Load Project"),
                     width = 6,
                     solidHeader = TRUE,
-                    status="primary",           
+                    status="primary",
                     p("1. Choose a project to load"),
                     actionButton("loadProjButton","Load your Project"),
                     actionButton("runExampleLoad", "Load Example")
-                    
                   )
                 )
                 
               })
               
-            }else{
-              if(currentProject()$standardRank[1] != 0){
-
-                output$start2 <- renderUI({
-                  div(                
-                    box(
-                      title = list(icon("folder-o"),"New Project"),
-                      width = 6,
-                      status="primary",
-                      solidHeader = TRUE,
-                      p("1. Choose the project folder"),
-                      actionButton("createProjButton", "Create your project !"),
-                      actionButton("runExampleNew", "Run Example"),
-                      br(),
-                      br(),
-                      p("2. Choose the internal standart element"),
-                      selectInput("internStand", label = "", 
-                                  choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1], 
-                                  selected = ElemStand$temp),
-                      p("3. Choose the calibration file"),
-                      div(
-                        div(actionButton("calibFile", "Search"), style = "display:inline-block"),
-                        div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
-                      ),
-                      br(),
-                      p("4. Sort the files in their analyzed rank"),
-                      column(6, 
-                             p("Standard files:"),
-                             lapply(1:length(standardFile$temp), function(i){
-                               div(style="height: 50px;",
-                                   column(8,br(),p(standardFile$temp[i])), #column
-                                   column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", currentProject()$standardRank[i], min = 0))) #column
-                               )
-                             })
-                      ),
-                      column(6, 
-                             p("Samples files:"),
-                             lapply(1:length(SampleFile$temp), function(i){
-                               div(style="height: 50px;",
-                                   column(8,br(),p(SampleFile$temp[i])), #column
-                                   column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "", currentProject()$sampleRank[i], min = 0))) #column
-                               ) 
-                             })
-                      )
-                      
-                      
-                    ),
-                    box(
-                      title = list(icon("folder"),"Load Project"),
-                      width = 6,
-                      solidHeader = TRUE,
-                      status="primary",            
-                      p("1. Choose a project to load"),
-                      actionButton("loadProjButton","Load your Project"),
-                      actionButton("runExampleLoad", "Load Example")
-                    )
-                  )
-                  
-                })
+             
+              } else {
                 
-              }else{
-
                 output$start2 <- renderUI({
                   div(
                     box(
@@ -4008,56 +4024,36 @@ runElementR <- function(){
                       actionButton("runExampleNew", "Run Example"),
                       br(),
                       br(),
-                      p("2. Choose the internal standart element"),
-                      selectInput("internStand", label = "", 
-                                  choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1], 
-                                  selected = ElemStand$temp),
+                      p("2. Choose the internal standard element"),
+                      selectInput("internStand", label = "",
+                                  choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1],
+                                  selected = "Ca43"),
                       p("3. Choose the calibration file"),
                       div(
                         div(actionButton("calibFile", "Search"), style = "display:inline-block"),
                         div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
                       ),
                       br(),
-                      p("4. Sort the files in their analyzed rank"),
-                      column(6, 
-                             p("Standard files:"),
-                             lapply(1:length(standardFile$temp), function(i){
-                               div(style="height: 50px;",
-                                   column(8,br(),p(standardFile$temp[i])), #column
-                                   column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", 0, min = 0))) #column
-                               ) 
-                             })
-                      ),
-                      column(6, 
-                             p("Samples files:"),
-                             lapply(1:length(SampleFile$temp), function(i){
-                               div(style="height: 50px;",
-                                   column(8,br(),p(SampleFile$temp[i])), #column
-                                   column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",0, min = 0))) #column
-                               ) 
-                             })
-                      )
-                      
+                      div(style = "display:flex", 
+                          p("4. Do you want to check the machine drift ?"), 
+                          div(checkboxInput("checkbox", label = "Yes", value = FALSE), style="margin-left: 10px")
+                      ), 
+                      p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis")
                     ),
                     box(
                       title = list(icon("folder"),"Load Project"),
                       width = 6,
                       solidHeader = TRUE,
-                      status="primary",       
+                      status="primary",
                       p("1. Choose a project to load"),
                       actionButton("loadProjButton","Load your Project"),
                       actionButton("runExampleLoad", "Load Example")
                     )
                   )
                   
-                })
-                
-              }          
+                })          
             } 
           } else {
-            
-            placeNIST <- c(1,5,9)
-            placeSAMPLE <- c(2,3,4,6,7,8,10,11,12)
             
             output$start2 <- renderUI({
               div(
@@ -4071,9 +4067,9 @@ runElementR <- function(){
                   actionButton("runExampleNew", "Run Example"),
                   br(),
                   br(),
-                  p("2. Choose the internal standart element"),
-                  selectInput("internStand", label = "", 
-                              choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1], 
+                  p("2. Choose the internal standard element"),
+                  selectInput("internStand", label = "",
+                              choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1],
                               selected = "Ca43"),
                   p("3. Choose the calibration file"),
                   div(
@@ -4081,32 +4077,17 @@ runElementR <- function(){
                     div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
                   ),
                   br(),
-                  p("4. Sort the files in their analyzed rank"),
-                  column(6, 
-                         p("Standard files:"),
-                         lapply(1:length(standardFile$temp), function(i){
-                           div(style="height: 50px;",
-                               column(8,br(),p(standardFile$temp[i])), #column
-                               column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
-                           ) 
-                         })
-                  ),
-                  column(6, 
-                         p("Samples files:"),
-                         lapply(1:length(SampleFile$temp), function(i){
-                           div(style="height: 50px;",
-                               column(8,br(),p(SampleFile$temp[i])), #column
-                               column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
-                           ) 
-                         })
-                  )
-                  
+                  div(style = "display:flex", 
+                    p("4. Do you want to check the machine drift ?"), 
+                    div(checkboxInput("checkbox", label = "Yes", value = FALSE), style="margin-left: 10px")
+                  ), 
+                  p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis")
                 ),
                 box(
                   title = list(icon("folder"),"Load Project"),
                   width = 6,
                   solidHeader = TRUE,
-                  status="primary",       
+                  status="primary",
                   p("1. Choose a project to load"),
                   actionButton("loadProjButton","Load your Project"),
                   actionButton("runExampleLoad", "Load Example")
@@ -4114,9 +4095,339 @@ runElementR <- function(){
               )
               
             })
+
+            
           }
           
-     
+        } else {}
+        
+        if(currentProject()$elementChecking[[1]] != 0 & is.null(currentProject()$errorSession)){
+          
+          output$start2 <- renderUI({
+            div(
+              box(
+                title = list(icon("folder-o"),"New Project"),
+                width = 6,
+                status="primary",
+                solidHeader = TRUE,
+                p("1. Choose the project folder"),
+                actionButton("createProjButton", "Create your project !"),
+                actionButton("runExampleNew", "Run Example"),
+                br(),
+                br(),
+                p("2. Checking elements"),
+                p(icon("times"), paste0("Problem in ", paste(currentProject()$elementChecking[[2]],sep="", collapse =" ")))
+              ),
+              box(
+                title = list(icon("folder"),"Load Project"),
+                width = 6,
+                solidHeader = TRUE,
+                status="primary",                
+                p("1. Choose a project to load"),
+                actionButton("loadProjButton","Load your Project"),
+                actionButton("runExampleLoad", "Load Example")
+              )
+            )
+          })
+          
+        } else {}
+        if(currentProject()$elementChecking[[1]] != 0 & !is.null(currentProject()$errorSession)){
+          
+          output$start2 <- renderUI({
+            
+            div(
+              box(
+                title = list(icon("folder-o"),"New Project"),
+                width = 6,
+                status="primary",
+                solidHeader = TRUE,
+                p("1. Choose the project folder"),
+                actionButton("createProjButton", "Create your project !"),
+                actionButton("runExampleNew", "Run Example"),
+                br(),
+                p("2. Checking elements"),
+                p(icon("times"), paste0("Problem in ", paste(currentProject()$elementChecking[[2]],sep="", collapse =" "))),
+                br(),
+                p("3. Verification of the non-numeric character of the data"),
+                p(icon("times"), paste0("Problem in ", paste(currentProject()$errorSession,sep="", collapse =" ")))
+              ),
+              box(
+                title = list(icon("folder"),"Load Project"),
+                width = 6,
+                solidHeader = TRUE,
+                status="primary",            
+                p("1. Choose a project to load"),
+                actionButton("loadProjButton","Load your Project"),
+                actionButton("runExampleLoad", "Load Example")
+              )
+            )
+          })
+          
+        } else {}
+        if(currentProject()$elementChecking[[1]] == 0 & !is.null(currentProject()$errorSession)){
+          
+          output$start2 <- renderUI({
+            div(
+              box(
+                title = list(icon("folder-o"),"New Project"),
+                width = 6,
+                status="primary",
+                solidHeader = TRUE,
+                p("1. Choose the project folder"),
+                actionButton("createProjButton", "Create your project !"),
+                actionButton("runExampleNew", "Run Example"),
+                br(),
+                p("2. Verification of the non-numeric character of the data"),
+                p(icon("times"), paste0("Problem in ", paste0(currentProject()$errorSession, sep="", collapse =" ")))
+              ),
+              box(
+                title = list(icon("folder"),"Load Project"),
+                width = 6,
+                solidHeader = TRUE,
+                status="primary",             
+                p("1. Choose a project to load"),
+                actionButton("loadProjButton","Load your Project"),
+                actionButton("runExampleLoad", "Load Example")
+              )
+            )
+            
+          })
+          
+        }  else {}   
+        
+        
+      } else {}
+      
+      if(flagStart$temp[1] == 1.5){
+        
+        output$start1 <- renderUI({
+          fluidRow(
+            box(
+              background = "light-blue",
+              height = 85,
+              width = 12,
+              column(9,                       
+                     div(h3(icon("cogs"),"Step 1. Create a new project or load an existing one"), style = "display: inline-block;")
+              )
+            )
+          )
+        })      
+        
+        if(currentProject()$elementChecking[[1]] == 0 & is.null(currentProject()$errorSession)){ 
+          
+          if(runEx$temp == 0){
+            
+            if(length(currentProject()$standardRank) == 1){
+              placeNIST <- rep(0,length(standardFile$temp))
+              placeSAMPLE <- rep(0,length(SampleFile$temp))
+            } else {
+              placeNIST <- currentProject()$standardRank
+              placeSAMPLE <- currentProject()$sampleRank
+            }
+            
+            if(is.na(currentProject()$standardRank[1])){
+              
+              elem <- colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1]
+              if(length(which(str_detect(elem, "Ca") == TRUE)) != 0){ElemStand$temp <- elem[(which(str_detect(elem, "Ca") == TRUE))[1]]} else {}
+              if(length(which(str_detect(elem, "Ca") == TRUE)) == 0){ElemStand$temp <- elem[1]}else {}
+              
+              output$start2 <- renderUI({
+                div(
+                  box(
+                    title = list(icon("folder-o"),"New Project"),
+                    width = 6,
+                    status="primary",
+                    solidHeader = TRUE,
+                    p("1. Choose the project folder"),
+                    actionButton("createProjButton", "Create your project !"),
+                    actionButton("runExampleNew", "Run Example"),
+                    br(),
+                    br(),
+                    p("2. Choose the internal standard element"),
+                    selectInput("internStand", label = "",
+                                choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1],
+                                selected = "Ca43"),
+                    p("3. Choose the calibration file"),
+                    div(
+                      div(actionButton("calibFile", "Search"), style = "display:inline-block"),
+                      div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
+                    ),
+                    br(),
+                    div(style = "display:flex", 
+                        p("4. Do you want to check the machine drift ?"), 
+                        div(checkboxInput("checkbox", label = "Yes", value = TRUE), style="margin-left: 10px")
+                    ), 
+                    p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis"),
+                    br(),
+                    p("Sort the files in their analyzed rank"),
+                    column(6,
+                           p("Standard files:"),
+                           lapply(1:length(standardFile$temp), function(i){
+                             div(style="height: 50px;",
+                                 column(8,br(),p(standardFile$temp[i])), #column
+                                 column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
+                             )
+                           })
+                    ),
+                    column(6,
+                           p("Samples files:"),
+                           lapply(1:length(SampleFile$temp), function(i){
+                             div(style="height: 50px;",
+                                 column(8,br(),p(SampleFile$temp[i])), #column
+                                 column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
+                             )
+                           })
+                    )
+                  ),
+                  box(
+                    title = list(icon("folder"),"Load Project"),
+                    width = 6,
+                    solidHeader = TRUE,
+                    status="primary",
+                    p("1. Choose a project to load"),
+                    actionButton("loadProjButton","Load your Project"),
+                    actionButton("runExampleLoad", "Load Example")
+                  )
+                )
+                
+              })
+              
+              
+            } else {
+                
+                output$start2 <- renderUI({
+                  div(
+                    box(
+                      title = list(icon("folder-o"),"New Project"),
+                      width = 6,
+                      status="primary",
+                      solidHeader = TRUE,
+                      p("1. Choose the project folder"),
+                      actionButton("createProjButton", "Create your project !"),
+                      actionButton("runExampleNew", "Run Example"),
+                      br(),
+                      br(),
+                      p("2. Choose the internal standard element"),
+                      selectInput("internStand", label = "",
+                                  choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1],
+                                  selected = "Ca43"),
+                      p("3. Choose the calibration file"),
+                      div(
+                        div(actionButton("calibFile", "Search"), style = "display:inline-block"),
+                        div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
+                      ),
+                      br(),
+                      div(style = "display:flex", 
+                          p("4. Do you want to check the machine drift ?"), 
+                          div(checkboxInput("checkbox", label = "Yes", value = TRUE), style="margin-left: 10px")
+                      ), 
+                      p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis"),
+                      br(),
+                      p("Sort the files in their analyzed rank"),
+                      column(6,
+                             p("Standard files:"),
+                             lapply(1:length(standardFile$temp), function(i){
+                               div(style="height: 50px;",
+                                   column(8,br(),p(standardFile$temp[i])), #column
+                                   column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
+                               )
+                             })
+                      ),
+                      column(6,
+                             p("Samples files:"),
+                             lapply(1:length(SampleFile$temp), function(i){
+                               div(style="height: 50px;",
+                                   column(8,br(),p(SampleFile$temp[i])), #column
+                                   column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
+                               )
+                             })
+                      )
+                    ),
+                    box(
+                      title = list(icon("folder"),"Load Project"),
+                      width = 6,
+                      solidHeader = TRUE,
+                      status="primary",
+                      p("1. Choose a project to load"),
+                      actionButton("loadProjButton","Load your Project"),
+                      actionButton("runExampleLoad", "Load Example")
+                    )
+                  )
+                  
+                })          
+            } 
+          } else {
+            if(length(currentProject()$standardRank) == 1){
+              placeNIST <- c(1,5,9)
+              placeSAMPLE <- c(2,3,4,6,7,8,10,11,12)
+            } else {
+              placeNIST <- currentProject()$standardRank
+              placeSAMPLE <- currentProject()$sampleRank
+            }
+            
+            output$start2 <- renderUI({
+              div(
+                box(
+                  title = list(icon("folder-o"),"New Project"),
+                  width = 6,
+                  status="primary",
+                  solidHeader = TRUE,
+                  p("1. Choose the project folder"),
+                  actionButton("createProjButton", "Create your project !"),
+                  actionButton("runExampleNew", "Run Example"),
+                  br(),
+                  br(),
+                  p("2. Choose the internal standard element"),
+                  selectInput("internStand", label = "",
+                              choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1],
+                              selected = "Ca43"),
+                  p("3. Choose the calibration file"),
+                  div(
+                    div(actionButton("calibFile", "Search"), style = "display:inline-block"),
+                    div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
+                  ),
+                  br(),
+                  div(style = "display:flex", 
+                      p("4. Do you want to check the machine drift ?"), 
+                      div(checkboxInput("checkbox", label = "Yes", value = TRUE), style="margin-left: 10px")
+                  ), 
+                  p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis"),
+                  br(),
+                  p("Sort the files in their analyzed rank"),
+                  column(6,
+                         p("Standard files:"),
+                         lapply(1:length(standardFile$temp), function(i){
+                           div(style="height: 50px;",
+                               column(8,br(),p(standardFile$temp[i])), #column
+                               column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
+                           )
+                         })
+                  ),
+                  column(6,
+                         p("Samples files:"),
+                         lapply(1:length(SampleFile$temp), function(i){
+                           div(style="height: 50px;",
+                               column(8,br(),p(SampleFile$temp[i])), #column
+                               column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
+                           )
+                         })
+                  )
+                ),
+                box(
+                  title = list(icon("folder"),"Load Project"),
+                  width = 6,
+                  solidHeader = TRUE,
+                  status="primary",
+                  p("1. Choose a project to load"),
+                  actionButton("loadProjButton","Load your Project"),
+                  actionButton("runExampleLoad", "Load Example")
+                )
+              )
+              
+            })
+            
+            
+          }
           
         } else {}
         if(currentProject()$elementChecking[[1]] != 0 & is.null(currentProject()$errorSession)){
@@ -4215,6 +4526,91 @@ runElementR <- function(){
         
         
       } else {}
+      
+      if(flagStart$temp[1] == 2.5){
+        
+        output$start1 <- renderUI({
+          fluidRow(
+            box(
+              background = "light-blue",
+              height = 85,
+              width = 12,
+              column(9,                       
+                     div(h3(icon("cogs"),"Step 1. Create a new project or load an existing one"), style = "display: inline-block;")
+              )
+            )
+          )
+        }) 
+        
+        output$start2 <- renderUI({
+          div(
+            
+            box(
+              title = list(icon("folder-o"),"New Project"),
+              width = 6,
+              status="primary",
+              solidHeader = TRUE,
+              p("1. Choose the project folder"),
+              actionButton("createProjButton", "Create your project !"),
+              actionButton("runExampleNew", "Run Example"),
+              br(),
+              br(),
+              p("2. Choose the internal standard element"),
+              selectInput("internStand", label = "", 
+                          choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1], 
+                          selected = ElemStand$temp),
+              p("3. Choose the calibration file"),
+              div(
+                div(actionButton("calibFile", "Search"), style = "display:inline-block"),
+                div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
+              ),
+              br(),
+              div(style = "display:flex", 
+                  p("4. Do you want to check the machine drift ?"), 
+                  div(checkboxInput("checkbox", label = "Yes", value = TRUE), style="margin-left: 10px")
+              ), 
+              p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis"),
+              br(),
+              p("Sort the files in their analyzed rank"),
+              column(6, 
+                     p("Standard files:"),
+                     lapply(1:length(standardFile$temp), function(i){
+                       div(style="height: 50px;",
+                           column(8,br(),p(standardFile$temp[i])), #column
+                           column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", currentProject()$standardRank[i], min = 0))) #column
+                       ) 
+                     })
+              ),
+              column(6, 
+                     p("Samples files:"),
+                     lapply(1:length(SampleFile$temp), function(i){
+                       div(style="height: 50px;",
+                           column(8,br(),p(SampleFile$temp[i])), #column
+                           column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "", currentProject()$sampleRank[i], min = 0))) #column
+                       ) 
+                     })
+              ),              
+              p("5. Validate  the created project"),
+              column(3, offset = 4, actionButton("validDonne","Go filtering !"))
+              
+              
+            ),
+            box(
+              title = list(icon("folder"),"Load Project"),
+              width = 6,
+              solidHeader = TRUE,
+              status="primary",             
+              p("1. Choose a project to load"),
+              actionButton("loadProjButton","Load your Project"),
+              actionButton("runExampleLoad", "Load Example")
+            )
+          )
+          
+        })
+        
+        
+      } else {}
+      
       if(flagStart$temp[1] == 2){
         
         output$start1 <- renderUI({
@@ -4243,7 +4639,7 @@ runElementR <- function(){
               actionButton("runExampleNew", "Run Example"),
               br(),
               br(),
-              p("2. Choose the internal standart element"),
+              p("2. Choose the internal standard element"),
               selectInput("internStand", label = "", 
                           choices = colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/")))[-1], 
                           selected = ElemStand$temp),
@@ -4253,26 +4649,13 @@ runElementR <- function(){
                 div(uiOutput("InformCalib"), style = "display:inline-block; margin-left:10px")
               ),
               br(),
-              p("4. Sort the files in their analyzed rank"),
-              column(6, 
-                     p("Standard files:"),
-                     lapply(1:length(standardFile$temp), function(i){
-                       div(style="height: 50px;",
-                           column(8,br(),p(standardFile$temp[i])), #column
-                           column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", currentProject()$standardRank[i], min = 0))) #column
-                       ) 
-                     })
-              ),
-              column(6, 
-                     p("Samples files:"),
-                     lapply(1:length(SampleFile$temp), function(i){
-                       div(style="height: 50px;",
-                           column(8,br(),p(SampleFile$temp[i])), #column
-                           column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "", currentProject()$sampleRank[i], min = 0))) #column
-                       ) 
-                     })
-              ),              
-              p("5. Valid the created project"),
+              div(style = "display:flex", 
+                  p("4. Do you want to check the machine drift ?"), 
+                  div(checkboxInput("checkbox", label = "Yes", value = F), style="margin-left: 10px")
+              ), 
+              p("WARNING: This step requires the rank of each standard and sample in the ICPMS analysis"),
+              br(),            
+              p("5. Validate  the created project"),
               column(3, offset = 4, actionButton("validDonne","Go filtering !"))
               
               
@@ -4292,6 +4675,7 @@ runElementR <- function(){
         
         
       } else {}
+      
       if(flagStart$temp[1] == 3){
         
         ## explanation for standards
@@ -4356,7 +4740,8 @@ runElementR <- function(){
                        column(12, offset = 1, p(temp4[[i]]))
                      }),
                      p(icon("share"), paste0("Calibration file: ", calibFile$temp, collapse = " ")),
-                     p(icon("share"), paste0("Internal standard element: ", currentProject()$elemStand))
+                     p(icon("share"), paste0("Internal standard element: ", currentProject()$elemStand)),
+                     p(icon("share"), paste0("Detection of a possible machine drift: ", currentProject()$ChoiceUserCorr))
                    ),
                    box(
                      title = list(icon("folder-o"),"Important information"),
@@ -4376,6 +4761,7 @@ runElementR <- function(){
         })
         
       } else {}
+      
       if(flagStart$temp[2] == 1){      
         
         output$start1 <- renderUI({
@@ -4424,6 +4810,7 @@ runElementR <- function(){
           
         })
       } else {}
+      
       if(flagStart$temp[2] == 3){      
         
         output$start1 <- renderUI({
@@ -4482,7 +4869,7 @@ runElementR <- function(){
                      width = 12,
                      status="primary",
                      solidHeader = TRUE,
-                     p(icon("share"), "You are editing or finishing a projet"),
+                     p(icon("share"), "You are editing or finishing a Project"),
                      p(icon("share"), paste0("Path of the project: ", projChar$temp[[3]])),
                      p(icon("share"), paste0("Standard files (and their rank) within the project: ", temp)),
                      p(icon("share"), "Sample files (and their rank) within the project: "),
@@ -4490,7 +4877,8 @@ runElementR <- function(){
                        column(12, offset = 1, p(temp4[[i]]))
                      }),
                      p(icon("share"), paste0("Calibration file: ", calibFile$temp, collapse = " ")),
-                     p(icon("share"), paste0("Internal standard element: ", currentProject()$elemStand))
+                     p(icon("share"), paste0("Internal standard element: ", currentProject()$elemStand)),
+                     p(icon("share"), paste0("Detection of a possible machine drift: ", currentProject()$ChoiceUserCorr))
                    ),
                    box(
                      title = list(icon("folder-o"),"Important information"),
@@ -4506,6 +4894,7 @@ runElementR <- function(){
           
           
         })
+        
       } else {}
       
     }) #observe
@@ -4575,7 +4964,7 @@ runElementR <- function(){
                        div(h3(icon("flask"),"Step 2. Standard replicate filtering"), style = "display: inline-block;")
                 ),
                 column(3, class = "class1",
-                       p(icon("eye"), "Select standart replicate"),
+                       p(icon("eye"), "Select standard replicate"),
                        selectInput("standardIn", "" ,  as.matrix(currentProject()$standardsFiles),multiple = FALSE, width = '100%') 
                 ),
                 column(2,
@@ -4646,6 +5035,7 @@ runElementR <- function(){
       }else if(is.null(input$standardIn)){      
       }else if(is.null(startSession$temp)){      
       }else{
+
         if(length(which(as.matrix(currentProject()$standardsFiles) == input$standardIn)) != 0 & length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){ 
           
           if(startSession$temp == 0){
@@ -4666,7 +5056,7 @@ runElementR <- function(){
                            div(h3(icon("flask"),"Step 2. Standard replicate filtering"), style = "display: inline-block;")
                     ),
                     column(3,
-                           selectInput("standardIn", "Select standart replicate" ,  as.matrix(currentProject()$standardsFiles),multiple = FALSE, width = '100%') 
+                           selectInput("standardIn", "Select standard replicate" ,  as.matrix(currentProject()$standardsFiles),multiple = FALSE, width = '100%') 
                     ),
                     column(2,
                            br(),
@@ -4691,7 +5081,7 @@ runElementR <- function(){
                              div(h3(icon("flask"),"Step 2. Standard replicate filtering"), style = "display: inline-block;")
                       ),
                       column(3, class = "class1",
-                             p(icon("eye"), "Select standart replicate"),
+                             p(icon("eye"), "Select standard replicate"),
                              selectInput("standardIn", "" ,  as.matrix(currentProject()$standardsFiles),multiple = FALSE, width = '100%') 
                       ),
                       column(2,
@@ -4864,6 +5254,8 @@ runElementR <- function(){
                 
                 output$distPlot2 <- renderPlot({
                   input$valRemplace
+                  BAV$temp
+                  LOD$temp
                   if(is.null(dataPlot2$dat)){}
                   else{                 
                     if(length(which(!is.na(dataPlot2$dat[,grep(input$listeElem, colnames(dataPlot2$dat))]))) == 0){
@@ -4915,7 +5307,7 @@ runElementR <- function(){
                              div(h3(icon("flask"),"Step 2. Standard replicate filtering"), style = "display: inline-block;")
                       ),
                       column(3,  class = "class1",
-                             p(icon("eye"), "Select standart replicate"),
+                             p(icon("eye"), "Select standard replicate"),
                              selectInput("standardIn", "" ,  as.matrix(currentProject()$standardsFiles),multiple = FALSE, width = '100%') 
                       ),
                       column(2,
@@ -5096,6 +5488,8 @@ runElementR <- function(){
                 
                 output$distPlot2 <- renderPlot({
                   input$valRemplace
+                  BAV$temp
+                  LOD$temp
                   if(is.null(dataPlot2$dat)){                    
                   }else{
                     if(length(which(!is.na(dataPlot2$dat[,grep(input$listeElem, colnames(dataPlot2$dat))]))) == 0){
@@ -5147,7 +5541,7 @@ runElementR <- function(){
                              div(h3(icon("flask"),"Step 2. Standard replicate filtering"), style = "display: inline-block;")
                       ),
                       column(3,  class = "class1",
-                             p(icon("eye"), "Select standart replicate"),
+                             p(icon("eye"), "Select standard replicate"),
                              selectInput("standardIn", "" ,  as.matrix(currentProject()$standardsFiles),multiple = FALSE, width = '100%') 
                       ),
                       column(2,
@@ -5320,6 +5714,8 @@ runElementR <- function(){
                 
                 output$distPlot2 <- renderPlot({
                   input$valRemplace
+                  BAV$temp
+                  LOD$temp
                   if(is.null(dataPlot2$dat)){                    
                   }else{
                     if(length(which(!is.na(dataPlot2$dat[,grep(input$listeElem, colnames(dataPlot2$dat))]))) == 0){
@@ -5385,7 +5781,8 @@ runElementR <- function(){
             } else if(is.null(Temp1$t)){            
             } else if(is.null(Temp2$t)){            
             }else{
-              if(is.finite(Temp$t)){dataPlot2$dat <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$CourbeNIST, bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+              if(is.finite(Temp$t)){
+                dataPlot2$dat <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$CourbeNIST, bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
                                      BAV$temp <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge
                                      LOD$temp <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD
               } else{}
@@ -5525,7 +5922,7 @@ runElementR <- function(){
             if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)]%%2) == 1 & input$saveNists >0){
               isolate({
                 currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 1)
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setBins(bins = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1]))     
+                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setBins(bins = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1]))
                 currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setPlat(plat = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1]))
                 currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
                 currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], bins2 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], plat1 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], plat2 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], average = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge, LOD = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD)
@@ -5904,41 +6301,48 @@ runElementR <- function(){
               
               output[[tablename]] <- renderUI({
                 
-                if(!is.null(input$CorrectAll)){
-                  
-                  if(input$CorrectAll == TRUE){
-                    valCheck = TRUE
-                  } else{
+                if(currentProject()$ChoiceUserCorr == T){
+                  if(!is.null(input$CorrectAll)){
+                    
+                    if(input$CorrectAll == TRUE){
+                      valCheck = TRUE
+                    } else{
+                      valCheck = machineCorrection$temp[x]
+                    }
+                  }else{
                     valCheck = machineCorrection$temp[x]
+                  }               
+                  
+                  if(is.null(validCorrection$temp)){
+                    val <- "Correction"
+                    valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
+                  } else if((validCorrection$temp%%2) == 0){
+                    val <- "Correction"
+                    valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
+                  }else{
+                    val <- "Correction"
+                    valB <- machineCorrection$temp[x]
                   }
-                }else{
-                  valCheck = machineCorrection$temp[x]
-                }               
-                
-                if(is.null(validCorrection$temp)){
-                  val <- "Correction"
-                  valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
-                } else if((validCorrection$temp%%2) == 0){
-                  val <- "Correction"
-                  valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
-                }else{
-                  val <- "Correction"
-                  valB <- machineCorrection$temp[x]
-                }
-                
-                
-                #########
-                
-                div(
+                  
+                  
+                  #########
+                  
                   div(
-                    div("", style ="display: inline-block;width: 370px;text-align: center"),
-                    div(val, style ="display: inline-block;width: 70px;text-align: center")
-                  ),
-                  div(
-                    div("Only two values for this chemical element", style ="display: inline-block;width: 370px;text-align: center"),
-                    div(valB, style ="display: inline-block;width: 70px;height : 30px; text-align: center;vertical-align: bottom;")
+                    div(
+                      div("", style ="display: inline-block;width: 370px;text-align: center"),
+                      div(val, style ="display: inline-block;width: 70px;text-align: center")
+                    ),
+                    div(
+                      div("Only two values for this chemical element", style ="display: inline-block;width: 370px;text-align: center"),
+                      div(valB, style ="display: inline-block;width: 70px;height : 30px; text-align: center;vertical-align: bottom;")
+                    )
                   )
-                )
+                
+                } else {
+                    p("You chose not to check for machine drift", style = "font-size:medium;font-weight: bold; text-align: center;")
+                  }
+                
+                
               }) 
               
               plotname2 <- paste("plotSession", x, sep="")
@@ -5993,7 +6397,7 @@ runElementR <- function(){
                 br(),
                 br(),
                 column(9,offset = 2,
-                       p(paste0("Y (Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand, ") = ", round(currentProject()$regressionModel[x,5],3), " + X (Stand. Rank) * ", round(currentProject()$regressionModel[x,6],3)), style = "font-size:medium;font-weight: bold;")
+                       p(paste0("Y (Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand, ") = ", round(currentProject()$regressionModel[x,5],3), " + X (Stand. Rank) * ", round(currentProject()$regressionModel[x,6],3)), style = "font-size:medium;font-weight: bold;text-align: center;")
                 ),
                 br(),
                 barre                                                         
@@ -6028,132 +6432,139 @@ runElementR <- function(){
               
               output[[tablename]] <- renderUI({
                 
-                if(is.na(tableauStat$temp[x,1])){
-                  valeur1 <- 'font-weight:bold; color:red'
-                }else{
-                  if(tableauStat$temp[x,1] < 0.05){
-                    valeur1 <- 'font-weight:bold; color:red'
-                  }else{valeur1 <- 'font-weight:normal; color:black'}
-                }
-                
-                if(is.na(tableauStat$temp[x,1])){
-                  valeur1Bis <- tableauStat$temp[x,1]
-                } else{
-                  if(tableauStat$temp[x,1] < 0.001){
-                    valeur1Bis <- format(tableauStat$temp[x,1], scientific = TRUE)
-                  }else{
-                    valeur1Bis <- format(round(tableauStat$temp[x,1], digits = 2), scientific = FALSE)
-                  }
-                }
-                
-                #########
-                
-                if(is.na(tableauStat$temp[x,2])){
-                  valeur2 <- 'font-weight:bold; color:red'
-                }else{
-                  if(tableauStat$temp[x,2] < 0.05){
-                    valeur2 <- 'font-weight:bold; color:red'
-                  }else{valeur2 <- 'font-weight:normal; color:black'}
-                }
-                
-                if(is.na(tableauStat$temp[x,2])){
-                  valeur2Bis <- tableauStat$temp[x,2]
-                }else{
-                  if(tableauStat$temp[x,2] < 0.001){
-                    valeur2Bis <- format(tableauStat$temp[x,2], scientific = TRUE)
-                  }else{
-                    valeur2Bis <- format(round(tableauStat$temp[x,2], digits = 2), scientific = FALSE)
-                  }
-                }
-                
-                #########
-                
-                if(is.na(tableauStat$temp[x,3])){
-                  valeur3 <- 'font-weight:bold; color:red'
-                }else{
-                  if(tableauStat$temp[x,3] < 0.05){
-                    valeur3 <- 'font-weight:bold; color:red'
-                  }else{valeur3 <- 'font-weight:normal; color:black'}
-                }
-                
-                if(is.na(tableauStat$temp[x,3])){
-                  valeur3Bis <- tableauStat$temp[x,3]
-                }else{
-                  if(tableauStat$temp[x,3] < 0.001){
-                    valeur3Bis <- format(tableauStat$temp[x,3], scientific = TRUE)
-                  }else{
-                    valeur3Bis <- format(round(tableauStat$temp[x,3], digits = 2), scientific = FALSE)
-                  }
-                }
-                
-                #########
-
-                if(!is.null(input$CorrectAll)){
+                if(currentProject()$ChoiceUserCorr == T){
                   
-                  if(input$CorrectAll == TRUE){
-                    valCheck = TRUE
+                  if(is.na(tableauStat$temp[x,1])){
+                    valeur1 <- 'font-weight:bold; color:red'
+                  }else{
+                    if(tableauStat$temp[x,1] < 0.05){
+                      valeur1 <- 'font-weight:bold; color:red'
+                    }else{valeur1 <- 'font-weight:normal; color:black'}
+                  }
+                  
+                  if(is.na(tableauStat$temp[x,1])){
+                    valeur1Bis <- tableauStat$temp[x,1]
                   } else{
+                    if(tableauStat$temp[x,1] < 0.001){
+                      valeur1Bis <- format(tableauStat$temp[x,1], scientific = TRUE)
+                    }else{
+                      valeur1Bis <- format(round(tableauStat$temp[x,1], digits = 2), scientific = FALSE)
+                    }
+                  }
+                  
+                  #########
+                  
+                  if(is.na(tableauStat$temp[x,2])){
+                    valeur2 <- 'font-weight:bold; color:red'
+                  }else{
+                    if(tableauStat$temp[x,2] < 0.05){
+                      valeur2 <- 'font-weight:bold; color:red'
+                    }else{valeur2 <- 'font-weight:normal; color:black'}
+                  }
+                  
+                  if(is.na(tableauStat$temp[x,2])){
+                    valeur2Bis <- tableauStat$temp[x,2]
+                  }else{
+                    if(tableauStat$temp[x,2] < 0.001){
+                      valeur2Bis <- format(tableauStat$temp[x,2], scientific = TRUE)
+                    }else{
+                      valeur2Bis <- format(round(tableauStat$temp[x,2], digits = 2), scientific = FALSE)
+                    }
+                  }
+                  
+                  #########
+                  
+                  if(is.na(tableauStat$temp[x,3])){
+                    valeur3 <- 'font-weight:bold; color:red'
+                  }else{
+                    if(tableauStat$temp[x,3] < 0.05){
+                      valeur3 <- 'font-weight:bold; color:red'
+                    }else{valeur3 <- 'font-weight:normal; color:black'}
+                  }
+                  
+                  if(is.na(tableauStat$temp[x,3])){
+                    valeur3Bis <- tableauStat$temp[x,3]
+                  }else{
+                    if(tableauStat$temp[x,3] < 0.001){
+                      valeur3Bis <- format(tableauStat$temp[x,3], scientific = TRUE)
+                    }else{
+                      valeur3Bis <- format(round(tableauStat$temp[x,3], digits = 2), scientific = FALSE)
+                    }
+                  }
+                  
+                  #########
+                  
+                  if(!is.null(input$CorrectAll)){
+                    
+                    if(input$CorrectAll == TRUE){
+                      valCheck = TRUE
+                    } else{
+                      valCheck = machineCorrection$temp[x]
+                    }
+                  }else{
                     valCheck = machineCorrection$temp[x]
                   }
-                }else{
-                  valCheck = machineCorrection$temp[x]
-                }
-                
-                if(is.na(tableauStat$temp[x,4])){valeur4 <- 'font-weight:bold; color:red'
-                                                 val <- "Correction"
-                                                 valB <- "NS"
-                } else {
-                  if(tableauStat$temp[x,4] < 0.05){valeur4 <- 'font-weight:bold; color:red'
-                                                   
-                                                   if(is.null(validCorrection$temp)){
-                                                     val <- "Correction"
-                                                     valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
-                                                   } else if((validCorrection$temp%%2) == 0){
-                                                     val <- "Correction"
-                                                     valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
-                                                   }else{
-                                                     val <- "Correction"
-                                                     valB <- machineCorrection$temp[x]
-                                                   }
-                                                   
-                                                   
-                  }else{valeur4 <- 'font-weight:normal; color:black'
-                        val <- "Correction"
-                        valB <- "NS"
-                  }
-                }
-                
-                if(is.na(tableauStat$temp[x,4])){
-                  valeur4Bis <- tableauStat$temp[x,4]
-                }else{
                   
-                  if(tableauStat$temp[x,4] < 0.001){
-                    valeur4Bis <- format(tableauStat$temp[x,4], scientific = TRUE)
-                  }else{
-                    valeur4Bis <- format(round(tableauStat$temp[x,4],digits = 2), scientific = FALSE)
+                  if(is.na(tableauStat$temp[x,4])){valeur4 <- 'font-weight:bold; color:red'
+                  val <- "Correction"
+                  valB <- "NS"
+                  } else {
+                    if(tableauStat$temp[x,4] < 0.05){valeur4 <- 'font-weight:bold; color:red'
+                    
+                    if(is.null(validCorrection$temp)){
+                      val <- "Correction"
+                      valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
+                    } else if((validCorrection$temp%%2) == 0){
+                      val <- "Correction"
+                      valB <- eval(parse(text = "checkboxInput(geneRMachineCorr$temp[x],label = '', value = valCheck)"))
+                    }else{
+                      val <- "Correction"
+                      valB <- machineCorrection$temp[x]
+                    }
+                    
+                    
+                    }else{valeur4 <- 'font-weight:normal; color:black'
+                    val <- "Correction"
+                    valB <- "NS"
+                    }
                   }
+                  
+                  if(is.na(tableauStat$temp[x,4])){
+                    valeur4Bis <- tableauStat$temp[x,4]
+                  }else{
+                    
+                    if(tableauStat$temp[x,4] < 0.001){
+                      valeur4Bis <- format(tableauStat$temp[x,4], scientific = TRUE)
+                    }else{
+                      valeur4Bis <- format(round(tableauStat$temp[x,4],digits = 2), scientific = FALSE)
+                    }
+                  }
+                  
+                  #########
+                  
+                  div(
+                    div(
+                      div(style ="display: inline-block;width: 70px;text-align: center; "),
+                      div("Norm.Res", style ="display: inline-block;width: 70px;text-align: center"),
+                      div("Homosc.Res", style ="display: inline-block;width: 90px;text-align: center"),
+                      div("Indep.Res", style ="display: inline-block;width: 70px;text-align: center"),
+                      div("Slope", style ="display: inline-block;width: 70px;text-align: center"),
+                      div(val, style ="display: inline-block;width: 70px;text-align: center")
+                    ),
+                    div(
+                      div("pvalue", style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;"),
+                      div(valeur1Bis, style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;", style = valeur1),
+                      div(valeur2Bis, style ="display: inline-block;width: 90px;height : 30px; text-align: center;font-style: italic;", style = valeur2),
+                      div(valeur3Bis, style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;", style = valeur3),
+                      div(valeur4Bis, style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;", style = valeur4),
+                      div(valB, style ="display: inline-block;width: 70px;height : 30px; text-align: center;vertical-align: bottom;")
+                    )
+                  )
+                } else {
+                  p("You chose not to check for machine drift", style = "font-size:medium;font-weight: bold; text-align: center;text-align: center;")
                 }
                 
-                #########
                 
-                div(
-                  div(
-                    div(style ="display: inline-block;width: 70px;text-align: center; "),
-                    div("Norm.Res", style ="display: inline-block;width: 70px;text-align: center"),
-                    div("Homosc.Res", style ="display: inline-block;width: 90px;text-align: center"),
-                    div("Indep.Res", style ="display: inline-block;width: 70px;text-align: center"),
-                    div("Slope", style ="display: inline-block;width: 70px;text-align: center"),
-                    div(val, style ="display: inline-block;width: 70px;text-align: center")
-                  ),
-                  div(
-                    div("pvalue", style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;"),
-                    div(valeur1Bis, style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;", style = valeur1),
-                    div(valeur2Bis, style ="display: inline-block;width: 90px;height : 30px; text-align: center;font-style: italic;", style = valeur2),
-                    div(valeur3Bis, style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;", style = valeur3),
-                    div(valeur4Bis, style ="display: inline-block;width: 70px;height : 30px; text-align: center;font-style: italic;", style = valeur4),
-                    div(valB, style ="display: inline-block;width: 70px;height : 30px; text-align: center;vertical-align: bottom;")
-                  )
-                )
               }) 
               
               if(flagHR$temp == 3){
@@ -6194,7 +6605,7 @@ runElementR <- function(){
                 br(),
                 br(),
                 column(9,offset = 2,
-                       p(paste0("Y (Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand, ") = ", round(currentProject()$regressionModel[x,5],3), " + X (Stand. Rank) * ", round(currentProject()$regressionModel[x,6],3)), style = "font-size:medium;font-weight: bold;")
+                       p(paste0("Y (Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand, ") = ", round(currentProject()$regressionModel[x,5],3), " + X (Stand. Rank) * ", round(currentProject()$regressionModel[x,6],3)), style = "font-size:medium;font-weight: bold;text-align: center;")
                 ),
                 br(),
                 barre                 
@@ -6235,33 +6646,60 @@ runElementR <- function(){
             
             if((validCorrection$temp%%2) == 0){
               
-              output$MachDrift1 <- renderUI({              
-                
-                fluidRow(
-                  box(
-                    width=12,
-                    background = "olive",         
-                    column(5, style = "margin-top:10px",
-                           div(h3(icon("plug"),"Step 3. Machine drift verification"), style = "display: inline-block;")
-                    ),
-                    column(4, 
-                           p(icon("eye"), "Element to plot"),
-                           div(selectizeInput("ElementChosen", label = "", choices = currentProject()$listeElem, selected = currentProject()$listeElem[elemChosen$temp], multiple = TRUE), style = "margin-top: -20px")
-                           
-                    ),   
-                    column(2,
-                           style = "width:120px;margin-top:15px",
-                           br(),
-                           checkboxInput("CorrectAll",label = "Correct all", value = FALSE)
-                    ),
-                    column(2,
-                           style = "width:100px;margin-top:20px",
-                           actionButton("validDrift", "Save machine drift", style = "margin-top:10px")
+              if(currentProject()$ChoiceUserCorr == T){
+                output$MachDrift1 <- renderUI({              
+                  
+                  fluidRow(
+                    box(
+                      width=12,
+                      background = "olive",         
+                      column(5, style = "margin-top:10px",
+                             div(h3(icon("plug"),"Step 3. Machine drift verification"), style = "display: inline-block;")
+                      ),
+                      column(4, 
+                             p(icon("eye"), "Element to plot"),
+                             div(selectizeInput("ElementChosen", label = "", choices = currentProject()$listeElem, selected = currentProject()$listeElem[elemChosen$temp], multiple = TRUE), style = "margin-top: -20px")
+                             
+                      ),   
+                      column(2,
+                             style = "width:120px;margin-top:15px",
+                             br(),
+                             checkboxInput("CorrectAll",label = "Correct all", value = FALSE)
+                      ),
+                      column(2,
+                             style = "width:100px;margin-top:20px",
+                             actionButton("validDrift", "Save machine drift", style = "margin-top:10px")
+                      )
+                      
                     )
-                    
-                  )
-                ) 
-              }) #output$MachDrift1   
+                  ) 
+                }) #output$MachDrift1 
+              } else {
+                output$MachDrift1 <- renderUI({              
+                  
+                  fluidRow(
+                    box(
+                      width=12,
+                      background = "olive",         
+                      column(5, style = "margin-top:10px",
+                             div(h3(icon("plug"),"Step 3. Machine drift verification"), style = "display: inline-block;")
+                      ),
+                      column(4, 
+                             p(icon("eye"), "Element to plot"),
+                             div(selectizeInput("ElementChosen", label = "", choices = currentProject()$listeElem, selected = currentProject()$listeElem[elemChosen$temp], multiple = TRUE), style = "margin-top: -20px")
+                             
+                      ), 
+                      column(2,
+                             style = "width:100px;margin-top:20px",
+                             actionButton("validDrift", "Save machine drift", style = "margin-top:10px")
+                      )
+                      
+                    )
+                  ) 
+                }) #output$MachDrift1 
+              }
+              
+                
               
               output$MachDrift2 <- renderUI({
                 fluidRow(
@@ -6379,12 +6817,13 @@ runElementR <- function(){
           if((input$validDrift%%2) == 1){
             validCorrection$temp <- validCorrection$temp + 1          
             updateSelectInput(session, 'ElementChosen', selected = input$ElementChosen)
+            
           } else {}
           
         })
       }
     }) #observe  
-    
+
     # save de data when the validCorrection$temp is in position of save and delete the data  if validCorrection$temp is is the delete position 
     observe({
       if(is.null(input$validDrift)){      
@@ -6439,22 +6878,20 @@ runElementR <- function(){
     
     BAV_Sample <- reactiveValues(temp = 0)
     LOD_Sample <- reactiveValues(temp = 0)
-    
-    output$signiS <- renderUI({
-      input$SampleIn
-      input$SampleIn2
-      input$listeElemSample
-      input$CourbeSample
-      input$binsSample
-      input$platSample
-      if(!is.null(input$CourbeSample)){
+
+    #signiS
+    observe({
+      validCorrection$temp
+      output$signiS <- renderUI({
+        
+        
         if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
           div(
-            div(style = "display: inline-block;", 
+            div(style = "display: inline-block;",
                 div(p(paste0("B.A.V.*: ", " ",  " ",round(BAV_Sample$temp[grep(input$listeElemSample, names(BAV_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px;"),
                 div(p(paste0("L.O.D.**: ", " ",  " ",round(LOD_Sample$temp[grep(input$listeElemSample, names(LOD_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px")
             ),
-            div(style = "display: inline-block; vertical-align: top; margin-top: 10px", 
+            div(style = "display: inline-block; vertical-align: top; margin-top: 10px",
                 div(style = "width:70px; vertical-align:top; margin-left: 50px; height: 30px; display: inline-block; background-color: rgba(232,26,29,0.5); border-style:solid; border-top: dotted 1px rgb(232,26,29); border-bottom: white; border-right: white; border-left:white"),
                 div(p("Under B.A.V."), style = "display: inline-block; margin-left:10px;")
             ),
@@ -6465,18 +6902,18 @@ runElementR <- function(){
           
         } else if(input$CourbeSample == "Blank removed"){
           div(
-            div(style = "display: inline-block;", 
+            div(style = "display: inline-block;",
                 div(p(paste0("B.A.V.*: ", " ",  " ",round(BAV_Sample$temp[grep(input$listeElemSample, names(BAV_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px;"),
                 div(p(paste0("L.O.D.**: ", " ",  " ",round(LOD_Sample$temp[grep(input$listeElemSample, names(LOD_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px")
             ),
-            div(style = "display: inline-block; vertical-align: top; margin-top: 10px", 
+            div(style = "display: inline-block; vertical-align: top; margin-top: 10px",
                 div(style = "width:70px; vertical-align:top; margin-left: 50px; height: 30px; display: inline-block; background-color: rgba(232,26,29,0.5); border-style:solid; border-top: dotted 1px rgb(232,26,29); border-bottom: white; border-right: white; border-left:white"),
                 div(p("Under L.O.D."), style = "display: inline-block; margin-left:10px;")
             ),
             br(),
             br(),
             p("* Blank averaged value ** Limit of detection", style = "margin-left:20px")
-          )                      
+          )
         } else {
           div(
             div(
@@ -6485,11 +6922,11 @@ runElementR <- function(){
             ),
             br(),
             p("* Blank averaged value ** Limit of detection", style = "margin-left:20px")
-          ) 
+          )
         }
-      } else {}
+      })
     })
-    
+      
     #set elemUsed$temp
     observe({
       if(is.null(input$selectallS)){      
@@ -6519,7 +6956,7 @@ runElementR <- function(){
             
             output$sample1 <- renderUI({
               div(class = "class4",
-                  div(h3("Step 4. Sample replicate filtering"), style = "display: inline-block;")      
+                  div(h3("Step 4. Sample replicate filtering"), style = "display: inline-block;")
               )
             }) # eo output$sample1
             
@@ -6584,116 +7021,227 @@ runElementR <- function(){
                 output$distPlot2Sample <- renderPlot({})# eo input$distPlot2Sample
               }else{
                 
+                
+                
                 if(flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)] == 0){
                   
                   output$sample4 <- renderUI({
                     actionButton("saveSample", "Save")       
                   }) # eo input$Sample4 
-                  
-                  output$Sample5 <- renderUI({
 
-                    input$SampleIn
-                    input$SampleIn2
+                  if(currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) != 0) {
                     
-                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                      if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){                    
-                    }else{
-                      
-                      minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                      maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                      
-                      minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                      maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                      
-                      value1S <- c(0,(maxBS - minBS)/6)
-                      value2S <- c((maxPS - minPS)*2/6,(maxPS - minPS)*4/6)
-                      step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
-                      
-                      fluidRow(
-                        column(8,style  = "padding-right: 5px",                          
-                               box(
-                                 title = list(icon("share"),"Background and plateau limits selection"),
-                                 status="info",
-                                 solidHeader = TRUE,
-                                 width = "100%", 
-                                 height = "640px",
-                                 fluidRow(
-                                   column(10,
-                                          plotOutput("distPlotSample"),
-                                          column(1),
-                                          column(11,
-                                                 div(style="height: 82px",
-                                                     sliderInput("binsSample","Background limits", value = value1S, min = minBS, max = maxBS, step = step, width = '100%', round = TRUE)
-                                                 ),
-                                                 div(style="height: 27px",
-                                                     sliderInput("platSample","Plateau limits", value = value2S, min = minPS, max = maxPS,step = step, width = '100%')
-                                                 )
-                                                 
-                                                 
-                                          ) 
-                                   ), 
-                                   column(2, 
-                                          div(style = "height: 10px",
-                                              actionLink("selectallS","Select All"),
-                                              div(style ="",      
-                                                  div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;", 
-                                                      div(style = "height:6px; width: 20px;"),
-                                                      lapply(1:length(currentProject()$listeElem), function(x){
-                                                        eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
-                                                        
-                                                      })
-                                                      
-                                                  ),
-                                                  div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
-                                                  
+                    output$Sample5 <- renderUI({
+                      input$SampleIn
+                      input$SampleIn2
+
+                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                        }else{
+
+                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                          value1S <- c(0,(maxBS - minBS)/6)
+                          value2S <- c((maxPS - minPS)*2/6,(maxPS - minPS)*4/6)
+                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+
+                          fluidRow(
+                            column(8,style  = "padding-right: 5px",
+                                   box(
+                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     height = "640px",
+                                     fluidRow(
+                                       column(10,
+                                              plotOutput("distPlotSample"),
+                                              column(1),
+                                              column(11,
+                                                     div(style="height: 82px",
+                                                         sliderInput("binsSample","Background limits", value = value1S, min = minBS, max = maxBS, step = step, width = '100%', round = TRUE)
+                                                     ),
+                                                     div(style="height: 27px",
+                                                         sliderInput("platSample","Plateau limits", value = value2S, min = minPS, max = maxPS,step = step, width = '100%')
+                                                     )
+
+
                                               )
-                                          )
+                                       ),
+                                       column(2,
+                                              div(style = "height: 10px",
+                                                  actionLink("selectallS","Select All"),
+                                                  div(style ="",
+                                                      div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
+                                                          div(style = "height:6px; width: 20px;"),
+                                                          lapply(1:length(currentProject()$listeElem), function(x){
+                                                            eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
+
+                                                          })
+
+                                                      ),
+                                                      div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
+
+                                                  )
+                                              )
+                                       )
+                                     )
                                    )
-                                 ) 
-                               )
-                               
-                        ),                  
-                        column(4,style  = "padding-left: 5px",
-                               box(
-                                 title = list(icon("share"),"Filtered data verification"),
-                                 status="info",
-                                 solidHeader = TRUE,
-                                 width = "100%", 
-                                 collapsible = TRUE,                           
-                                 column(6, class = "class1",
-                                        p(icon("cubes"),"Element plotted"),
-                                        selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%') 
-                                 ), 
-                                 column(6, class = "class1",
-                                        p(icon("area-chart"),"Curve plotted"),
-                                        selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), selected  = "Plateau", width = '100%') 
-                                 ),
-                                 div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
-                                 uiOutput("signiS")
-                               ),
-                               box(
-                                 title = list(icon("floppy-o"),"Graphic export"),
-                                 status="info",
-                                 solidHeader = TRUE,
-                                 width = "100%", 
-                                 collapsible = TRUE,
-                                 collapsed = TRUE,
-                                 selectizeInput("ElementToExportS", label = "Element(s) to export", 
-                                                choices = currentProject()$listeElem,
-                                                selected = currentProject()$listeElem, multiple = TRUE),
-                                 checkboxGroupInput("courveToExportS", label = "Curve(s) to export", 
-                                                    choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"),
-                                                    selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), inline = TRUE),
-                                 div(actionButton("ExportGraphS","Export graphics"), align="center")
-                               )                             
-                               
-                        )   
-                        
-                      ) 
-                    }
-                    } else {}
+
+                            ),
+                            column(4,style  = "padding-left: 5px",
+                                   box(
+                                     title = list(icon("share"),"Filtered data verification"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     collapsible = TRUE,
+                                     column(6, class = "class1",
+                                            p(icon("cubes"),"Element plotted"),
+                                            selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%')
+                                     ),
+                                     column(6, class = "class1",
+                                            p(icon("area-chart"),"Curve plotted"),
+                                            selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), selected  = "Plateau", width = '100%')
+                                     ),
+                                     div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
+                                     uiOutput("signiS")
+                                   ),
+                                   box(
+                                     title = list(icon("floppy-o"),"Graphic export"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     collapsible = TRUE,
+                                     collapsed = TRUE,
+                                     selectizeInput("ElementToExportS", label = "Element(s) to export",
+                                                    choices = currentProject()$listeElem,
+                                                    selected = currentProject()$listeElem, multiple = TRUE),
+                                     checkboxGroupInput("courveToExportS", label = "Curve(s) to export",
+                                                        choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"),
+                                                        selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), inline = TRUE),
+                                     div(actionButton("ExportGraphS","Export graphics"), align="center")
+                                   )
+
+                            )
+
+                          )
+                        }
+                      } else {}
+
+                    }) # eo input$Sample5
+                  } else {
                     
-                  }) # eo input$Sample5
+                    output$Sample5 <- renderUI({
+
+                      input$SampleIn
+                      input$SampleIn2
+
+
+                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                        }else{
+
+                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                          value1S <- c(0,(maxBS - minBS)/6)
+                          value2S <- c((maxPS - minPS)*2/6,(maxPS - minPS)*4/6)
+                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+                  
+                          fluidRow(
+                            column(8,style  = "padding-right: 5px",
+                                   box(
+                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     height = "640px",
+                                     fluidRow(
+                                       column(10,
+                                              plotOutput("distPlotSample"),
+                                              column(1),
+                                              column(11,
+                                                     div(style="height: 82px",
+                                                         sliderInput("binsSample","Background limits", value = value1S, min = minBS, max = maxBS, step = step, width = '100%', round = TRUE)
+                                                     ),
+                                                     div(style="height: 27px",
+                                                         sliderInput("platSample","Plateau limits", value = value2S, min = minPS, max = maxPS,step = step, width = '100%')
+                                                     )
+
+
+                                              )
+                                       ),
+                                       column(2,
+                                              div(style = "height: 10px",
+                                                  actionLink("selectallS","Select All"),
+                                                  div(style ="",
+                                                      div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
+                                                          div(style = "height:6px; width: 20px;"),
+                                                          lapply(1:length(currentProject()$listeElem), function(x){
+                                                            eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
+
+                                                          })
+
+                                                      ),
+                                                      div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
+
+                                                  )
+                                              )
+                                       )
+                                     )
+                                   )
+
+                            ),
+                            column(4,style  = "padding-left: 5px",
+                                   box(
+                                     title = list(icon("share"),"Filtered data verification"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     collapsible = TRUE,
+                                     column(6, class = "class1",
+                                            p(icon("cubes"),"Element plotted"),
+                                            selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%')
+                                     ),
+                                     column(6, class = "class1",
+                                            p(icon("area-chart"),"Curve plotted"),
+                                            selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"), selected  = "Plateau", width = '100%')
+                                     ),
+                                     div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
+                                     uiOutput("signiS")
+                                   ),
+                                   box(
+                                     title = list(icon("floppy-o"),"Graphic export"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     collapsible = TRUE,
+                                     collapsed = TRUE,
+                                     selectizeInput("ElementToExportS", label = "Element(s) to export",
+                                                    choices = currentProject()$listeElem,
+                                                    selected = currentProject()$listeElem, multiple = TRUE),
+                                     checkboxGroupInput("courveToExportS", label = "Curve(s) to export",
+                                                        choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"),
+                                                        selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"), inline = TRUE),
+                                     div(actionButton("ExportGraphS","Export graphics"), align="center")
+                                   )
+
+                            )
+
+                          )
+                        }
+                      } else {}
+
+                    }) # eo input$Sample5
+                  }
                   
                   output$distPlotSample <- renderPlot({
                     
@@ -6745,6 +7293,8 @@ runElementR <- function(){
                   
                   output$distPlot2Sample <- renderPlot({
                     input$valRemplace
+                    BAV_Sample$temp
+                    LOD_Sample$temp
                     if(is.null(dataPlot2Sample$datS)){
                       
                     }else{
@@ -6790,37 +7340,37 @@ runElementR <- function(){
                 } else {}
                 if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0 & flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)] != 0){
                   
-                  
-                  
                   output$sample4 <- renderUI({
                     actionButton("saveSample", "Save")       
                   })  # eo input$Sample4 
                   
-                  output$Sample5 <- renderUI({
-                    
+                  if(currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) != 0) {
+
+                    output$Sample5 <- renderUI({
+                      
                     input$SampleIn
                     input$SampleIn2
-                    
+
                     if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
                       if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){ }else{
-                        
+
                         minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
                         maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                        
+
                         minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
                         maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                        
+
                         value1S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins
                         value2S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat
                         step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
-                        
+
                         fluidRow(
-                          column(8, style  = "padding-right: 5px",                          
+                          column(8, style  = "padding-right: 5px",
                                  box(
                                    title = list(icon("share"),"Background and plateau limits selection"),
                                    status="info",
                                    solidHeader = TRUE,
-                                   width = "100%", 
+                                   width = "100%",
                                    height = "640px",
                                    fluidRow(
                                      column(10,
@@ -6833,45 +7383,45 @@ runElementR <- function(){
                                                    div(style="height: 27px",
                                                        sliderInput("platSample","Plateau limits", value = value2S, min = minPS, max = maxPS,step = step, width = '100%')
                                                    )
-                                                   
-                                                   
-                                            ) 
-                                     ), 
-                                     column(2, 
+
+
+                                            )
+                                     ),
+                                     column(2,
                                             div(style = "height: 10px",
                                                 actionLink("selectallS","Select All"),
-                                                div(style ="",      
-                                                    div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;", 
+                                                div(style ="",
+                                                    div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
                                                         div(style = "height:6px; width: 20px;"),
                                                         lapply(1:length(currentProject()$listeElem), function(x){
                                                           eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
-                                                          
+
                                                         })
-                                                        
+
                                                     ),
                                                     div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
-                                                    
+
                                                 )
                                             )
                                      )
                                    )
                                  )
-                          ),                  
+                          ),
                           column(4, style  = "padding-left: 5px",
                                  box(
                                    title = list(icon("share"),"Filtered data verification"),
                                    status="info",
                                    solidHeader = TRUE,
-                                   width = "100%", 
-                                   collapsible = TRUE,                           
+                                   width = "100%",
+                                   collapsible = TRUE,
                                    column(6, class = "class1",
                                           p(icon("cubes"),"Element plotted"),
-                                          selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%') 
-                                   ), 
+                                          selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%')
+                                   ),
                                    column(6, class = "class1",
                                           p(icon("area-chart"),"Curve plotted"),
-                                          selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), selected  = "Plateau", width = '100%') 
-                                   ), 
+                                          selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), selected  = "Plateau", width = '100%')
+                                   ),
                                    div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
                                    uiOutput("signiS")
                                  ),
@@ -6879,26 +7429,133 @@ runElementR <- function(){
                                    title = list(icon("floppy-o"),"Graphic export"),
                                    status="info",
                                    solidHeader = TRUE,
-                                   width = "100%", 
+                                   width = "100%",
                                    collapsible = TRUE,
                                    collapsed = TRUE,
-                                   selectizeInput("ElementToExportS", label = "Element(s) to export", 
+                                   selectizeInput("ElementToExportS", label = "Element(s) to export",
                                                   choices = currentProject()$listeElem,
                                                   selected = currentProject()$listeElem, multiple = TRUE),
-                                   checkboxGroupInput("courveToExportS", label = "Curve(s) to export", 
+                                   checkboxGroupInput("courveToExportS", label = "Curve(s) to export",
                                                       choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"),
                                                       selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), inline = TRUE),
                                    div(actionButton("ExportGraphS","Export graphics"), align="center")
-                                 )                       
-                          ) 
-                          
-                        ) 
-                        
+                                 )
+                          )
+
+                        )
+
                       }
-                    } else {}                   
-                    
-                    
+                    } else {}
+
+
                   }) # eo input$Sample5
+
+                  } else {
+                    
+                    output$Sample5 <- renderUI({
+
+                      input$SampleIn
+                      input$SampleIn2
+
+                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){ }else{
+
+                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                          value1S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins
+                          value2S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat
+                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+
+                          fluidRow(
+                            column(8, style  = "padding-right: 5px",
+                                   box(
+                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     height = "640px",
+                                     fluidRow(
+                                       column(10,
+                                              plotOutput("distPlotSample"),
+                                              column(1),
+                                              column(11,
+                                                     div(style="height: 82px",
+                                                         sliderInput("binsSample","Background limits", value = value1S, min = minBS, max = maxBS, step = step, width = '100%', round = TRUE)
+                                                     ),
+                                                     div(style="height: 27px",
+                                                         sliderInput("platSample","Plateau limits", value = value2S, min = minPS, max = maxPS,step = step, width = '100%')
+                                                     )
+
+
+                                              )
+                                       ),
+                                       column(2,
+                                              div(style = "height: 10px",
+                                                  actionLink("selectallS","Select All"),
+                                                  div(style ="",
+                                                      div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
+                                                          div(style = "height:6px; width: 20px;"),
+                                                          lapply(1:length(currentProject()$listeElem), function(x){
+                                                            eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
+
+                                                          })
+
+                                                      ),
+                                                      div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
+
+                                                  )
+                                              )
+                                       )
+                                     )
+                                   )
+                            ),
+                            column(4, style  = "padding-left: 5px",
+                                   box(
+                                     title = list(icon("share"),"Filtered data verification"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     collapsible = TRUE,
+                                     column(6, class = "class1",
+                                            p(icon("cubes"),"Element plotted"),
+                                            selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%')
+                                     ),
+                                     column(6, class = "class1",
+                                            p(icon("area-chart"),"Curve plotted"),
+                                            selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"), selected  = "Plateau", width = '100%')
+                                     ),
+                                     div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
+                                     uiOutput("signiS")
+                                   ),
+                                   box(
+                                     title = list(icon("floppy-o"),"Graphic export"),
+                                     status="info",
+                                     solidHeader = TRUE,
+                                     width = "100%",
+                                     collapsible = TRUE,
+                                     collapsed = TRUE,
+                                     selectizeInput("ElementToExportS", label = "Element(s) to export",
+                                                    choices = currentProject()$listeElem,
+                                                    selected = currentProject()$listeElem, multiple = TRUE),
+                                     checkboxGroupInput("courveToExportS", label = "Curve(s) to export",
+                                                        choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"),
+                                                        selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"), inline = TRUE),
+                                     div(actionButton("ExportGraphS","Export graphics"), align="center")
+                                   )
+                            )
+
+                          )
+
+                        }
+                      } else {}
+
+
+                    }) # eo input$Sample5
+                  }
                   
                   output$distPlotSample <- renderPlot({
                     
@@ -6956,6 +7613,8 @@ runElementR <- function(){
                   
                   output$distPlot2Sample <- renderPlot({
                     input$valRemplace
+                    BAV_Sample$temp
+                    LOD_Sample$temp
                     if(is.null(dataPlot2Sample$datS)){
                       
                     }else{
@@ -7009,71 +7668,73 @@ runElementR <- function(){
                     actionButton("saveSample", "Delete")       
                   }) # eo input$Sample
                   
-                  output$Sample5 <- renderUI({
-                    
+                  if(currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) != 0) {
+                   
+                   output$Sample5 <- renderUI({
+
                     input$SampleIn
                     input$SampleIn2
-                    
-                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) == 0){                    
-                    }else if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){                    
+
+                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) == 0){
+                    }else if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
                     }else{
-                      
+
                       minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
                       maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                      
+
                       minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
                       maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                      
+
                       fluidRow(
-                        column(8, style  = "padding-right: 5px",                          
+                        column(8, style  = "padding-right: 5px",
                                box(
                                  title = list(icon("share"),"Background and plateau limits selection"),
                                  status="info",
                                  solidHeader = TRUE,
-                                 width = "100%", 
+                                 width = "100%",
                                  height = "640px",
                                  fluidRow(
                                    column(10,
                                           plotOutput("distPlotSample"),
                                           column(1),
                                           column(11
-                                                 
-                                                 
-                                          ) 
-                                   ), 
-                                   column(2, 
+
+
+                                          )
+                                   ),
+                                   column(2,
                                           div(style = "height: 10px",
                                               actionLink("selectallS","Select All"),
-                                              div(style ="",      
-                                                  div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;", 
+                                              div(style ="",
+                                                  div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
                                                       div(style = "height:6px; width: 20px;"),
                                                       lapply(1:length(currentProject()$listeElem), function(x){
                                                         eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
-                                                        
+
                                                       })
-                                                      
+
                                                   ),
                                                   div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
-                                              )  
+                                              )
                                           )
                                    )
                                  )
-                               ) 
+                               )
                         ),
                         column(4, style  = "padding-left: 5px",
                                box(
                                  title = list(icon("share"),"Filtered data verification"),
                                  status="info",
                                  solidHeader = TRUE,
-                                 width = "100%", 
-                                 collapsible = TRUE,                           
+                                 width = "100%",
+                                 collapsible = TRUE,
                                  column(6, class = "class1",
                                         p(icon("cubes"),"Element plotted"),
-                                        selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%') 
-                                 ), 
+                                        selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%')
+                                 ),
                                  column(6, class = "class1",
                                         p(icon("area-chart"),"Curve plotted"),
-                                        selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), selected  = "Plateau", width = '100%') 
+                                        selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), selected  = "Plateau", width = '100%')
                                  ),
                                  div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
                                  uiOutput("signiS")
@@ -7082,24 +7743,118 @@ runElementR <- function(){
                                  title = list(icon("floppy-o"),"Graphic export"),
                                  status="info",
                                  solidHeader = TRUE,
-                                 width = "100%", 
+                                 width = "100%",
                                  collapsible = TRUE,
                                  collapsed = TRUE,
-                                 selectizeInput("ElementToExportS", label = "Element(s) to export", 
+                                 selectizeInput("ElementToExportS", label = "Element(s) to export",
                                                 choices = currentProject()$listeElem,
                                                 selected = currentProject()$listeElem, multiple = TRUE),
-                                 checkboxGroupInput("courveToExportS", label = "Curve(s) to export", 
+                                 checkboxGroupInput("courveToExportS", label = "Curve(s) to export",
                                                     choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"),
                                                     selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration", "Conc. corrected"), inline = TRUE),
                                  div(actionButton("ExportGraphS","Export graphics"), align="center")
-                               )                       
-                        )   
-                        
-                      ) 
-                      
+                               )
+                        )
+
+                      )
+
                     }
-                    
+
                   }) # eo input$Sample5
+
+                   } else {
+                     output$Sample5 <- renderUI({
+                       
+                       input$SampleIn
+                       input$SampleIn2
+                       
+                       if(length(grep(input$SampleIn,currentProject()$samplesFiles)) == 0){
+                       }else if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                       }else{
+
+                         minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                         maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                         minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
+                         maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+
+                         fluidRow(
+                           column(8, style  = "padding-right: 5px",
+                                  box(
+                                    title = list(icon("share"),"Background and plateau limits selection"),
+                                    status="info",
+                                    solidHeader = TRUE,
+                                    width = "100%",
+                                    height = "640px",
+                                    fluidRow(
+                                      column(10,
+                                             plotOutput("distPlotSample"),
+                                             column(1),
+                                             column(11
+
+
+                                             )
+                                      ),
+                                      column(2,
+                                             div(style = "height: 10px",
+                                                 actionLink("selectallS","Select All"),
+                                                 div(style ="",
+                                                     div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
+                                                         div(style = "height:6px; width: 20px;"),
+                                                         lapply(1:length(currentProject()$listeElem), function(x){
+                                                           eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
+
+                                                         })
+
+                                                     ),
+                                                     div(checkboxGroupInput("checkGroupS", label = "", choices = currentProject()$listeElem, selected = elemUsed$temp), style = "display: inline-block; width: 40px; vertical-align: top;")
+                                                 )
+                                             )
+                                      )
+                                    )
+                                  )
+                           ),
+                           column(4, style  = "padding-left: 5px",
+                                  box(
+                                    title = list(icon("share"),"Filtered data verification"),
+                                    status="info",
+                                    solidHeader = TRUE,
+                                    width = "100%",
+                                    collapsible = TRUE,
+                                    column(6, class = "class1",
+                                           p(icon("cubes"),"Element plotted"),
+                                           selectInput("listeElemSample", label = "", choices =  currentProject()$listeElem, selected  = currentProject()$elemStand, width = '100%')
+                                    ),
+                                    column(6, class = "class1",
+                                           p(icon("area-chart"),"Curve plotted"),
+                                           selectInput("CourbeSample", label = "", choices =  c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"), selected  = "Plateau", width = '100%')
+                                    ),
+                                    div(plotOutput("distPlot2Sample", height = '350px'), style = "height:430px"),
+                                    uiOutput("signiS")
+                                  ),
+                                  box(
+                                    title = list(icon("floppy-o"),"Graphic export"),
+                                    status="info",
+                                    solidHeader = TRUE,
+                                    width = "100%",
+                                    collapsible = TRUE,
+                                    collapsed = TRUE,
+                                    selectizeInput("ElementToExportS", label = "Element(s) to export",
+                                                   choices = currentProject()$listeElem,
+                                                   selected = currentProject()$listeElem, multiple = TRUE),
+                                    checkboxGroupInput("courveToExportS", label = "Curve(s) to export",
+                                                       choices = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"),
+                                                       selected = c("Blank","Raw", "Plateau","Blank removed","> LOD", "Normalized","Concentration"), inline = TRUE),
+                                    div(actionButton("ExportGraphS","Export graphics"), align="center")
+                                  )
+                           )
+
+                         )
+
+                       }
+
+                     }) # eo input$Sample5
+                  }
                   
                   output$distPlotSample <- renderPlot({
                     
@@ -7149,6 +7904,8 @@ runElementR <- function(){
                   
                   output$distPlot2Sample <- renderPlot({
                     input$valRemplace
+                    BAV_Sample$temp
+                    LOD_Sample$temp
                     if(is.null(dataPlot2Sample$datS)){                    
                     }else{
                       
@@ -7229,16 +7986,18 @@ runElementR <- function(){
           }else{
             
             if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
-              if(is.null(input$bins)){                
+              if(is.null(input$binsSample)){                
               }else if(is.null(input$plat)){   
               }else if(is.null(TempS$t)){
               }else if(is.null(Temp0S$t)){                
               }else if(is.null(Temp1S$t)){                
               }else if(is.null(Temp2S$t)){                
               }else{
-                if(is.finite(TempS$t)){dataPlot2Sample$datS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$CourbeSample, bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
-                                        BAV_Sample$temp <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge
-                                        LOD_Sample$temp <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD
+                if(is.finite(TempS$t)){
+                  dataPlot2Sample$datS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$CourbeSample, bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  BAV_Sample$temp <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge
+                  LOD_Sample$temp <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD
+                                        
                 } else {}
               }
             } else {}
@@ -7351,6 +8110,9 @@ runElementR <- function(){
                   currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setBins(bins = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1]))     
                   currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setPlat(plat = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1]))
                   currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  if(currentProject()$ChoiceUserCorr == F | (currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) != 0)) {
+                    currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$reset()
+                  } else {}
                   currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], bins2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], plat1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], plat2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], average = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge, LOD = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD)
                 })                              
               } else {}
@@ -7374,6 +8136,9 @@ runElementR <- function(){
                   currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setBins(bins = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1]))     
                   currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setPlat(plat = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1]))
                   currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  if(currentProject()$ChoiceUserCorr == F | (currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) != 0)) {
+                    currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$reset()
+                  } else {}
                   currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], bins2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], plat1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], plat2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], average = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge, LOD = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD)
                   passageS <- names(currentProject()$flag_Sample[[grep(input$SampleIn,currentProject()$samplesFiles)]] == 0)[currentProject()$flag_Sample[[grep(input$SampleIn,currentProject()$samplesFiles)]] == 0][1]
                   if(!is.na(passageS)){
@@ -8217,7 +8982,7 @@ runElementR <- function(){
       if(!is.null(input$selectRealign)){
         if(length(which(flagSample$temp == TRUE)) != 0){
           if(length(grep(input$selectRealign,currentProject()$samplesFiles)) !=0){
-            currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$setRep_dataFiltre() 
+            currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$setRep_dataFiltre(x = currentProject()$ChoiceUserCorr) 
             tabProvSpot$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$intermStepSpot()
             tabProvSample$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
           } else {}
@@ -8356,7 +9121,7 @@ runElementR <- function(){
               status = "primary",
               title = "Calculation settings", 
               div(
-                div(p("Choose the value with which remplace the plateau value under the limite of detection"), style = "display: inline-block;vertical-align: top;margin-top:15px; margin-right:20px"),
+                div(p("Choose the value with which replace the plateau value under the limit of detection"), style = "display: inline-block;vertical-align: top;margin-top:15px; margin-right:20px"),
                 div(selectInput("valRemplace", "", choices = c("NA", "0", "Averaged value of the blank"), selected = "NA", width = '100%'), style = "display: inline-block; margin-top:-10px; width: 300px")
               )
             )

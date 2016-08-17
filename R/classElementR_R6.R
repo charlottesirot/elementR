@@ -212,7 +212,11 @@ elementR_data <- R6Class("elementR_data",
                              
                              self$dataNorm <- subDat
                              
-                           }#setDataNorm   
+                           },#setDataNorm   
+                           
+                           reset = function(){
+                             self$dataConcCorr <- NA
+                           } # reset table
                          )
 
 )#elementR_data
@@ -279,7 +283,8 @@ elementR_standard <- R6Class("elementR_standard",
                                     if(curve =="Blank") {self$setDataBlanc(bins = bins)
                                                          return(self$dataBlank)} else {}
                                     
-                                    if(curve =="Raw") {return(self$data) } else {}
+                                    if(curve =="Raw") {self$setDataBlanc(bins = bins)
+                                                        return(self$data) } else {}
                                     
                                     if(curve =="Plateau") {self$setDataPlateau(plat = plat, bins = bins)
                                                            return(self$dataPlateau)} else {}
@@ -410,7 +415,8 @@ elementR_sample <- R6Class("elementR_sample",
                                if(curve =="Blank") {self$setDataBlanc(bins = bins)
                                                          return(self$dataBlank)}
                                
-                               if(curve =="Raw") {return(self$data) }
+                               if(curve =="Raw") {self$setDataBlanc(bins = bins)
+                                                  return(self$data) }
                                
                                if(curve =="Plateau") {self$setDataPlateau(plat = plat, bins = bins)
                                                            return(self$dataPlateau)}
@@ -494,6 +500,19 @@ elementR_project <- R6Class("elementR_project",
                               nbCalib = vector(), # A vector corresponding to the number of standard values available for each chemical element to proceed the linear regression
                               elemStand = NA, # A character string indicating the chemical element considered as internal standard (by default = Ca)
                               summarySettings = matrix(), # A matrix summarizing all the parameters set by user for each replicate (sample and standard)
+                              ChoiceUserCorr = NA, # the choice of the user to correct or no the session based on the first step of configuration
+                              
+                              ##################################################################################################
+                              # Name: set_ChoiceUserCorr
+                              # Function: set self$ChoiceUserCorr
+                              # inputs: x = T (for checking machine drift), F (for not checking machine drift)
+                              ##################################################################################################
+                              
+                              set_ChoiceUserCorr = function(x){
+                                
+                                self$ChoiceUserCorr <- x
+                                
+                              },
                               
                               ##################################################################################################
                               # Name: set_summarySettings
@@ -720,6 +739,7 @@ elementR_project <- R6Class("elementR_project",
                               setCorrection = function(x){
                                 
                                 self$machineCorrection <- x
+                                
                                 
                               },
                               
@@ -1246,11 +1266,18 @@ elementR_repSample <- R6Class("elementR_repSample",
                                ##################################################################################################
                                # Name: setRep_dataFiltre
                                # Function: set self$rep_dataFiltre
+                               # Input: x = the choice of user to correct or no
                                ##################################################################################################
                                
-                               setRep_dataFiltre = function(){
+                               setRep_dataFiltre = function(x){
                                  
-                                 self$rep_dataFiltre <- lapply(1:length(self$rep_Files),function(x){self$rep_data[[x]]$dataConcCorr})
+                                 if(x == T){
+                                   self$rep_dataFiltre <- lapply(1:length(self$rep_Files),function(x){self$rep_data[[x]]$dataConcCorr})
+                                 } else {
+                                   self$rep_dataFiltre <- lapply(1:length(self$rep_Files),function(x){self$rep_data[[x]]$dataConc})
+                                 }
+                                 
+                                 
                                  
                                  names(self$rep_dataFiltre) <- self$rep_Files
                                                                   

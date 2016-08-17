@@ -1,0 +1,13 @@
+How to install elementR package from GitHub
+
+1. Check the version of R installed on your computer. It needs to be at least ≥ 3.2.3. For updating the version of R, visit https://cran.r-project.org/
+
+2. Install and source "devtools" package from CRAN
+
+install.packages("devtools", dependencies = T)
+library(devtools)
+
+3. Install and source "elementR" package from GitHub
+
+install_github("charlottesirot/elementR", ref = "dashDy-Cha", force = T, dependencies = T)
+library(elementR)
