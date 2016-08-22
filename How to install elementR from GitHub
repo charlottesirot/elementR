@@ -1,13 +1,39 @@
 How to install elementR package from GitHub
 
+####### For Windows and Linux ####### 
+
 1. Check the version of R installed on your computer. It needs to be at least ≥ 3.2.3. For updating the version of R, visit https://cran.r-project.org/
 
-2. Install and source "devtools" package from CRAN
+2. Install and source "devtools" package from CRAN by running on R console:
 
 install.packages("devtools", dependencies = T)
 library(devtools)
 
-3. Install and source "elementR" package from GitHub
+3. Install and source "elementR" package from GitHub by running on R console:
 
-install_github("charlottesirot/elementR", ref = "dashDy-Cha", force = T, dependencies = T)
+install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
 library(elementR)
+
+Note: ElementR runs with any web browser, but the graphic of the user interface has been developed based on Firefox. Authors therefore advise the use of elementR with this last web browser.
+
+####### For Mac OS ####### 
+
+1. Check the version of R installed on your mac. It needs to be at least ≥ 3.2.3. For updating the version of R, visit https://cran.r-project.org/
+
+2. Check that Xcode is installed on your mac. For downloading and installing Xcode, visit you Appstore.
+
+3. Install and source "devtools" package from CRAN by running on R console:
+
+install.packages("devtools", dependencies = T)
+library(devtools)
+
+4. Install and source "elementR" package from GitHub by running on R console:
+
+install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
+library(elementR)
+
+Note: 
+-> if the elementR installation is stuck during the installation of the tcltk package, this means that the xcode is not running properly.
+-> ElementR runs with any web browser, but the graphic of the user interface has been developed based on Firefox. Authors therefore advise the use of elementR with this last web browser.
+
+
