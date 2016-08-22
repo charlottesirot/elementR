@@ -27,6 +27,7 @@ An \code{R6Class} generator object
 \describe{\item{\code{remplaceValue}}{A character string corresponding to the value replacing the \code{dataSuppBlank} below the limit of detection}}
 }
 
+
 \section{Methods}{
 \describe{\item{\code{initialize(filePath)}}{Aim: Create and set basic information of the considered replicate; Argument: filePath = the path of the considered replicate data; Output: an R6Class \code{elementR_data} object}}
 \describe{\item{\code{setBins(bins)}}{Aim: set \code{bins}; Argument: bins = A numerical value corresponding to the time at which end the blank values}}
@@ -36,7 +37,9 @@ An \code{R6Class} generator object
 \describe{\item{\code{setDataSuppBlank(bins,plat)}}{Aim: set \code{dataSuppBlank}; Arguments: bins = A numerical value corresponding to the time at which end the blank values, plat = A vector containing two numerical values corresponding respectively to the time at which begin and end the plateau values}}
 \describe{\item{\code{setDataSupLOD(bins,plat)}}{Aim: set \code{dataSupLOD}; Arguments: bins = A numerical value corresponding to the time at which end the blank values, plat = A vector containing two numerical values corresponding respectively to the time at which begin and end the plateau values}}
 \describe{\item{\code{setDataNorm(bins,plat)}}{Aim: set \code{dataNorm}; Arguments: bins = A numerical value corresponding to the time at which end the blank values, plat = A vector containing two numerical values corresponding respectively to the time at which begin and end the plateau values}}
+\describe{\item{\code{reset()}}{Aim: replace \code{dataConcCorr} by NA}}
 }
+
 
 \details{
 When \code{\link{runElementR}} is running and as soon as a project is loaded, an \code{elementR_data} is automatically created for each replicate included in the session (standard and sample). Each of these objects contains the basic information regarding the considered replicate (name, path and raw data) and is filled by the intermediate and final data as user proceeds to the filtration procedure.

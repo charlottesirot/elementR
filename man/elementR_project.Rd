@@ -38,6 +38,7 @@ An \code{R6Class} generator object
 \describe{\item{\code{nbCalib}}{A vector corresponding to the number of standard values available for each chemical element to proceed the linear regression}}
 \describe{\item{\code{elemStand}}{A character string indicating the chemical element considered as internal standard (by default = Ca)}}
 \describe{\item{\code{summarySettings}}{A matrix summarizing all the parameters set by user for each replicate (sample and standard)}}
+\describe{\item{\code{ChoiceUserCorr}}{A logical value corresponding to the choice of the user to correct or no the session based on the first step of configuration}}
 }
 
 \section{Methods}{
@@ -57,7 +58,7 @@ An \code{R6Class} generator object
 \describe{\item{\code{set_flagRealign(replicate, type, value)}}{Aim: set \code{flagRealign}; Arguments: replicate = a numerical value corresponding to the number of the considered replicate, type = a character string indicating the raster or spot mode, value = the numerical value to set}}
 \describe{\item{\code{setElemStand(elem)}}{Aim: define \code{elemStand} and transmit this value to all \code{elementR_rep} and \code{elementR_data} objects inlcuded in the project; Arguments: elem = a character string corresponding to the element considered as intern standard}}
 \describe{\item{\code{initialize(folderPath)}}{ Aim: create the project; Arguments: filePath = the path of the considered project; Outputs: R6Class \code{elementR_project}}}
-
+\describe{\item{\code{set_ChoiceUserCorr(x)}}{ Aim: information about the will of user to check or not the machine drift; Arguments: x = T (for checking machine drift), F (for not checking machine drift) }}
 }
 
 \details{

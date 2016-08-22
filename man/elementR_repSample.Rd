@@ -26,7 +26,7 @@ An \code{R6Class} generator object
 
 \describe{\item{\code{setrep_type2(x)}}{Aim: set \code{rep_type2}; Arguments: x = a character string indicating spot or raster mode}}
 \describe{\item{\code{Realign2(data, pas)}}{Aim: Realign data; Arguments: data = a list of matrix corresponding to the data to realign, pas = the step of time between two consecutive analysis within data of the considered sample; Output: data = a list of matrix containing the realigned data}}
-\describe{\item{\code{setRep_dataFiltre()}}{Aim: set \code{rep_dataFiltre}}}
+\describe{\item{\code{setRep_dataFiltre(x)}}{Aim: set \code{rep_dataFiltre}; Arguments: x = a logical value corresponding to the choice of user to correct or not the machine drift}}
 \describe{\item{\code{setRep_dataFinalSpot(x)}}{Aim: set \code{rep_dataFinalSpot}; Arguments: x = the matrix to set}}
 \describe{\item{\code{intermStepSpot()}}{Aim: create and return an intermediate matrix containing the average and the standard deviation per chemical element for all sample replicates; Output: outputTab = a matrix with two lines corresponding to the average and the standard deviation per chemical element for all sample replicates}}
 \describe{\item{\code{intermStepRaster()}}{Aim: create and return an intermediate matrix containing realigned data for all sample replicates; Output: outputList = a list of matrix containing realigned data for all sample replicates}}

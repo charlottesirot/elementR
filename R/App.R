@@ -25,6 +25,39 @@ runElementR <- function(){
   ######################
   
   ##################################################################################################
+  # Name: checkFormat
+  # function: check the format (i.e. the extension) of the file uploaded
+  # input : files = the path of the session uploaded
+  # output: A logical value, F = error, T = no error
+  ################################################################################################## 
+  
+  checkFormat <- function(files){
+    
+    ref <- NULL
+    
+    for(x in 1:length(files)){
+      if(str_detect(files[x], ".xlsx")){
+        ref <- c(ref, T)
+      } else if(str_detect(files[x], ".xls")){
+        ref <- c(ref, T)
+      } else if(str_detect(files[x], ".ods")){
+        ref <- c(ref, T)
+      } else if(str_detect(files[x], ".csv")){
+        ref <- c(ref, T)
+      } else {
+        ref <- c(ref, F)
+      }
+    }
+    
+    if(length(which(ref == F)) == !0){
+      res <- F
+    } else {
+      res <- T
+    }
+    return(res)
+  }
+  
+  ##################################################################################################
   # Name: readData
   # function: detect the format of the data and read the table
   # input : x = a character string of the path of the data
@@ -3300,19 +3333,23 @@ runElementR <- function(){
             runEx$temp <- 0
             calibFile$temp <- NA
             
+            print(checkFormat(projPath$temp))
+            
             if(is.na(projPath$temp)){
               
               flagStart$temp[2] <- 0
               flagStart$temp[1] <- 0
               
-            } else {
-              
-              if(sum(c("standards","samples")%in%dir(projPath$temp))!=2){
+            } else if(sum(c("standards","samples")%in%dir(projPath$temp))!=2){
                 
                 tkmessageBox(message = "A folder should contain two subfolder 'standards' & 'samples' to create an elementR project '[^_-]'", icon = "error", type = "ok")
                 
-              } else {
-                
+            } else if(checkFormat(projPath$temp) == F){
+              print("here")
+                  tkmessageBox(message = "Problem in file extension (format)", icon = "error", type = "ok")
+                  
+            } else {
+
                 flagStart$temp[1] <- 1
                 flagStart$temp[2] <- 0  
                 
@@ -3347,8 +3384,7 @@ runElementR <- function(){
                 
                 currentProject()$setRank(type = "sample", value = NA)
                 currentProject()$setRank(type = "standard", value = NA)
-              }
-            }
+                }
           })
         } else {}
       }

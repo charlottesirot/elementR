@@ -500,7 +500,7 @@ elementR_project <- R6Class("elementR_project",
                               nbCalib = vector(), # A vector corresponding to the number of standard values available for each chemical element to proceed the linear regression
                               elemStand = NA, # A character string indicating the chemical element considered as internal standard (by default = Ca)
                               summarySettings = matrix(), # A matrix summarizing all the parameters set by user for each replicate (sample and standard)
-                              ChoiceUserCorr = NA, # the choice of the user to correct or no the session based on the first step of configuration
+                              ChoiceUserCorr = NA, # a logical value corresponding to the choice of the user to correct or no the session based on the first step of configuration
                               
                               ##################################################################################################
                               # Name: set_ChoiceUserCorr
@@ -1266,7 +1266,7 @@ elementR_repSample <- R6Class("elementR_repSample",
                                ##################################################################################################
                                # Name: setRep_dataFiltre
                                # Function: set self$rep_dataFiltre
-                               # Input: x = the choice of user to correct or no
+                               # Input: x = the choice of user to correct or not the machine drift
                                ##################################################################################################
                                
                                setRep_dataFiltre = function(x){
