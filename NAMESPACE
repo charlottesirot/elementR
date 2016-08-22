@@ -1,0 +1,19 @@
+exportPattern("^[[:alpha:]]+")
+
+importFrom(R6, R6Class)
+importFrom(shinyjs, colourInput)
+importFrom(shinyjs, delay)
+importFrom(shinyjs, useShinyjs)
+importFrom(gnumeric, read.gnumeric.sheet)
+importFrom(abind, abind)
+importFrom(tcltk2, tk2text)
+importFrom(gdata, read.xls)
+import(shiny, shinydashboard, stringr, lmtest, reader, devtools, tcltk)
+
+importFrom("grDevices", "bmp", "colorRampPalette", "dev.off", "jpeg",
+             "png", "rainbow", "tiff")
+importFrom("graphics", "abline", "layout", "legend", "mtext", "par",
+             "plot", "points", "rect", "text", "title")
+importFrom("stats", "sd")
+importFrom("utils", "read.table", "write.csv", "write.table")
+
