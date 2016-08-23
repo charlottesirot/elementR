@@ -16,4 +16,4 @@ importFrom("graphics", "abline", "layout", "legend", "mtext", "par",
 importFrom("stats", "sd")
 importFrom("utils", "read.table", "write.csv", "write.table")
 
-import(shinydashboard, stringr, lmtest, reader, devtools, tcltk)
+import(shiny, shinydashboard, stringr, lmtest, reader, devtools, tcltk)
