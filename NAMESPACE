@@ -8,13 +8,6 @@ importFrom(gnumeric, read.gnumeric.sheet)
 importFrom(abind, abind)
 importFrom(tcltk2, tk2text)
 importFrom(gdata, read.xls)
-import(miniUI)
-import(httpuv)
-import(XML)
-
-import(shiny)
-
-import(shinydashboard, stringr, lmtest, reader, devtools, tcltk)
 importFrom("readODS", read.ods)
 importFrom("grDevices", "bmp", "colorRampPalette", "dev.off", "jpeg",
              "png", "rainbow", "tiff")
@@ -23,3 +16,4 @@ importFrom("graphics", "abline", "layout", "legend", "mtext", "par",
 importFrom("stats", "sd")
 importFrom("utils", "read.table", "write.csv", "write.table")
 
+import(shiny, shinydashboard, stringr, lmtest, reader, devtools, tcltk)
