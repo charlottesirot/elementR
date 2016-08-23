@@ -4892,7 +4892,7 @@ runElementR <- function(){
               actionButton("runExampleLoad", "Load Example"),
               br(),
               br(),
-              p(paste0("Project loaded: ",projPath$temp)),
+              p(paste0("Project loaded: ",str_split(projPath$temp, pattern = "/")[[1]][length(str_split(projPath$temp, pattern = "/")[[1]])])),
               br(),
               column(3, offset = 4, actionButton("validDonne2","Go filtering !"))
             )
