@@ -8,10 +8,12 @@ importFrom(gnumeric, read.gnumeric.sheet)
 importFrom(abind, abind)
 importFrom(tcltk2, tk2text)
 importFrom(gdata, read.xls)
-import(shiny)
 import(miniUI)
 import(httpuv)
 import(XML)
+
+import(shiny)
+
 import(shinydashboard, stringr, lmtest, reader, devtools, tcltk)
 importFrom("readODS", read.ods)
 importFrom("grDevices", "bmp", "colorRampPalette", "dev.off", "jpeg",
