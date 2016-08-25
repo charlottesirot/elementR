@@ -1,58 +1,26 @@
 How to install elementR package from GitHub
 
-For any platform: Check the version of the R software installed on your computer (must be at least ≥ 3.2.3, see https://cran.r-project.org/ for updating your version)
+Technical prerequisites:
 
-######## For Linux ########
+1. To have Internet access.
 
-1. Install and source "devtools" package from CRAN by running the following commands in your R console:
+2. For all platforms (Linux, Windows, MacOS), check the version of the R software installed on your computer (must be at least ≥ 3.2.3, see https://cran.r-project.org/ for updating your version). 
 
-install.packages("devtools", dependencies = T)
-library(devtools)
+3. For a Macintosh platform, elementR package needs XQuartz. Please check, that XQuartz is installed and runs properly on your computer. If not, please visit https://www.xquartz.org/.
 
-2. Install and source "elementR" package from GitHub by running the following commands in your R console:
+Installation of the elementR package:
 
-install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
-library(elementR)
+1. Install elementR's dependencies by running the following commands in your R console:
 
-######## For Mac OS ########
+pkg <­ c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk2", "reader", "readODS")
+lapply(1:length(pkg), function(x){install.packages(pkg[x], dependencies = T)})
 
-1. Check that XQuartz (https://www.xquartz.org/) is installed on your computer
-
-2. Install and source "devtools" package from CRAN by running the following commands in your R console:
-
-install.packages("devtools", dependencies = T)
-library(devtools)
-
-3. Install and source "elementR" package from GitHub by running the following commands in your R console:
+2. Install and source elementR package from GitHub by running the following commands in your R console:
 
 install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
 library(elementR)
 
-Note: If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
-
-######## For Windows ########
-
-1. Install and source "devtools" package from CRAN by running the following commands in your R console:
-
-install.packages("devtools", dependencies = T)
-library(devtools)
-
-2. Install elementR's dependencies by running the following commands in your R console:
-
-install.packages("miniCRAN", dependencies = T)
-library(miniCRAN)
-
-pkg <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk2", "reader", "readODS")
-pkgToInstall <- pkgDep(pkg)
-lapply(1:length(pkgToInstall), function(x){install.packages(pkgToInstall[x], dependencies = T)})
-lapply(1:length(pkgToInstall), function(x){library(pkgToInstall[x])})
-
-3. Install and source "elementR" package from GitHub by running the following commands in your R console:
-
-install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
-library(elementR)
-
-#############################
-
-Note for all platforms:
-ElementR runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR through this last web browser for an optimal design. Visit https://www.mozilla.org/en-US/firefox/new/ to download Firefox.
+Note:
+-> If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
+-> elementR runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR
+through this last web browser for an optimal design. Please visit https://www.mozilla.org/en-US/firefox/new/ to download Firefox.
