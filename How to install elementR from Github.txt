@@ -12,11 +12,12 @@ Installation of the elementR package:
 
 1. Install elementR's dependencies by running the following commands in your R console:
 
-pkg <­ c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk2", "reader", "readODS")
+pkg <-­ c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk2", "reader", "readODS")
 lapply(1:length(pkg), function(x){install.packages(pkg[x], dependencies = T)})
 
 2. Install and source elementR package from GitHub by running the following commands in your R console:
 
+library(devtools)
 install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
 library(elementR)
 
