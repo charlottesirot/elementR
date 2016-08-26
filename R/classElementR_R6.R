@@ -995,7 +995,7 @@ elementR_project <- R6Class("elementR_project",
 
                                 info <- sprintf("%d%% done", round(40))
                                 setTkProgressBar(pb, 40, sprintf("Data loading (%s)", info), info)
-                                
+                                print("ici")
                                 setwd(paste0(folderPath, "/samples"))
                                 files <- list.files(, recursive = TRUE)
                                 
