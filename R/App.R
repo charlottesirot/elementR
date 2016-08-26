@@ -3459,18 +3459,17 @@ runElementR <- function(){
             
             sauvegarde <- getwd() 
             
-            print(paste0(system.file("", package="elementR"), "Example_Session"))
+            print(paste0(system.file("", package="elementR"), "/Example_Session"))
             
-            # if(Sys.info()[1] == "Windows"){
+             if(Sys.info()[1] == "Windows"){
             
-           # projPath$temp <- paste0(system.file("", package="elementR"), "/Example_Session")
+            projPath$temp <- paste0(system.file("", package="elementR"), "/Example_Session")
             
-            #} else {
+            } else {
             
-           # projPath$temp <- paste0(system.file("", package="elementR"), "Example_Session")
+            projPath$temp <- paste0(system.file("", package="elementR"), "Example_Session")
             
-            #}
-            
+            }
             runEx$temp <- 1
             calibFile$temp <- NA
             
