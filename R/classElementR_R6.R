@@ -974,6 +974,8 @@ elementR_project <- R6Class("elementR_project",
                                 setwd(paste0(folderPath, "/standards"))
                                 files <- list.files(, recursive = TRUE) 
                                 
+                                print(files)
+                                
                                 dat <- readData(files[1])
                                 toCheck <- colnames(dat)[-1]
                                 
