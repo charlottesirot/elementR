@@ -3459,7 +3459,7 @@ runElementR <- function(){
             
             sauvegarde <- getwd() 
             
-            if(Sys.info()[1] == "Windows){
+            if(Sys.info()[1] == "Windows"){
             
             projPath$temp <- paste0(system.file("", package="elementR"), "/Example_Session")
             
