@@ -986,6 +986,8 @@ elementR_project <- R6Class("elementR_project",
                                 print(i)
                                   
                                   dat <- readData(files[i])
+                                  
+                                  print(dat)
                                   nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
                                   
                                   if(nbNumError != 0){nonNumPlace <- c(nonNumPlace, files[i])}
