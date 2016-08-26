@@ -3459,7 +3459,7 @@ runElementR <- function(){
             
             sauvegarde <- getwd() 
             
-            print(paste0(system.file("", package="elementR"), "Example_Session")
+            print(paste0(system.file("", package="elementR"), "Example_Session"))
             
             # if(Sys.info()[1] == "Windows"){
             
