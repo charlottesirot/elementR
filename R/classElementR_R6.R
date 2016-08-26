@@ -982,6 +982,8 @@ elementR_project <- R6Class("elementR_project",
                                 self$listeElem <- toCheck
                                 
                                 for (i in 1: length(files)){
+                                
+                                print(i)
                                   
                                   dat <- readData(files[i])
                                   nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
