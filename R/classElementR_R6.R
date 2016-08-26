@@ -14,7 +14,6 @@ readData <- function(x){
   } else {}
   if(str_detect(x, ".csv")){
     df <- read.table(x, header = TRUE, sep = ";", dec = ".")
-    prinf(df)
   } else {}
   if(str_detect(x, ".ods")){
     
@@ -56,7 +55,7 @@ readData <- function(x){
     }
     
   } else {}
-  prinf(df)
+  print(df)
   return(df)
 }
 
