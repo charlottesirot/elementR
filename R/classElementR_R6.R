@@ -56,6 +56,7 @@ readData <- function(x){
     }
     
   } else {}
+  prinf(df)
   return(df)
 }
 
