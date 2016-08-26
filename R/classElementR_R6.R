@@ -8,14 +8,13 @@
 #####################################################################
 
 readData <- function(x){
-  print(getwd())
   
   if(str_detect(x, ".xls")){
     df <- read.xls (x, sheet = 1, header = TRUE, dec = ".")
   } else {}
   if(str_detect(x, ".csv")){
-  print(read.table(x, header = TRUE, sep = ";", dec = "."))
-   # df <- read.table(x, header = TRUE, sep = ";", dec = ".")
+    df <- read.table(x, header = TRUE, sep = ";", dec = ".")
+    prinf(df)
   } else {}
   if(str_detect(x, ".ods")){
     
