@@ -3584,8 +3584,18 @@ runElementR <- function(){
       }else{
         if(input$runExampleLoad != 0){
           isolate({
+          
+          if(Sys.info()[1] == "Windows"){
+            
+            tempoR1 <- paste0(system.file("", package="elementR"), "/Results/Example_Session.RData")
+            
+          } else {
             
             tempoR1 <- paste0(system.file("", package="elementR"), "Results/Example_Session.RData")
+            
+          }
+            
+            
             
             if(length(tempoR1) != 0){
               
