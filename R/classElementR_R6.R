@@ -55,7 +55,7 @@ readData <- function(x){
     }
     
   } else {}
-  print(df)
+  
   return(df)
 }
 
@@ -975,8 +975,6 @@ elementR_project <- R6Class("elementR_project",
                                 setwd(paste0(folderPath, "/standards"))
                                 files <- list.files(, recursive = TRUE) 
                                 
-                                print(files)
-                                
                                 dat <- readData(files[1])
                                 toCheck <- colnames(dat)[-1]
                                 
@@ -989,13 +987,13 @@ elementR_project <- R6Class("elementR_project",
                                   dat <- readData(files[i])
                                   
                                   print(dat)
-                                  nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
+                                  #nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
                                   
-                                  if(nbNumError != 0){nonNumPlace <- c(nonNumPlace, files[i])}
+                                  #if(nbNumError != 0){nonNumPlace <- c(nonNumPlace, files[i])}
                                   
-                                  temp <- colnames(dat)[-1]
+                                 #temp <- colnames(dat)[-1]
                                   
-                                  if(!identical(toCheck, temp)){structureError <- 1; structreLocation[k] <- files[i]; k <- k+1;} else {}   
+                                  #if(!identical(toCheck, temp)){structureError <- 1; structreLocation[k] <- files[i]; k <- k+1;} else {}   
                                 }
 
                                 info <- sprintf("%d%% done", round(40))
