@@ -982,18 +982,15 @@ elementR_project <- R6Class("elementR_project",
                                 
                                 for (i in 1: length(files)){
                                 
-                                print(i)
+                                dat <- readData(files[i])
                                   
-                                  dat <- readData(files[i])
+                                nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
                                   
-                                  print(dat)
-                                  #nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
+                                if(nbNumError != 0){nonNumPlace <- c(nonNumPlace, files[i])}
                                   
-                                  #if(nbNumError != 0){nonNumPlace <- c(nonNumPlace, files[i])}
+                                 temp <- colnames(dat)[-1]
                                   
-                                 #temp <- colnames(dat)[-1]
-                                  
-                                  #if(!identical(toCheck, temp)){structureError <- 1; structreLocation[k] <- files[i]; k <- k+1;} else {}   
+                                if(!identical(toCheck, temp)){structureError <- 1; structreLocation[k] <- files[i]; k <- k+1;} else {}   
                                 }
 
                                 info <- sprintf("%d%% done", round(40))
