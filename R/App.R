@@ -3710,10 +3710,6 @@ margin-bottom: 0px
                 
               }
               
-              if(dir.exists(paste0(system.file("", package="elementR"),"/Results")) == T){
-                projPath$temp <- system.file("", package="elementR")
-                DirToCreate$temp <- 0
-              } else {
                 DirToCreate$temp <- 1
                 
                 d <- paste0(str_split(projPath$temp, pattern = ".RData")[[1]][1], "__", Sys.Date()) 
@@ -3740,7 +3736,7 @@ margin-bottom: 0px
                     suppressWarnings(dir.create(paste0(d,"/Results/samples/", currentProject()$samplesFiles[y],"/",temporaire)))
                   })
                 })
-              }
+                
               
               tempO <- list()
               
