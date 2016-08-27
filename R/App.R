@@ -1184,6 +1184,23 @@ margin-bottom: 0px
             
             setwd(paste0(projPath$temp,"/Results"))
             
+            ToRemove <- list.files(, pattern = ".csv", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".xls", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".RData", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".jpg", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".jpeg", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".bmp", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".png", recursive = T)
+            invisible(file.remove(ToRemove))
+            ToRemove <- list.files(, pattern = ".tiff", recursive = T)
+            invisible(file.remove(ToRemove))
+            
             pb <- tkProgressBar("Progress bar", "Project export in %",
                                 0, 100, 0)
             
