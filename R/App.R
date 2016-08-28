@@ -3709,10 +3709,12 @@ margin-bottom: 0px
                 DIRECTORY <- paste0(system.file("", package="elementR"), "Example_Session")
                 
               }
-              
+
                 DirToCreate$temp <- 1
                 
-                d <- paste0(str_split(projPath$temp, pattern = ".RData")[[1]][1], "__", Sys.Date()) 
+                projPath$temp <- system.file("", package="elementR")
+                
+                d <- paste0(projPath$temp, "/Example_Session_", Sys.Date()) 
                 
                 projPath$temp <- d
                 
@@ -3735,8 +3737,7 @@ margin-bottom: 0px
                     temporaire <-currentProject()$samples[[y]]$rep_Files[x]
                     suppressWarnings(dir.create(paste0(d,"/Results/samples/", currentProject()$samplesFiles[y],"/",temporaire)))
                   })
-                })
-                
+                })  
               
               tempO <- list()
               
@@ -5024,7 +5025,7 @@ margin-bottom: 0px
             replace <- "Example_Session"
           }
         } else {}
-
+        
         output$start1 <- renderUI({
           fluidRow(
             box(
@@ -5497,20 +5498,20 @@ margin-bottom: 0px
                       }
                       
                       if(!is.null(Temp2$t)){
-                      
-                      rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                      rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
-                      
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                      
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,x],  cex = 3, col ="grey")})
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,x], cex = 3, col ="grey")})
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
-                      
+                        
+                        rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                        rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                        
+                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
+                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
+                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                        
+                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,x],  cex = 3, col ="grey")})
+                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,x], cex = 3, col ="grey")})
+                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
+                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
+                        
                       } else {}
                     }
                     
