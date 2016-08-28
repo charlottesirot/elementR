@@ -3487,7 +3487,15 @@ margin-bottom: 0px
             
             sauvegarde <- getwd() 
             
-            projPath$temp <- tk_choose.dir()
+            if(Sys.info()[1] == "Windows"){
+              
+              projPath$temp <- rchoose.dir()
+              
+            } else  {
+              
+              projPath$temp <- tk_choose.dir()
+              
+            }
             
             runEx$temp <- 0
             calibFile$temp <- NA
@@ -3629,7 +3637,15 @@ margin-bottom: 0px
         if(input$loadProjButton !=0){
           isolate({
             
-            tempoR1 <- tk_choose.files(default = getwd(), caption = "Select files", multi = FALSE, filters = matrix(c("R data", ".RData"), 1,2), index = 1)
+            if(Sys.info()[1] == "Windows"){
+              
+              projPath$temp <- choose.files(default = getwd(), caption = "Select files", multi = FALSE, filters = matrix(c("R data", ".RData"), 1,2), index = 1)
+              
+            } else  {
+              
+              tempoR1 <- tk_choose.files(default = getwd(), caption = "Select files", multi = FALSE, filters = matrix(c("R data", ".RData"), 1,2), index = 1)
+              
+            }
             
             if(length(tempoR1) != 0){
               
@@ -3983,8 +3999,16 @@ margin-bottom: 0px
             if(runEx$temp == 0){
               Filters <- matrix(c("Text", ".csv", "OO sheet", ".ods", "Excel sheet", ".xls", "Excel sheet", ".xlsx"), 4, 2, byrow = TRUE)
               
-              temp <- tk_choose.files(default = paste0(projChar$temp[[3]], "/calibration file"), caption = "Select files",
-                                      multi = FALSE, filters = Filters, index = 1)
+              if(Sys.info()[1] == "Windows"){
+                
+                projPath$temp <- choose.files(default = paste0(projChar$temp[[3]], "/calibration file"), caption = "Select files",multi = FALSE, filters = Filters, index = 1)
+                
+              } else  {
+                
+                temp <- tk_choose.files(default = paste0(projChar$temp[[3]], "/calibration file"), caption = "Select files",multi = FALSE, filters = Filters, index = 1)
+                
+              }
+              
               
               if(length(temp) == 0){
                 
