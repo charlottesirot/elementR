@@ -3489,7 +3489,7 @@ margin-bottom: 0px
             
             if(Sys.info()[1] == "Windows"){
               
-              projPath$temp <- rchoose.dir()
+              projPath$temp <- choose.dir()
               
             } else  {
               
