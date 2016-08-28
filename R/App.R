@@ -1268,11 +1268,9 @@ margin-bottom: 0px
               setTkProgressBar(pb, round(20 + x*10/length(currentProject()$standards[[1]]$rep_Files)), sprintf("Export (%s)", info), info)
 
               if(currentProject()$flag_stand[x] == 0){
-                ToRemove <- list.files(, pattern = ".csv", recursive = T)
+                ToRemove <- list.files(, pattern = ".csv")
                 invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".xls", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".RData", recursive = T)
+                ToRemove <- list.files(, pattern = ".xls")
                 invisible(file.remove(ToRemove))
                 ToRemove <- list.files(, pattern = ".jpg", recursive = T)
                 invisible(file.remove(ToRemove))
@@ -1334,11 +1332,9 @@ margin-bottom: 0px
                 setwd(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x],"/",temporaire))
                 
                 if(currentProject()$flag_Sample[[x]][y] == 0){
-                  ToRemove <- list.files(, pattern = ".csv", recursive = T)
+                  ToRemove <- list.files(, pattern = ".csv")
                   invisible(file.remove(ToRemove))
-                  ToRemove <- list.files(, pattern = ".xls", recursive = T)
-                  invisible(file.remove(ToRemove))
-                  ToRemove <- list.files(, pattern = ".RData", recursive = T)
+                  ToRemove <- list.files(, pattern = ".xls")
                   invisible(file.remove(ToRemove))
                   ToRemove <- list.files(, pattern = ".jpg", recursive = T)
                   invisible(file.remove(ToRemove))
@@ -1423,23 +1419,27 @@ margin-bottom: 0px
                   } else {}
                 }
               } else {
+
+                ToRemove <- list.files(, pattern = ".csv")[-match(currentProject()$samples[[x]]$rep_Files, list.files(, pattern = ".csv"))]
+                invisible(file.remove(ToRemove))
+                ToRemove <- list.files(, pattern = ".xls")[-match(currentProject()$samples[[x]]$rep_Files, list.files(, pattern = ".xls"))]
+                invisible(file.remove(ToRemove))
                 
-                ToRemove <- list.files(, pattern = ".csv", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".xls", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".RData", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".jpg", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".jpeg", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".bmp", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".png", recursive = T)
-                invisible(file.remove(ToRemove))
-                ToRemove <- list.files(, pattern = ".tiff", recursive = T)
-                invisible(file.remove(ToRemove))
+                if(dir.exists(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x], "/graphics")) == T){
+                  
+                  setwd(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x], "/graphics"))
+                  ToRemove <- list.files(, pattern = ".jpg")
+                  invisible(file.remove(ToRemove))
+                  ToRemove <- list.files(, pattern = ".jpeg")
+                  invisible(file.remove(ToRemove))
+                  ToRemove <- list.files(, pattern = ".bmp")
+                  invisible(file.remove(ToRemove))
+                  ToRemove <- list.files(, pattern = ".png")
+                  invisible(file.remove(ToRemove))
+                  ToRemove <- list.files(, pattern = ".tiff")
+                  invisible(file.remove(ToRemove))
+                } else {}
+                
               }
               
             }) #eo lapply
@@ -3923,7 +3923,7 @@ margin-bottom: 0px
           
           isolate({
             flagSupp$temp <- 1
-            
+
             waste$temp <- unlist(c(waste$temp, valeurColor$temp, rankStandard$temp, rankSample$temp, geneRMachineCorr$temp, generRRealign$temp))
             
             flagStart$temp[c(1,2)] <- 0
