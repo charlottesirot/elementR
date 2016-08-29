@@ -3647,7 +3647,7 @@ margin-bottom: 0px
               
             }
             
-            if(length(tempoR1) != 0 & str_detect(files[x], ".RData")){
+            if(length(tempoR1) != 0 & str_detect(tempoR1, ".RData")){
               
               flagStart$temp[2] <- 1
               flagStart$temp[1] <- 0
@@ -4010,7 +4010,7 @@ margin-bottom: 0px
               }
               
               
-              if(length(temp) == 0 & (str_detect(files[x], ".csv") | str_detect(files[x], ".xls" | str_detect(files[x], ".ods")){
+              if(length(temp) == 0 & (str_detect(temp, ".csv") | str_detect(temp, ".xls") | str_detect(temp, ".ods"))){
                 
               } else {
                 currentProject()$setEtalon(x = temp)
