@@ -3639,7 +3639,7 @@ margin-bottom: 0px
             
             if(Sys.info()[1] == "Windows"){
               
-              tempoR1 <- file.choose(default = getwd())
+              tempoR1 <- choose.file(default = getwd())
               
             } else  {
               
@@ -4001,7 +4001,7 @@ margin-bottom: 0px
               
               if(Sys.info()[1] == "Windows"){
                 
-                temp <- file.choose(default = paste0(projChar$temp[[3]], "/calibration file"))
+                temp <- choose.file(default = paste0(projChar$temp[[3]], "/calibration file"))
                 
               } else  {
                 
