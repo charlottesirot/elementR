@@ -4001,7 +4001,7 @@ margin-bottom: 0px
               
               if(Sys.info()[1] == "Windows"){
                 
-                projPath$temp <- choose.files(default = paste0(projChar$temp[[3]], "/calibration file"), caption = "Select files",multi = FALSE, filters = Filters, index = 1)
+                projPath$temp <- choose.files(default = paste0(projChar$temp[[3]], "/calibration file"), caption = "Select files",multi = FALSE, index = 1)
                 
               } else  {
                 
