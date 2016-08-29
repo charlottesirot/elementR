@@ -3647,7 +3647,7 @@ margin-bottom: 0px
               
             }
             
-            if(length(tempoR1) != 0 & str_detect(files[x], ".RData")))){
+            if(length(tempoR1) != 0 & str_detect(files[x], ".RData")){
               
               flagStart$temp[2] <- 1
               flagStart$temp[1] <- 0
