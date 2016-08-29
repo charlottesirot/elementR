@@ -3639,7 +3639,7 @@ margin-bottom: 0px
             
             if(Sys.info()[1] == "Windows"){
               
-              projPath$temp <- choose.files(default = getwd(), caption = "Select files", multi = FALSE, filters = ".RData", index = 1)
+              tempoR1 <- choose.files(default = getwd(), caption = "Select files", multi = FALSE, filters = ".RData", index = 1)
               
             } else  {
               
