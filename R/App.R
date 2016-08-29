@@ -3715,6 +3715,11 @@ margin-bottom: 0px
             } else {
               flagStart$temp[2] <- 0
               flagStart$temp[1] <- 0
+              
+              if(str_detect(tempoR1, ".RData") == F){
+                tkmessageBox(message = "WARNING: you must upload an object saved on a .RData format", icon = "error", type = "ok")
+              }
+              
             }
             
             WhatLoaded$temp <- "notExample"
@@ -4010,8 +4015,10 @@ margin-bottom: 0px
               }
               
               
-              if(length(temp) == 0 & (str_detect(temp, ".csv") | str_detect(temp, ".xls") | str_detect(temp, ".ods"))){
-                
+              if(length(temp) == 0 | (str_detect(temp, ".csv") | str_detect(temp, ".xls") | str_detect(temp, ".ods"))){
+                if(str_detect(temp, ".csv") | str_detect(temp, ".xls") | str_detect(temp, ".ods")){
+                  tkmessageBox(message = "WARNING: you must upload an file saved on a .csv, .ods, .xls or .xlsx format", icon = "error", type = "ok")
+                }
               } else {
                 currentProject()$setEtalon(x = temp)
               }
