@@ -1319,8 +1319,6 @@ elementR_repSample <- R6Class("elementR_repSample",
                                    self$rep_dataFiltre <- lapply(1:length(self$rep_Files),function(x){self$rep_data[[x]]$dataConc})
                                  }
                                  
-                                 
-                                 
                                  names(self$rep_dataFiltre) <- self$rep_Files
                                                                   
                                },
@@ -1343,7 +1341,7 @@ elementR_repSample <- R6Class("elementR_repSample",
                                ##################################################################################################
                                
                                intermStepSpot = function(){
-                                   
+                                 
                                  outputTab <- rbind(t(as.matrix(sapply(1:length(self$rep_Files), function(x){apply(self$rep_dataFiltre[[x]][,-1],2, mean,na.rm = TRUE)}))),t(as.matrix(sapply(1:length(self$rep_Files), function(x){apply(self$rep_dataFiltre[[x]][,-1],2, sd,na.rm = TRUE)}))))
                                  
                                  namesCol <- c(paste0("Mean_", self$rep_Files),paste0("SD_", self$rep_Files))                                   

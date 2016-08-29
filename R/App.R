@@ -5438,7 +5438,7 @@ margin-bottom: 0px
                     fluidRow(
                       column(8, style  = "padding-right: 5px"  ,                       
                              box(
-                               title = list(icon("share"),"Background and plateau limits selection"),
+                               title = list(icon("share"),"Blank and plateau limits selection"),
                                status="success",
                                solidHeader = TRUE,
                                width = "100%", 
@@ -5669,7 +5669,7 @@ margin-bottom: 0px
                     fluidRow(
                       column(8, style  = "padding-right: 5px",                     
                              box(
-                               title = list(icon("share"),"Background and plateau limits selection"),
+                               title = list(icon("share"),"Blank and plateau limits selection"),
                                status="success",
                                solidHeader = TRUE,
                                width = "100%", 
@@ -5905,7 +5905,7 @@ margin-bottom: 0px
                     fluidRow(
                       column(8, style  = "padding-right: 5px",                            
                              box(
-                               title = list(icon("share"),"Background and plateau limits selection"),
+                               title = list(icon("share"),"Blank and plateau limits selection"),
                                status="success",
                                solidHeader = TRUE,
                                width = "100%", 
@@ -7383,7 +7383,7 @@ margin-bottom: 0px
                           fluidRow(
                             column(8,style  = "padding-right: 5px",
                                    box(
-                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     title = list(icon("share"),"Blank and plateau limits selection"),
                                      status="info",
                                      solidHeader = TRUE,
                                      width = "100%",
@@ -7490,7 +7490,7 @@ margin-bottom: 0px
                           fluidRow(
                             column(8,style  = "padding-right: 5px",
                                    box(
-                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     title = list(icon("share"),"Blank and plateau limits selection"),
                                      status="info",
                                      solidHeader = TRUE,
                                      width = "100%",
@@ -7706,7 +7706,7 @@ margin-bottom: 0px
                           fluidRow(
                             column(8, style  = "padding-right: 5px",
                                    box(
-                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     title = list(icon("share"),"Blank and plateau limits selection"),
                                      status="info",
                                      solidHeader = TRUE,
                                      width = "100%",
@@ -7812,7 +7812,7 @@ margin-bottom: 0px
                           fluidRow(
                             column(8, style  = "padding-right: 5px",
                                    box(
-                                     title = list(icon("share"),"Background and plateau limits selection"),
+                                     title = list(icon("share"),"Blank and plateau limits selection"),
                                      status="info",
                                      solidHeader = TRUE,
                                      width = "100%",
@@ -8027,7 +8027,7 @@ margin-bottom: 0px
                         fluidRow(
                           column(8, style  = "padding-right: 5px",
                                  box(
-                                   title = list(icon("share"),"Background and plateau limits selection"),
+                                   title = list(icon("share"),"Blank and plateau limits selection"),
                                    status="info",
                                    solidHeader = TRUE,
                                    width = "100%",
@@ -8120,7 +8120,7 @@ margin-bottom: 0px
                         fluidRow(
                           column(8, style  = "padding-right: 5px",
                                  box(
-                                   title = list(icon("share"),"Background and plateau limits selection"),
+                                   title = list(icon("share"),"Blank and plateau limits selection"),
                                    status="info",
                                    solidHeader = TRUE,
                                    width = "100%",
@@ -9321,14 +9321,17 @@ margin-bottom: 0px
       if(!is.null(input$selectRealign)){
         if(length(which(flagSample$temp == TRUE)) != 0){
           if(length(grep(input$selectRealign,currentProject()$samplesFiles)) !=0){
-            currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$setRep_dataFiltre(x = currentProject()$ChoiceUserCorr) 
-            tabProvSpot$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$intermStepSpot()
-            tabProvSample$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
+            
+              currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$setRep_dataFiltre(x = currentProject()$ChoiceUserCorr) 
+            
+            
+            if(all(is.na(unlist(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre))) == F){
+              tabProvSpot$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$intermStepSpot()
+              tabProvSample$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
+            }
           } else {}
-          
         }  else {}
       } else {}
-      
     }) # observe
     
     # set flagRealign$temp and average the data when input$MoyenneRaster is pressed (raster mode) 
