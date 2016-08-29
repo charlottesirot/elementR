@@ -3639,7 +3639,7 @@ margin-bottom: 0px
             
             if(Sys.info()[1] == "Windows"){
               
-              tempoR1 <- choose.files(default = getwd(), caption = "Select files", multi = FALSE, filters = ".RData", index = 1)
+              tempoR1 <- file.choose(default = getwd())
               
             } else  {
               
@@ -3647,7 +3647,7 @@ margin-bottom: 0px
               
             }
             
-            if(length(tempoR1) != 0){
+            if(length(tempoR1) != 0 & str_detect(files[x], ".RData")))){
               
               flagStart$temp[2] <- 1
               flagStart$temp[1] <- 0
@@ -4001,7 +4001,7 @@ margin-bottom: 0px
               
               if(Sys.info()[1] == "Windows"){
                 
-                temp <- choose.files(default = paste0(projChar$temp[[3]], "/calibration file"))
+                temp <- file.choose(default = paste0(projChar$temp[[3]], "/calibration file"))
                 
               } else  {
                 
@@ -4010,7 +4010,7 @@ margin-bottom: 0px
               }
               
               
-              if(length(temp) == 0){
+              if(length(temp) == 0 & (str_detect(files[x], ".csv") | str_detect(files[x], ".xls" | str_detect(files[x], ".ods")){
                 
               } else {
                 currentProject()$setEtalon(x = temp)
