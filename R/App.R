@@ -3647,80 +3647,75 @@ margin-bottom: 0px
               
             }
             
-            if(length(tempoR1) != 0 & str_detect(tempoR1, ".RData")){
-              
-              flagStart$temp[2] <- 1
-              flagStart$temp[1] <- 0
-              
-              load(tempoR1)
-              
-              tempProj$temp <- myProject
-              
-              projChar$temp <- list(2, "Type of action: Modification of an existing elementR project", tempoR1, tempProj$temp$name, tempProj$temp$folderPath, tempProj$temp$standardsFiles, tempProj$temp$samplesFiles, tempProj$temp$listeElem)
-              
-              currentProject <- reactive({
-                tempProj$temp
-              })
-              
-              DIRECTORY <- currentProject()$folderPath
-              
-              if(dir.exists(paste0(DIRECTORY,"/Results")) == T){
-                projPath$temp <- DIRECTORY
-                DirToCreate$temp <- 0
+            if(length(tempoR1) != 0){
+              if(str_detect(tempoR1, ".RData")){
+                flagStart$temp[2] <- 1
+                flagStart$temp[1] <- 0
                 
-              } else {
-                DirToCreate$temp <- 1
+                load(tempoR1)
                 
-                d <- paste0(str_split(tempoR1, pattern = ".RData")[[1]][1], "__", Sys.Date()) 
+                tempProj$temp <- myProject
                 
-                projPath$temp <- d
+                projChar$temp <- list(2, "Type of action: Modification of an existing elementR project", tempoR1, tempProj$temp$name, tempProj$temp$folderPath, tempProj$temp$standardsFiles, tempProj$temp$samplesFiles, tempProj$temp$listeElem)
                 
-                tkmessageBox(title = "INFO !",message = paste("The path of the project is not included in this machine. The project will be exported in:",d), icon = "info", type = "ok")
-                
-                suppressWarnings(dir.create(d))
-                
-                suppressWarnings(dir.create(paste0(d,"/Results")))
-                suppressWarnings(dir.create(paste0(d,"/Results/standards")))
-                suppressWarnings(dir.create(paste0(d,"/Results/samples")))
-                
-                lapply(1:length(currentProject()$standardsFiles), function(y){
-                  temporaire <- currentProject()$standardsFiles[y]
-                  suppressWarnings(dir.create(paste0(d,"/Results/standards/", temporaire)))
+                currentProject <- reactive({
+                  tempProj$temp
                 })
                 
-                lapply(1:length(currentProject()$samples), function(y){
-                  suppressWarnings(dir.create(paste0(d,"/Results/samples/",currentProject()$samplesFiles[y])))
-                  lapply(1:length(currentProject()$samples[[y]]$rep_Files), function(x){
-                    temporaire <-currentProject()$samples[[y]]$rep_Files[x]
-                    suppressWarnings(dir.create(paste0(d,"/Results/samples/", currentProject()$samplesFiles[y],"/",temporaire)))
+                DIRECTORY <- currentProject()$folderPath
+                
+                if(dir.exists(paste0(DIRECTORY,"/Results")) == T){
+                  projPath$temp <- DIRECTORY
+                  DirToCreate$temp <- 0
+                  
+                } else {
+                  DirToCreate$temp <- 1
+                  
+                  d <- paste0(str_split(tempoR1, pattern = ".RData")[[1]][1], "__", Sys.Date())
+                  
+                  projPath$temp <- d
+                  
+                  tkmessageBox(title = "INFO !",message = paste("The path of the project is not included in this machine. The project will be exported in:",d), icon = "info", type = "ok")
+                  
+                  suppressWarnings(dir.create(d))
+                  
+                  suppressWarnings(dir.create(paste0(d,"/Results")))
+                  suppressWarnings(dir.create(paste0(d,"/Results/standards")))
+                  suppressWarnings(dir.create(paste0(d,"/Results/samples")))
+                  
+                  lapply(1:length(currentProject()$standardsFiles), function(y){
+                    temporaire <- currentProject()$standardsFiles[y]
+                    suppressWarnings(dir.create(paste0(d,"/Results/standards/", temporaire)))
                   })
-                })
+                  
+                  lapply(1:length(currentProject()$samples), function(y){
+                    suppressWarnings(dir.create(paste0(d,"/Results/samples/",currentProject()$samplesFiles[y])))
+                    lapply(1:length(currentProject()$samples[[y]]$rep_Files), function(x){
+                      temporaire <-currentProject()$samples[[y]]$rep_Files[x]
+                      suppressWarnings(dir.create(paste0(d,"/Results/samples/", currentProject()$samplesFiles[y],"/",temporaire)))
+                    })
+                  })
+                  
+                }
                 
-              }
-              
-              tempO <- list()
-              
-              for (i in 1: length(currentProject()$flag_Sample)){
-                tempO[[i]] <- rainbow(length(currentProject()$samples[[i]]$rep_Files))
-                names(tempO[[i]]) <- currentProject()$samples[[i]]$rep_Files
-              }
-              
-              colorReplicate$temp <- tempO
-              
-              flagStandard$temp <- currentProject()$flag_stand
-              flagSampleDetail$temp <- currentProject()$flag_Sample
-              flagRealign$temp <- currentProject()$flagRealign
-              validCorrection$temp <- currentProject()$flagMachineCorrection
-              
+                tempO <- list()
+                
+                for (i in 1: length(currentProject()$flag_Sample)){
+                  tempO[[i]] <- rainbow(length(currentProject()$samples[[i]]$rep_Files))
+                  names(tempO[[i]]) <- currentProject()$samples[[i]]$rep_Files
+                }
+                
+                colorReplicate$temp <- tempO
+                
+                flagStandard$temp <- currentProject()$flag_stand
+                flagSampleDetail$temp <- currentProject()$flag_Sample
+                flagRealign$temp <- currentProject()$flagRealign
+                validCorrection$temp <- currentProject()$flagMachineCorrection
+              } else { tkmessageBox(message = "WARNING: you must upload an object saved on a .RData format", icon = "error", type = "ok")}
             } else {
               flagStart$temp[2] <- 0
               flagStart$temp[1] <- 0
-              
-              if(str_detect(tempoR1, ".RData") == F){
-                tkmessageBox(message = "WARNING: you must upload an object saved on a .RData format", icon = "error", type = "ok")
               }
-              
-            }
             
             WhatLoaded$temp <- "notExample"
           })
@@ -4014,14 +4009,14 @@ margin-bottom: 0px
                 
               }
               
-              
-              if(length(temp) == 0 | (str_detect(temp, ".csv") & str_detect(temp, ".xls") & str_detect(temp, ".ods"))){
-                if(str_detect(temp, ".csv") & str_detect(temp, ".xls") & str_detect(temp, ".ods")){
-                  tkmessageBox(message = "WARNING: you must upload an file saved on a .csv, .ods, .xls or .xlsx format", icon = "error", type = "ok")
-                }
+              if(length(temp) != 0){
+                if(str_detect(temp, ".csv") | str_detect(temp, ".xls") | str_detect(temp, ".ods")){
+                  currentProject()$setEtalon(x = temp)
+                } else { tkmessageBox(message = "WARNING: you must upload an file saved on a .csv, .ods, .xls or .xlsx format", icon = "error", type = "ok")}
               } else {
-                currentProject()$setEtalon(x = temp)
+                
               }
+
               
             } else {
               
