@@ -1,0 +1,12 @@
+Package: elementR
+Type: Package
+Title: A Shiny Application for Reducing Elemental LA-ICPMS Data from Solid Structures
+Version: 1.0
+Date: 2016-08-26
+Author: Charlotte Sirot, Francois Guilhaumon, Franck Ferraton, Audrey Darnaude, Jacques Panfili, Amber Child 
+Maintainer: Charlotte Sirot <charlott.sirot@gmail.com>
+Description: Aims to facilitate the reduction of elemental microchemistry data from solid-phase LA-ICPMS analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR package provides a reactive and user friendly interface for conducting all steps needed for an optimal data reduction while leaving maximum control for user.
+Repository: CRAN
+Depends: R (>= 3.2.3)
+Imports: gdata, shiny,devtools, shinyjs, gnumeric, R6, shinydashboard, abind, stringr, lmtest, tcltk,tcltk2, reader, readODS, readxl
+License: GPL (>=2)
