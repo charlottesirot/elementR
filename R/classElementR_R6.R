@@ -1,24 +1,22 @@
 ##############################################################
 #
-# elementR 1.0 - 26/08/2016
+# elementR 1.3 - 15/12/2016
 # 
 # charlott.sirot@gmail.com
 # francois.guilhaumon@ird.fr
 #
 #####################################################################
 
-readData <- function(x){
+readData <- function(x, sep = ";", dec = "."){
   
   if(str_detect(x, ".xls")){
-    
     df <- as.data.frame(read_excel(x, sheet = 1, col_names = TRUE))
-    
   } else {}
+  
   if(str_detect(x, ".csv")){
-    
-    df <- read.table(x, header = TRUE, sep = ";", dec = ".")
-    
+    df <- read.table(x, header = TRUE, sep = sep, dec = dec)
   } else {}
+  
   if(str_detect(x, ".ods")){
     
     df <- read.ods(x)[[1]]
@@ -99,12 +97,12 @@ elementR_data <- R6Class("elementR_data",
                            # Name: initialize
                            ##################################################################################################
                            
-                           initialize = function(fPath=NULL) {
+                           initialize = function(fPath=NULL, sep = ";", dec = ".") {
                              if(is.null(fPath)) stop("error, fPath missing !")
                              charStrings <- unlist(lapply(strsplit(fPath,"[.]"),strsplit,split="/"))
                              self$name <- charStrings[length(charStrings)-1] 
                              self$fPath <- fPath
-                             d <- readData(fPath)
+                             d <- readData(fPath, sep = sep, dec = dec)
                              self$data <- d
                            },#initialize
                            
@@ -434,13 +432,11 @@ elementR_sample <- R6Class("elementR_sample",
                                  }           
                                })
                                
-                               
-                               
                                tabTemp <- cbind(as.matrix(self$dataNorm[,1]),temp)
                                
                                colnames(tabTemp) <- colnames(self$dataNorm)
-                               
                                self$dataConcCorr <- tabTemp
+                               
                                
                              }, #setDataConc
                             
@@ -676,9 +672,9 @@ elementR_project <- R6Class("elementR_project",
                               # Input:  x = a character string corresponding to the path of the calibration file
                               ##################################################################################################
                               
-                              setEtalon = function(x){
+                              setEtalon = function(x, sep, dec){
                                 
-                                temp <- readData(x)
+                                temp <- readData(x, sep = sep, dec = dec)
 
                                 Num <- unlist(sapply(2:ncol(temp), function(x){
                                   
@@ -691,7 +687,7 @@ elementR_project <- R6Class("elementR_project",
                                 if(identical(colnames(temp)[2:ncol(temp)],colnames(self$standards[[1]]$rep_data[[1]]$data)[2:ncol(temp)]) & is.null(Num)){
                                   
                                   self$EtalonPath <- x                                  
-                                  self$EtalonData <- readData(x)
+                                  self$EtalonData <- readData(x, sep = sep, dec = dec)
                                   
                                 } else {
                                   
@@ -947,7 +943,7 @@ elementR_project <- R6Class("elementR_project",
                               # Name: initialize
                               ##################################################################################################
                                                             
-                              initialize = function(folderPath=NULL) {   
+                              initialize = function(folderPath=NULL,  sep = ";", dec = ".") {   
                                 
                                 pb <- tkProgressBar("Progress bar", "Some information in %",
                                                     0, 100, 20)
@@ -978,14 +974,19 @@ elementR_project <- R6Class("elementR_project",
                                 setwd(paste0(folderPath, "/standards"))
                                 files <- list.files(, recursive = TRUE) 
                                 
-                                dat <- readData(files[1])
+                                dat <- readData(files[1], sep = sep, dec = dec)
+                                
+                                if(ncol(dat) == 1){
+                                  self$errorSession <- 1
+                                  
+                                } 
                                 toCheck <- colnames(dat)[-1]
                                 
                                 self$listeElem <- toCheck
                                 
                                 for (i in 1: length(files)){
                                   
-                                  dat <- readData(files[i])
+                                  dat <- readData(files[i], sep = sep, dec = dec)
                                   
                                   nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
                                   
@@ -995,7 +996,7 @@ elementR_project <- R6Class("elementR_project",
                                   
                                   if(!identical(toCheck, temp)){structureError <- 1; structreLocation[k] <- files[i]; k <- k+1;} else {}   
                                 }
-
+                                
                                 info <- sprintf("%d%% done", round(40))
                                 setTkProgressBar(pb, 40, sprintf("Data loading (%s)", info), info)
                                 
@@ -1003,7 +1004,7 @@ elementR_project <- R6Class("elementR_project",
                                 files <- list.files(, recursive = TRUE)
                                 
                                 for (i in 1: length(files)){                                  
-                                  dat <- readData(files[i])
+                                  dat <- readData(files[i], sep = sep, dec = dec)
                                   nbNumError <- self$NonNumericCheck(data = dat, col = 1:ncol(dat))
                                   
                                   if(nbNumError != 0){nonNumPlace <- c(nonNumPlace, files[i])}
@@ -1012,7 +1013,7 @@ elementR_project <- R6Class("elementR_project",
                                   
                                   if(!identical(toCheck, temp)){structureError <- 1; structreLocation[k] <- files[i]; k <- k+1;} else {}                                   
                                 }  
-
+                                
                                 info <- sprintf("%d%% done", round(50))
                                 setTkProgressBar(pb, 50, sprintf("Data loading (%s)", info), info)
                                 
@@ -1033,7 +1034,7 @@ elementR_project <- R6Class("elementR_project",
                                 calFiles <- dir(self$standardsPath)                                
                                 self$standardsFiles <- calFiles
                                 
-                                calList <- lapply(paste0(self$standardsPath, sep=""),function(f){elementR_repStandard$new(f)})
+                                calList <- lapply(paste0(self$standardsPath, sep=""),function(f){elementR_repStandard$new(f, sep = sep, dec = dec)})
                                 names(calList) <- "Rep_standard"                          
                                 self$standards <- calList
                                 
@@ -1043,9 +1044,11 @@ elementR_project <- R6Class("elementR_project",
                                 #b. samples
                                 self$samplesPath <- paste0(folderPath,"/samples")
                                 sampFiles <- dir(self$samplesPath)
-                                self$samplesFiles <- sampFiles                                
+                                self$samplesFiles <- sampFiles    
                                 
-                                sampList <- lapply(paste0(self$samplesPath,"/",sampFiles),function(f){elementR_repSample$new(f)})
+                                sampList <- lapply(paste0(self$samplesPath,"/",sampFiles),function(f){elementR_repSample$new(f, sep = sep, dec = dec)})
+                                
+                                
                                 names(sampList) <- sampFiles
                                 self$samples <- sampList 
                                 
@@ -1072,12 +1075,19 @@ elementR_project <- R6Class("elementR_project",
                                 })
                                 
                                 rownames(self$summarySettings) <- c(self$standardsFiles, toInsert)
-                                colnames(self$summarySettings) <- c("name", "Rank in analysis", "blank beginning", "blank end", "plateau beginning", "plateau end", paste("Blank average", colnames(dat)[2:ncol(dat)]), paste("LOD", colnames(dat)[2:ncol(dat)]))
-
+                                if(ncol(dat) != 1){
+                                  colnames(self$summarySettings) <- c("name", "Rank in analysis", "blank beginning", "blank end", "plateau beginning", "plateau end", paste("Blank average", colnames(dat)[2:ncol(dat)]), paste("LOD", colnames(dat)[2:ncol(dat)]))
+                                  
+                                } 
+                                
+                                
                                 info <- sprintf("%d%% done", round(100))
                                 setTkProgressBar(pb, 100, sprintf("Data loading (%s)", info), info)
                                 
                                 close(pb)
+                                
+                                
+
                               }
                             ),#public
                             private = list(
@@ -1097,6 +1107,8 @@ elementR_rep <- R6Class("elementR_rep",
                           rep_Files = NA, # A vector containing the name of the files within the considered folder
                           rep_data = NA, # A list containing the self$elementR_data corresponding to the replicates included the considered folder                        
                           rep_pas = NA, # A numerical value corresponding to the time between two consecutive analysis within data of the considered folder
+                          sep = NA,
+                          dec = NA,
                           
                           ##################################################################################################
                           # Name: setRep_pas
@@ -1113,7 +1125,7 @@ elementR_rep <- R6Class("elementR_rep",
                           # Name: initialize
                           ##################################################################################################
                           
-                          initialize = function(rep_folderPath=NULL) {
+                          initialize = function(rep_folderPath=NULL,  sep = ";", dec = ".") {
                             
                             charStrings <- unlist(strsplit(rep_folderPath,"/"))
                             self$rep_name <- charStrings[length(charStrings)]
@@ -1121,6 +1133,9 @@ elementR_rep <- R6Class("elementR_rep",
                             
                             Files <- dir(self$rep_folderPath)
                             self$rep_Files <- Files 
+                            
+                            self$sep <- sep
+                            self$dec <- dec
                             
                             self$create()
                           }
@@ -1194,7 +1209,7 @@ elementR_repStandard <- R6Class("elementR_repStandard",
                                
                                create = function(){
                                  
-                                 temp <- lapply(paste0(self$rep_folderPath, "/", self$rep_Files),function(f){elementR_standard$new(f)})
+                                 temp <- lapply(paste0(self$rep_folderPath, "/", self$rep_Files),function(f){elementR_standard$new(f, sep = self$sep, dec = self$dec)})
                                  
                                  names(temp) <- self$rep_Files
                                  
@@ -1231,7 +1246,7 @@ elementR_repSample <- R6Class("elementR_repSample",
                              
                                create = function(){
                                  
-                                 self$rep_data <- lapply(paste0(self$rep_folderPath, "/", self$rep_Files),function(f){elementR_sample$new(f)})
+                                 self$rep_data <- lapply(paste0(self$rep_folderPath, "/", self$rep_Files),function(f){elementR_sample$new(f, sep = self$sep, dec = self$dec)})
                                  
                                  names(self$rep_data) <- self$rep_Files
                                },
