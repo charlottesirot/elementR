@@ -1,4 +1,4 @@
-# elementR <i class="fa fa-star-half-o" aria-hidden="true" align="right"></i>
+# elementR :star:
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 
