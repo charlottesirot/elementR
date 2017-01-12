@@ -2,7 +2,7 @@ language: r
 cache: packages
 
 before_install:
-  - sudo apt-get -qq update
+  - sudo apt-get update -qq
   - sudo apt-get install -y libtcl8.5 libtcl8.5-dev
 
 r_packages:
