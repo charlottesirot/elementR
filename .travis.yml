@@ -1,11 +1,9 @@
 language: r
 cache: packages
 
-addons:
-  apt:
-    packages:
-      - libtcl8.4
-      - libtcl8.4-dbg
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libtcl8.4 libtcl8.4-dbg
 
 r_packages:
   - covr
