@@ -1,6 +1,7 @@
 # elementR :star:
 
-![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR) ![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR)](http://cran.rstudio.com/web/packages/elementR/index.html)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
+[![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR)](http://cran.rstudio.com/web/packages/elementR/index.html)
 
 ## Overview
 
