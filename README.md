@@ -27,15 +27,13 @@ Alternatively, you can install the development version (not yet pushed on cran) 
 
 ```
 #Install elementR's dependencies
-pkg <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl")
+pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl")
 
-invisible(vapply(seq_along(pkg), function(x){install.packages(pkg[x], dependencies = T)}))
-
-#Check for devtools
-if(!require("devtools")){
-	install.packages("devtools")
-	library("devtools")
-}
+invisible(vapply(pkgs, function(pkg){
+	if(!require(pkg)){
+		install.packages(pkg, dependencies=TRUE)
+	}
+}))
 
 #Install elementR
 devtools::install_github("charlottesirot/elementR", ref = "master", force = T, dependencies = T)
@@ -47,7 +45,9 @@ library(elementR)
 
 > For Mac users: during installation elementR will ask to install "XCode/otool". Accept this installation.
 
+
 > If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
+
 
 > elementR runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR under [Firefox](https://www.mozilla.org/en-US/firefox/new/).
 
@@ -65,4 +65,4 @@ If you are new to elementR you are better off starting with a systematic introdu
 
 ## Troubleshoutting
 
-If, despite the care devoted to programming this package and write this documentation, you have difficulties to install or run elementR, if you have questions about the procedures or calculations, or if you want to report bugs, do not hesitate to consult the official elementR documentation above or on [CRAN](https://CRAN.R-project.org/package=elementR) or connect with us on [GitHub](https://github.com/charlottesirot/elementR).
+If, despite the :heart: brought during the programming of this R package and writing of this documentation, you have difficulties to install or run elementR, if you have questions about the procedures or calculations, or if you want to report bugs :beetle:, do not hesitate to consult the official elementR documentation above or on [CRAN](https://CRAN.R-project.org/package=elementR) or connect with us on [GitHub](https://github.com/charlottesirot/elementR).
