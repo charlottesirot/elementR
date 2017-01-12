@@ -4,7 +4,9 @@
 
 ## Overview
 
-**elementR** is an R package facilitating the reduction of elemental microchemistry data from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides a reactive and user friendly interface for conducting all steps needed for an optimal data reduction while leaving maximum control to the user.
+**elementR** is an R package facilitating the reduction of elemental microchemistry data from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides a reactive and user friendly interface running in the web browser for conducting all steps needed for an optimal data reduction while leaving maximum control to the user.
+
+**elementR** implements [R6 R classes](https://github.com/wch/R6/) and is based on [Shiny](http://shiny.rstudio.com/) for it's GUI.
 
 #### Technical prerequisites
 
@@ -29,7 +31,7 @@ Alternatively, you can install the development version (not yet pushed on cran) 
 #Install elementR's dependencies
 pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl")
 
-invisible(vapply(pkgs, function(pkg){
+invisible(lapply(pkgs, function(pkg){
 	if(!require(pkg)){
 		install.packages(pkg, dependencies=TRUE)
 	}
@@ -59,6 +61,7 @@ For launching elementR, just run the following command in your R console:
 ```
 runElementR()
 ```
+
 ## Learning elementR
 
 If you are new to elementR you are better off starting with a systematic introduction, this can be found in the [pdf documentation](inst/elementR_documentation.pdf) of this package.
