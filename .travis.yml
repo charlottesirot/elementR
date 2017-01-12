@@ -3,7 +3,7 @@ cache: packages
 
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y libtcl8.4 libtcl8.4-dbg
+  - sudo apt-get install -y libtcl8.5 libtcl8.5-dev
 
 r_packages:
   - covr
