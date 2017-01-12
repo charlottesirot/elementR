@@ -211,7 +211,7 @@ runElementR <- function(){
   body <- dashboardBody(
   	
     tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "inst/www/elementR.css")
+      tags$link(rel = "stylesheet", type = "text/css", href = "elementR.css")
     ),
     
     div(style = "min-height:100vh; min-width: (100vw - 230); display:flex",
