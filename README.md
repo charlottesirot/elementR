@@ -4,15 +4,21 @@
 
 ## Overview
 
-elementR is an R package facilitating the reduction of elemental microchemistry data from solid-phase LA-ICPMS analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR package provides a reactive and user friendly interface for conducting all steps needed for an optimal data reduction while leaving maximum control for user.
+elementR is an R package facilitating the reduction of elemental microchemistry data from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides a reactive and user friendly interface for conducting all steps needed for an optimal data reduction while leaving maximum control to the user.
 
 #### Technical prerequisites
 
-1. Internet access.
+1. Internet access. :laughing:
 
-2. For all platforms (Linux, Windows, MacOS), check the version of R installed on your computer (must be at least ≥ 3.2.3, see [https://cran.r-project.org/](https://cran.r-project.org/) for updating your version).
+2. For all platforms (Linux, Windows, MacOS), check the version of R installed on your computer :
 
-3. For a Macintosh platform, elementR package needs XQuartz. Please check, that XQuartz is installed and runs properly on your computer. If not, please visit https://www.xquartz.org/.
+```
+sessionInfo()
+```
+
+must be ≥ 3.2.3, see [https://cran.r-project.org/](https://cran.r-project.org/) for updating your version.
+
+3. For Mac users, elementR package needs XQuartz. Please check, that XQuartz is installed and runs properly on your computer. If not, please visit [https://www.xquartz.org/](https://www.xquartz.org/).
 
 ## Installation
 
