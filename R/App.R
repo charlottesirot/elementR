@@ -210,9 +210,10 @@ runElementR <- function(){
   
   body <- dashboardBody(
   	
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "elementR.css")
-    ),
+   # tags$head(
+   #   tags$link(rel = "stylesheet", type = "text/css", href = "elementR.css")
+   # ),
+    includeCSS("elementR.css"),
     
     div(style = "min-height:100vh; min-width: (100vw - 230); display:flex",
         div(style = "background-color: #666666; width: 31px;",
