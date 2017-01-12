@@ -53,7 +53,7 @@ When \code{\link{runElementR}} is running and as soon as a project is loaded, an
 ## create a new elementR_data object based on the "filePath" 
 ## from a file containing data (accepted format of data: .csv, .ods, .xls, .xlsx)
 
-filePath <- system.file("Example_Session/standards/Stand3.csv", package="elementR")
+filePath <- system.file("Example_Session/standards/Stand3.xls", package="elementR")
 
 standard <- elementR_data$new(filePath)
 

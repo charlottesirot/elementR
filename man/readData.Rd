@@ -23,7 +23,7 @@ For the Excel and text format, \code{readData} reads by default the first worksh
 \examples{
 ## Read data based on its path "filePath"
 
-filePath <- system.file("Example_Session/standards/Stand3.csv", package="elementR")
+filePath <- system.file("Example_Session/standards/Stand1.csv", package="elementR")
 
 readData(filePath, sep = ";", dec = ".")
 
