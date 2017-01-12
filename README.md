@@ -6,7 +6,7 @@
 
 elementR is an R package facilitating the reduction of elemental microchemistry data from solid-phase LA-ICPMS analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR package provides a reactive and user friendly interface for conducting all steps needed for an optimal data reduction while leaving maximum control for user.
 
-## Technical prerequisites
+#### Technical prerequisites
 
 1. Internet access.
 
