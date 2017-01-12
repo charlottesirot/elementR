@@ -5,7 +5,10 @@
 [![Build Status](https://api.travis-ci.org/fguilhaumon/elementR.svg?branch=master)](https://travis-ci.org/fguilhaumon/elementR)
 ## Overview
 
-**elementR** is an R package facilitating the reduction of elemental microchemistry data from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides a reactive and user friendly interface running in the web browser for conducting all steps needed for an optimal data reduction while leaving maximum control to the user.
+**elementR** is an R package facilitating the handling and reduction of elemental microchemistry data obtained from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides:
+
+- a set of classes to handle LA-ICPMS data
+- a reactive user friendly interface running in the web browser to conduct all steps needed for an optimal data reduction while leaving maximum control to the user.
 
 **elementR** implements [R6 R classes](https://github.com/wch/R6/) and is based on [Shiny](http://shiny.rstudio.com/) for it's GUI.
 
