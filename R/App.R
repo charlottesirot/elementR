@@ -20,6 +20,8 @@ runElementR <- function(){
   skin <- tolower(skin)
   if (skin == "") skin <- "blue"
   
+  menuIconClass <- "fa-lg" 
+  
   ######################
   ############ FUNCTIONS
   ######################
@@ -179,25 +181,17 @@ runElementR <- function(){
     useShinyjs(),
     sidebarMenu(id = "tab",
                 div(p(icon("star-half-o"),"element-R", style = "font-size: 200%; padding-left:50px;padding-top:5px"), style = "background: rgb(60, 141, 188); height: 50px"),
-                menuItem("Step 1. Project Settings", tabName = "start", icon = icon("flask")),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage1"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 2. Filtering standard data", tabName = "Standards", icon = icon("flask")),
+                menuItem("Project Setup", tabName = "start", icon = icon("thermometer-0", class=menuIconClass), badgeLabel="Step 1", badgeColor="blue"),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+                menuItem("Filter standards", tabName = "Standards", icon = icon("thermometer-1", class=menuIconClass), badgeLabel="Step 2", badgeColor="green"),
                 uiOutput("renderProgress2"),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage2"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 3. Drift verification", tabName = "MachDrift", icon = icon("flask")),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage3"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 4. Filtering sample data", tabName = "Samples", icon = icon("flask")),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+                menuItem("Drift verification", tabName = "MachDrift", icon = icon("thermometer-2", class=menuIconClass), badgeLabel="Step 3", badgeColor="purple"),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+    		    menuItem("Filter samples", tabName = "Samples", icon = icon("thermometer-3", class=menuIconClass), badgeLabel="Step 4", badgeColor="maroon"),
                 uiOutput("renderProgress4"),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage4"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 5. Averaging sample repl.", tabName = "realign", icon = icon("flask")),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+                menuItem("Average samples", tabName = "realign", icon = icon("thermometer-4", class=menuIconClass), badgeLabel="Step 5", badgeColor="orange"),
                 uiOutput("renderProgress5"),
                 hr(style ="width: 70%; color: white; align: center"),
                 menuItem("Configuration", icon = icon("sliders"), tabName = "Config"),
