@@ -5,4 +5,10 @@ addons:
   apt:
     packages:
       - libtcl8.5
-      - libtcl8.5-dbg      
+      - libtcl8.5-dbg
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
