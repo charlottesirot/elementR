@@ -2,7 +2,7 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 [![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR)](http://cran.rstudio.com/web/packages/elementR/index.html)
-
+[![Build Status](https://api.travis-ci.org/fguilhaumon/elementR.svg?branch=master)](https://travis-ci.org/fguilhaumon/elementR)
 ## Overview
 
 **elementR** is an R package facilitating the reduction of elemental microchemistry data from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides a reactive and user friendly interface running in the web browser for conducting all steps needed for an optimal data reduction while leaving maximum control to the user.
