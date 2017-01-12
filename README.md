@@ -10,13 +10,7 @@
 
 1. Internet access. :laughing:
 
-2. For all platforms (Linux, Windows, MacOS), check the version of R installed on your computer :
-
-```
-sessionInfo()
-```
-
-must be ≥ 3.2.3, see [https://cran.r-project.org/](https://cran.r-project.org/) for updating your version.
+2. For all platforms (Linux, Windows, MacOS), check the version of R installed on your computer (`sessionInfo()`), must be ≥ 3.2.3, see [https://cran.r-project.org/](https://cran.r-project.org/) for updating your version.
 
 3. For Mac users, elementR package needs XQuartz. Please check, that XQuartz is installed and runs properly on your computer. If not, please visit [https://www.xquartz.org/](https://www.xquartz.org/).
 
