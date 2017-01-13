@@ -1,10 +1,10 @@
 language: r
 cache: packages
 
-addons:
-  sauce_connect:
-    username: "fguilhaumon"
-    access_key: "37bb8444-05bd-4508-bb15-f1720fbaf01d"
+#addons:
+#  sauce_connect:
+#    username: "fguilhaumon"
+#    access_key: "37bb8444-05bd-4508-bb15-f1720fbaf01d"
 
 r_packages:
   - covr
