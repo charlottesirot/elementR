@@ -1,21 +1,25 @@
 context("test elementR R6 classes")
 library(elementR)
 #library(RSelenium)
-#library(testthat)
+library(testthat)
 
-#we do not testing nothing for now we cannot paste the acces key in this 
-
-test_that("can create elementR_data object from xls data file", {
+test_that("can create & manipulate elementR_data object from xls data file", {
 	
 	filePath <- system.file("Example_Session/standards/Stand3.xls", package="elementR")
 	
-	standard <- elementR_data$new(filePath)
+	obj <- elementR_data$new(filePath)
 	
 	#data is 2 dimension
-	expect_equal(length(dim(standard$data)), 2)
+	expect_equal(length(dim(obj$data)), 2)
 	
 	#class is "elementR_data" & "R6"
-	expect_equal(class(standard), c("elementR_data","R6"))
+	expect_equal(class(obj), c("elementR_data","R6"))
+	
+	#setBin set the bins
+	obj$setDataBlanc(c(1,16))
+	expect_equal(length(obj$LOD),(dim(obj$data)[2]-1))
+	
+	
 })
 
 test_that("can create elementR_standard object from csv data file", {
@@ -57,6 +61,4 @@ test_that("can create elementR_repStrandard object from 3 csv,xls,ods data files
 	#class is "elementR_data" & "R6"
 	expect_equal(class(obj), c("elementR_repStandard","elementR_rep","R6"))
 })
-
-
 
