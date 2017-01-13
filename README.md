@@ -6,7 +6,7 @@
 [![codecov.io](https://codecov.io/github/fguilhaumon/elementR/coverage.svg?branch=master)](https://codecov.io/github/fguilhaumon/elementR?branch=master)
 ## Overview
 
-**elementR** is an R package facilitating the handling and reduction of elemental microchemistry data obtained from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR R-package provides:
+**elementR** is an R package facilitating the handling and reduction of elemental microchemistry data obtained from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The **elementR** R-package provides:
 
 - a set of classes to handle LA-ICPMS data
 - a reactive user friendly interface running in the web browser to conduct all steps needed for an optimal data reduction while leaving maximum control to the user.
