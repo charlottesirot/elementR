@@ -7,7 +7,7 @@
 #
 #####################################################################
 
-runElementR <- function(){
+runElementR <- function(){ # nocov start
   
   
   ######################
@@ -9338,4 +9338,4 @@ runElementR <- function(){
   ######################
   app <- shinyApp(ui, server)
   runApp(app, launch.browser = T)
-    }
+    } # nocov end
