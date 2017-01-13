@@ -12,13 +12,11 @@
 
 **elementR** implements [R6 R classes](https://github.com/wch/R6/) and is based on [Shiny](http://shiny.rstudio.com/) for it's GUI.
 
-#### Technical prerequisites
+#### Before installation
 
-1. Internet access. :laughing:
+1. Check the version of R installed on your computer (`sessionInfo()`), must be ≥ 3.2.3, see [https://cran.r-project.org/](https://cran.r-project.org/) to update your version.
 
-2. For all platforms (Linux, Windows, MacOS), check the version of R installed on your computer (`sessionInfo()`), must be ≥ 3.2.3, see [https://cran.r-project.org/](https://cran.r-project.org/) for updating your version.
-
-3. For Mac users, elementR package needs XQuartz. Please check, that XQuartz is installed and runs properly on your computer. If not, please visit [https://www.xquartz.org/](https://www.xquartz.org/).
+2. __For Mac users only__: elementR package needs XQuartz. Please check, that XQuartz is installed and runs properly on your computer. If not, please visit [https://www.xquartz.org/](https://www.xquartz.org/).
 
 ## Installation
 
@@ -33,7 +31,8 @@ Alternatively, you can install the development version (not yet pushed on cran) 
 
 ```
 #Install elementR's dependencies
-pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard", "abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl")
+pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard",
+	"abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl")
 
 invisible(lapply(pkgs, function(pkg){
 	if(!require(pkg)){
