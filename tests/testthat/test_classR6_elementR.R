@@ -15,9 +15,11 @@ test_that("can create & manipulate elementR_data object from xls data file", {
 	#class is "elementR_data" & "R6"
 	expect_equal(class(obj), c("elementR_data","R6"))
 	
-	#setBin set the bins
-	obj$setDataBlanc(c(1,16))
+	#setDataSupLOD triggers a long chain if testing hopefuly
+	obj$setDataSupLOD(bins=c(1,16),plat=c(17,37),rempl="NA")
 	expect_equal(length(obj$LOD),(dim(obj$data)[2]-1))
+	
+	
 	
 	
 })
