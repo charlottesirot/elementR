@@ -1,7 +1,7 @@
 # elementR :star:
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
-[![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR)](http://cran.rstudio.com/web/packages/elementR/index.html)
+[![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR?color=brightgreen)](http://cran.rstudio.com/web/packages/elementR/index.html)
 [![Build Status](https://api.travis-ci.org/fguilhaumon/elementR.svg?branch=master)](https://travis-ci.org/fguilhaumon/elementR)
 [![codecov.io](https://codecov.io/github/fguilhaumon/elementR/coverage.svg?branch=master)](https://codecov.io/github/fguilhaumon/elementR?branch=master)
 ## Overview
