@@ -181,7 +181,7 @@ runElementR <- function(){ # nocov start
     useShinyjs(),
     sidebarMenu(id = "tab",
                 div(p(icon("star-half-o"),"element-R", style = "font-size: 200%; padding-left:50px;padding-top:5px"), style = "background: rgb(60, 141, 188); height: 50px"),
-                menuItem("Project Setup", tabName = "start", icon = icon("thermometer-0", class=menuIconClass), badgeLabel="Step 1", badgeColor="blue"),
+                menuItem("Project setup", tabName = "start", icon = icon("thermometer-0", class=menuIconClass), badgeLabel="Step 1", badgeColor="blue"),
     		    div(align="center",icon("arrow-down",class="fa-2x")),
                 menuItem("Filter standards", tabName = "Standards", icon = icon("thermometer-1", class=menuIconClass), badgeLabel="Step 2", badgeColor="green"),
                 uiOutput("renderProgress2"),
@@ -207,7 +207,7 @@ runElementR <- function(){ # nocov start
    # tags$head(
    #   tags$link(rel = "stylesheet", type = "text/css", href = "elementR.css")
    # ),
-    includeCSS("elementR.css"),
+    includeCSS(system.file("www/elementR.css", package="elementR")),
     
     div(style = "min-height:100vh; min-width: (100vw - 230); display:flex",
         div(style = "background-color: #666666; width: 31px;",
