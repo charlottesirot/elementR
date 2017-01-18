@@ -7,7 +7,7 @@
 #
 #####################################################################
 
-runElementR <- function(){
+runElementR <- function(){ # nocov start
   
   
   ######################
@@ -19,6 +19,8 @@ runElementR <- function(){
   skin <- Sys.getenv("DASHBOARD_SKIN")
   skin <- tolower(skin)
   if (skin == "") skin <- "blue"
+  
+  menuIconClass <- "fa-lg" 
   
   ######################
   ############ FUNCTIONS
@@ -179,25 +181,17 @@ runElementR <- function(){
     useShinyjs(),
     sidebarMenu(id = "tab",
                 div(p(icon("star-half-o"),"element-R", style = "font-size: 200%; padding-left:50px;padding-top:5px"), style = "background: rgb(60, 141, 188); height: 50px"),
-                menuItem("Step 1. Project Settings", tabName = "start", icon = icon("flask")),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage1"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 2. Filtering standard data", tabName = "Standards", icon = icon("flask")),
+                menuItem("Project setup", tabName = "start", icon = icon("thermometer-0", class=menuIconClass), badgeLabel="Step 1", badgeColor="blue"),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+                menuItem("Filter standards", tabName = "Standards", icon = icon("thermometer-1", class=menuIconClass), badgeLabel="Step 2", badgeColor="green"),
                 uiOutput("renderProgress2"),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage2"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 3. Drift verification", tabName = "MachDrift", icon = icon("flask")),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage3"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 4. Filtering sample data", tabName = "Samples", icon = icon("flask")),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+                menuItem("Drift verification", tabName = "MachDrift", icon = icon("thermometer-2", class=menuIconClass), badgeLabel="Step 3", badgeColor="purple"),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+    		    menuItem("Filter samples", tabName = "Samples", icon = icon("thermometer-3", class=menuIconClass), badgeLabel="Step 4", badgeColor="maroon"),
                 uiOutput("renderProgress4"),
-                div(style = "height: 30px",
-                    div(imageOutput("myImage4"), style = "padding-left: 100px; padding-top: 5px")
-                ),
-                menuItem("Step 5. Averaging sample repl.", tabName = "realign", icon = icon("flask")),
+    		    div(align="center",icon("arrow-down",class="fa-2x")),
+                menuItem("Average samples", tabName = "realign", icon = icon("thermometer-4", class=menuIconClass), badgeLabel="Step 5", badgeColor="orange"),
                 uiOutput("renderProgress5"),
                 hr(style ="width: 70%; color: white; align: center"),
                 menuItem("Configuration", icon = icon("sliders"), tabName = "Config"),
@@ -209,277 +203,11 @@ runElementR <- function(){
   )
   
   body <- dashboardBody(
-    tags$style(HTML("
-                    
-                    .col-sm-6.class1>.form-group.shiny-input-container{
-                    margin-top:-20px;
-                    margin-bottom:0px;
-                    }
-                    
-                    .col-sm-3.class1>.form-group.shiny-input-container{
-                    margin-top:-25px;
-                    margin-bottom:0px;
-                    }
-                    
-                    .col-sm-2.class1>.form-group.shiny-input-container{
-                    margin-top:-25px;
-                    margin-bottom:0px;
-                    }
-                    
-                    .col-sm-6>.box.box-solid.box-primary>.box-body>.form-group.shiny-input-container{
-                    margin-top:-20px
-                    }
-                    
-                    .skin-blue>.wrapper{
-                    min-height:100%;
-                    }
-                    
-                    .content{
-                    padding-left: 0px;
-                    padding-top:0px;
-                    padding-right:0px;
-                    padding-bottom:0px;
-                    }
-                    
-                    .skin-blue>.wrapper>.content-wrapper{
-                    min-height:100%;
-                    }
-                    
-                    .skin-blue>.wrapper>.content-wrapper>.content{
-                    min-height: 100vh;
-                    }
-                    
-                    .box.box-solid.bg-green>.box-body{
-                    background-color:#429926;}
-                    
-                    .box.box-solid.bg-green{margin-bottom:10px}
-                    
-                    .col-sm-12>.box.box-solid.bg-olive>.box-body{
-                    background-color: #9B6CA8;
-                    }
-                    
-                    .box.box-solid.bg-olive{
-                    margin-bottom:0px
-                    }
-                    
-                    .col-sm-12>.box.box-solid.bg-aqua>.box-body{
-                    background-color: #85735D;
-                    }
-                    
-                    .box.box-solid.bg-aqua{
-                    background-color: #85735D;
-                    margin-bottom:10px}
-                    
-                    
-                    .box.box-solid.box-success>.box-header {
-                    color:#fff;
-                    background:#429926
-                    }
-                    
-                    
-                    
-                    .box.box-solid.box-info>.box-header {
-                    color:#fff;
-                    background:#85735D;
-                    }
-                    
-                    .box.box-solid.box-info{
-                    border-bottom-color:#85735D;
-                    border-left-color:#85735D;
-                    border-right-color:#85735D;
-                    border-top-color:#85735D;
-                    margin-bottom:10px
-                    }
-                    
-                    .box.box-solid.box-danger>.box-header {
-                    background:#9B6CA8
-                    }
-                    
-                    .box.box-solid.box-danger{
-                    margin-top: 0px
-                    }
-                    
-                    .box.box-solid.box-danger{
-                    border-bottom-color:#9B6CA8;
-                    border-left-color:#9B6CA8;
-                    border-right-color:#9B6CA8;
-                    border-top-color:#9B6CA8;
-                    }
-                    
-                    
-                    .box.box-solid.box-success{
-                    border-bottom-color:#429926;
-                    border-left-color:#429926;
-                    border-right-color:#429926;
-                    border-top-color:#429926;
-                    margin-bottom:10px
-                    }
-                    
-                    .box1{
-                    padding-left:0px;
-                    padding-right:0px;
-                    padding-top: 0px;
-                    padding-bottom: 0px;
-                    }
-                    
-                    .col-sm-1.class2{
-                    margin-top:10px
-                    }
-                    
-                    .col-sm-7.class3{
-                    margin-top:5px
-                    }
-                    
-                    .col-sm-5>#sample1.shiny-html-output.shiny-bound-output{
-                    margin-top:10px
-                    }
-                    
-                    .box-body.box1>#MachDrift3_3.shiny-html-output.shiny-bound-output>.col-sm-6{
-                    margin-bottom:0px;
-                    padding-left:0px;
-                    padding-right:0px;
-}
-
-.box-body.box1>#MachDrift3_3.shiny-html-output.shiny-bound-output>.col-sm-6>.box{
-
-box-shadow:0 0px 0px rgba(0,0,0,0);
-border-top-color: white;
-
-}
-
-.box-body.box1>#MachDrift3_2.shiny-html-output.shiny-bound-output>.col-sm-6{
-margin-bottom:0px;
-padding-left:0px;
-padding-right:0px;
-}
-
-.box-body.box1>#MachDrift3_2.shiny-html-output.shiny-bound-output>.col-sm-6>.box{
-
-box-shadow:0 0px 0px rgba(0,0,0,0);
-border-top-color: white;
-
-}
-
-.box-body.box1>#MachDrift3_1.shiny-html-output.shiny-bound-output>.col-sm-6{
-margin-bottom:0px;
-padding-left:0px;
-padding-right:0px;
-}
-
-.box-body.box1>#MachDrift3_1.shiny-html-output.shiny-bound-output>.col-sm-6>.box{
-
-box-shadow:0 0px 0px rgba(0,0,0,0);
-border-top-color: white;
-
-}
-
-.box-body.box1>#MachDrift3_0.shiny-html-output.shiny-bound-output>.col-sm-6{
-margin-bottom:0px;
-padding-left:0px;
-padding-right:0px;
-}
-
-.box-body.box1>#MachDrift3_0.shiny-html-output.shiny-bound-output>.col-sm-6>.box{
-
-box-shadow:0 0px 0px rgba(0,0,0,0);
-border-top-color: white;
-
-}
-
-.checkbox{
-margin-top:0px;
-}
-
-#realign4.shiny-datatable-output.shiny-bound-output{
-width:170px
-}
-
-#DataTables_Table_4_info.dataTables_info{
-color:white;
-}
-#DataTables_Table_5_info.dataTables_info{
-color:white;
-}
-#DataTables_Table_6_info.dataTables_info{
-color:white;
-}
-#DataTables_Table_8_info.dataTables_info{
-color:white;
-}
-
-.col-sm-12>.box.box-solid.box-danger{
-margin-bottom: 0px; margin-top: 10px
-}
-
-#shiny-tab-Samples.tab-pane.active>.col-sm-12{
-padding-left:0px;
-padding-right: 0px
-}
-
-.box.box-solid.box-danger.collapsed-box{
-margin-bottom: 0px; margin-top: 10px
-}
-
-.box.box-solid.box-warning{
-margin-bottom: 0px; margin-top: 10px
-}
-
-.box.box-solid.box-warning.collapsed-box{
-margin-bottom: 0px; margin-top: 10px
-}
-
-.tab-content{
-margin-top: 10px;
-margin-right: 10px;
-}
-
-.box.box-solid.bg-yellow{
-margin-bottom: 0px
-}
-
-
-")),
-    
-    tags$head(tags$style(HTML('
-                              /* main sidebar */
-                              .skin-blue .main-sidebar {
-                              background-color: #666666;
-                              font-size: 100%;
-                              
-                              }
-                              
-                              #tab.sidebar-menu.shiny-bound-input{
-                              position:fixed;
-                              width:230px
-                              }
-                              
-                              .main-sidebar{
-                              padding-top:0px
-                              }
-                              
-                              .sidebar{
-                              padding-top:0px
-                              }
-                              
-                              .skin-blue .sidebar-menu>li.active>a,.skin-blue .sidebar-menu>li:hover>a {
-                              background-color: #444444;
-                              }
-                              
-                              /* active selected tab in the sidebarmenu */
-                              .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
-                              background-color: #444444;
-                              }
-                              
-                              .progress{height: 30px;background-color: #444444;padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; margin-bottom:0px;border-left-color:rgb(60, 141, 188);border-left-style: solid; border-left-width:3px}
-                              .progressActive{height: 30px;background-color: #666666;padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; margin-bottom:0px; color: rgb(184, 199, 206);}
-                              
-                              .bar{background-color: #666666;height: 30px;}
-                              .barActive{background-color: #444444;height: 30px;}
-                              '))),
-    
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-    ),
+  	
+   # tags$head(
+   #   tags$link(rel = "stylesheet", type = "text/css", href = "elementR.css")
+   # ),
+    includeCSS(system.file("www/elementR.css", package="elementR")),
     
     div(style = "min-height:100vh; min-width: (100vw - 230); display:flex",
         div(style = "background-color: #666666; width: 31px;",
@@ -9610,4 +9338,4 @@ margin-bottom: 0px
   ######################
   app <- shinyApp(ui, server)
   runApp(app, launch.browser = T)
-    }
+    } # nocov end
