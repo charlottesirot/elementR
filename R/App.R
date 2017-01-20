@@ -139,6 +139,7 @@ runElementR <- function(){ # nocov start
     if(NBComb > nombreMax | (NBComb + length(toAvoid)) > nombreMax){
       
       tkmessageBox(message = "Saturated memory. Please re-launch elementR.", icon = "error", type = "ok")
+    	
       stop()
       
     } else {
@@ -180,21 +181,48 @@ runElementR <- function(){ # nocov start
   sidebar <-   dashboardSidebar(
     useShinyjs(),
     sidebarMenu(id = "tab",
-                div(p(icon("star-half-o"),"element-R", style = "font-size: 200%; padding-left:50px;padding-top:5px"), style = "background: rgb(60, 141, 188); height: 50px"),
-                menuItem("Project setup", tabName = "start", icon = icon("thermometer-0", class=menuIconClass), badgeLabel="Step 1", badgeColor="blue"),
+                div(style = "background: rgb(60, 141, 188); height: 50px",
+                	p(icon("star-half-o"),"element-R", 
+                	style = "font-size: 200%; padding-left:50px;padding-top:5px")),
+    		
+                menuItem("Project setup", tabName = "start", 
+                	   icon = icon("thermometer-0", class=menuIconClass), 
+                	   badgeLabel="Step 1", badgeColor="blue"),
+    		
     		    div(align="center",icon("arrow-down",class="fa-2x")),
-                menuItem("Filter standards", tabName = "Standards", icon = icon("thermometer-1", class=menuIconClass), badgeLabel="Step 2", badgeColor="green"),
+    		
+                menuItem("Filter standards", tabName = "Standards", 
+                	   icon = icon("thermometer-1", class=menuIconClass), 
+                	   badgeLabel="Step 2", badgeColor="green"),
+    		
                 uiOutput("renderProgress2"),
+    		
     		    div(align="center",icon("arrow-down",class="fa-2x")),
-                menuItem("Drift verification", tabName = "MachDrift", icon = icon("thermometer-2", class=menuIconClass), badgeLabel="Step 3", badgeColor="purple"),
+    		
+                menuItem("Drift verification", tabName = "MachDrift", 
+                	   icon = icon("thermometer-2", class=menuIconClass), 
+                	   badgeLabel="Step 3", badgeColor="purple"),
+    		
     		    div(align="center",icon("arrow-down",class="fa-2x")),
-    		    menuItem("Filter samples", tabName = "Samples", icon = icon("thermometer-3", class=menuIconClass), badgeLabel="Step 4", badgeColor="maroon"),
+    		
+    		    menuItem("Filter samples", tabName = "Samples", 
+    		    	   icon = icon("thermometer-3", class=menuIconClass), 
+    		    	   badgeLabel="Step 4", badgeColor="maroon"),
+    		
                 uiOutput("renderProgress4"),
+    		
     		    div(align="center",icon("arrow-down",class="fa-2x")),
-                menuItem("Average samples", tabName = "realign", icon = icon("thermometer-4", class=menuIconClass), badgeLabel="Step 5", badgeColor="orange"),
+    		
+                menuItem("Average samples", tabName = "realign", 
+                	   icon = icon("thermometer-4", class=menuIconClass), 
+                	   badgeLabel="Step 5", badgeColor="orange"),
+    		
                 uiOutput("renderProgress5"),
+    		
                 hr(style ="width: 70%; color: white; align: center"),
+    		
                 menuItem("Configuration", icon = icon("sliders"), tabName = "Config"),
+    		
                 menuItem("Source code for app", icon = icon("file-code-o"),
                          href = "https://github.com/charlottesirot/elementR"
                 ),
@@ -311,9 +339,12 @@ runElementR <- function(){ # nocov start
       if(flagStart$temp[1] != 3 & flagStart$temp[2] != 3){
         
         if(input$tab == "Standards" | input$tab == "MachDrift" | input$tab == "Samples" | input$tab == "realign"){
-          
-          updateTabItems(session, "tab", selected = "start")
-          tkmessageBox(message = "You need to finish the first step for handling the rest of the filtration procedure!", icon = "error", type = "ok")
+        	
+        	updateTabItems(session, "tab", selected = "start")
+        	
+        	Message <- "You need to finish the first step for handling the rest of the filtration procedure!"
+        	
+        	tkmessageBox(message = Message, icon = "error", type = "ok")
           
         } else {}
         
@@ -321,16 +352,23 @@ runElementR <- function(){ # nocov start
         
         if(input$tab == "MachDrift" | input$tab == "Samples" | input$tab == "realign"){
           
-          updateTabItems(session, "tab", selected = "Standards")
-          tkmessageBox(message = "You need to finish filtering standards for continuing the filtration procedure!", icon = "error", type = "ok")
+        	updateTabItems(session, "tab", selected = "Standards")
+        	
+        	Message <- "You need to finish filtering standards for continuing the filtration procedure!"
+        	
+        	tkmessageBox(message = Message, icon = "error", type = "ok")
+        	
         } else {}
         
       } else if(currentProject()$flagMachineCorrection != 1){
         
         if(input$tab == "Samples" | input$tab == "realign"){
           
-          updateTabItems(session, "tab", selected = "MachDrift")
-          tkmessageBox(message = "You need to validate machine drift for continuing the filtration procedure!", icon = "error", type = "ok")
+        	updateTabItems(session, "tab", selected = "MachDrift")
+        	
+        	Message <- "You need to validate machine drift for continuing the filtration procedure!"
+        	
+        	tkmessageBox(message = Message, icon = "error", type = "ok")
           
         } else {}
         
@@ -338,8 +376,12 @@ runElementR <- function(){ # nocov start
         
         if(input$tab == "realign"){
           
-          updateTabItems(session, "tab", selected = "Samples")
-          tkmessageBox(message = "You need to validate all the sample replicate to access the last step !", icon = "error", type = "ok")
+        	updateTabItems(session, "tab", selected = "Samples")
+        	
+        	Message <- "You need to validate all the sample replicate to access the last step !"
+        	
+        	tkmessageBox(message = Message, icon = "error", type = "ok")
+        	
         } else {}
         
       } else {}
@@ -348,6 +390,7 @@ runElementR <- function(){ # nocov start
     
     # How to come back to the current page
     observe({
+    	
       currentPage$temp <- c(input$tab, isolate(currentPage$temp)[1])
       
     })
@@ -409,9 +452,13 @@ runElementR <- function(){ # nocov start
       } else{
         if(input$tab == "start"){
           if(flagStart$temp[1] == 3 | flagStart$temp[2] == 3){
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: right;padding-right: 20px")
+                    div(style ="float: right;padding-right: 20px",
+                    	actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", style="margin-bottom:5px"), 
+                    		     style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px")
+                        )
                     
                 )
             )
@@ -421,67 +468,111 @@ runElementR <- function(){ # nocov start
         }
         else if(input$tab == "Standards"){
           if(length(which(currentProject()$flag_stand != 1)) == 0){
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px"),
-                    div(actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: right;padding-right: 20px")
+                    
+                    div(style ="float: left;padding-left: 20px",
+                    	actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), 
+                    		     style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px")),
+                    
+                    div(style ="float: right;padding-right: 20px",
+                    	actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", style="margin-bottom:5px"), 
+                    		     style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"))
                     
                 ))
           } else{
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px")
-                    
-                ))
+                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), 
+                    					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"),
+                        style ="float: left;padding-left: 20px")
+                    )
+                )
           }
         }
         else if(input$tab == "MachDrift"){
           if((validCorrection$temp%%2) == 1){
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px"),
-                    div(actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: right;padding-right: 20px")
                     
-                ))
+                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", 
+                    					 style="margin-bottom:5px"), 
+                    					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"),
+                        style ="float: left;padding-left: 20px"),
+                    
+                    div(actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", 
+                    					 style="margin-bottom:5px"), 
+                    					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), 
+                        style ="float: right;padding-right: 20px")
+                    )
+                )
+          	
           } else{
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px")
-                    
-                ))
+                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", 
+                    					 style="margin-bottom:5px"), 
+                    					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), 
+                        style ="float: left;padding-left: 20px")
+                    )
+                )
           }
         }
         else if(input$tab == "Samples"){
           
           temp <- sapply(1: length(currentProject()$flag_Sample), function(x){
+          	
             if(sum(currentProject()$flag_Sample[[x]]) == length(currentProject()$flag_Sample[[x]])){
-              return(1)
+            	return(1)
             }else{return(0)}
+          	
           })
           
           if(length(temp) == 0){
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px")
-                    
-                ))
+                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", 
+                    					 style="margin-bottom:5px"), 
+                    					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), 
+                        style ="float: left;padding-left: 20px")
+                    )
+                )
+          	
           } else{
+          	
             div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
                 div(style = "overflow: auto;",
-                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px"),
-                    div(actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: right;padding-right: 20px")
                     
-                ))
+                    div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", 
+                    					 style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), 
+                        style ="float: left;padding-left: 20px"),
+                    
+                    div(actionButton("nextStep", p(icon("arrow-circle-right"), "Next Step", 
+                    					 style="margin-bottom:5px"), 
+                    					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"),
+                        style ="float: right;padding-right: 20px")
+                    )
+                )
           }
           
         }
         else if(input$tab == "realign"){
+        	
           div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ",
               div(style = "overflow: auto;",
-                  div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", style="margin-bottom:5px"), style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), style ="float: left;padding-left: 20px")
-                  
-              ))
-        }else{div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ") }
+                  div(actionButton("prevStep", p(icon("arrow-circle-left"), "Previous Step", 
+                  					 style="margin-bottom:5px"), 
+                  					 style="padding-top: 5px;padding-bottom: 0px;margin-top: 7px"), 
+                      style ="float: left;padding-left: 20px")
+                  )
+              )
+        	
+        } else{ div(style = "background: rgb(60, 141, 188); height: 50px; margin-top:-10px; margin-left: -10px; ") }
       }
       
       
@@ -574,12 +665,14 @@ runElementR <- function(){ # nocov start
       else{
         if(input$tab == "Standards"){
           div(class = "progress", style = "overflow: auto;",
-              p(paste0("Standard(s) filtered: ", sum(currentProject()$flag_stand), " / ", length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
+              p(paste0("Standard(s) filtered: ", sum(currentProject()$flag_stand), " / ", 
+              	   length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
               
           )
         } else {
           div(class = "progressActive", style = "overflow: auto;",
-              p(paste0("Standard(s) filtered: ", sum(currentProject()$flag_stand), " / ", length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
+              p(paste0("Standard(s) filtered: ", sum(currentProject()$flag_stand), " / ", 
+              	   length(currentProject()$flag_stand)), style = "line-height:1px; text-align:center")
               
           )
         }
@@ -618,7 +711,7 @@ runElementR <- function(){ # nocov start
     output$ValidFlag2 <- renderUI({
       if(input$tab == "Standards"){
         div(
-          div(imageOutput("myImageProgressBar2"),style = "height: 44px; width: 30px; padding-top: 8px", class = "barActive"),
+          div(imageOutput("myImageProgressBar2"), style = "height: 44px; width: 30px; padding-top: 8px", class = "barActive"),
           div(style = "width: 30px;", class = "barActive")
         )
         
@@ -688,22 +781,32 @@ runElementR <- function(){ # nocov start
       
       if(flagStart$temp[1] == 0 & flagStart$temp[2] == 0){
         if(input$tab == "Samples"){
+        	
           div(class = "progress",
               p("Waiting for data", style = "line-height:1px; text-align:center")
           )
+        	
         } else {
+        	
           div(class = "progressActive",
               p("Waiting for data", style = "line-height:1px; text-align:center")
           )
+        	
         }
       } else if(input$tab == "Samples"){
+      	
         div(class = "progress", style = "overflow: auto;",
-            p(paste0("Sample repl. filtered: ", do.call(sum, currentProject()$flag_Sample), " / ", length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")
+            p(paste0("Sample repl. filtered: ", do.call(sum, currentProject()$flag_Sample), " / ", 
+            	   length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")
         )
+      	
       } else {
+      	
         div(class = "progressActive", style = "overflow: auto;",
-            p(paste0("Sample repl. filtered: ", do.call(sum, currentProject()$flag_Sample), " / ", length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")
+            p(paste0("Sample repl. filtered: ", do.call(sum, currentProject()$flag_Sample), " / ", 
+            	   length(unlist(currentProject()$flag_Sample))), style = "line-height:1px; text-align:center")
         )
+      	
       }
       
     }) #eo output$renderProgress4
@@ -754,13 +857,16 @@ runElementR <- function(){ # nocov start
     }, deleteFile = FALSE ) #eo output$myImageProgressBar4
     
     output$ValidFlag4 <- renderUI({
+    	
       if(input$tab == "Samples"){
+      	
         div(
-          div(imageOutput("myImageProgressBar4"),style = "height: 44px; width: 30px; padding-top: 8px", class = "barActive"),
+          div(imageOutput("myImageProgressBar4"), style = "height: 44px; width: 30px; padding-top: 8px", class = "barActive"),
           div(style = "width: 30px;", class = "barActive")
         )
         
       } else {
+      	
         div(
           div(imageOutput("myImageProgressBar4"),style = "height: 44px; width: 30px; padding-top: 8px", class = "bar"),
           div(style = "width: 30px;", class = "bar")
@@ -800,7 +906,8 @@ runElementR <- function(){ # nocov start
           }))
           
           div(class = "progress", style = "overflow: auto;",
-              p(paste0("Samples handled: ", temp, " / ", length(flagRealign$temp)), style = "line-height:1px; text-align:center")
+              p(paste0("Samples handled: ", temp, " / ", length(flagRealign$temp)), 
+                style = "line-height:1px; text-align:center")
           )
         } else{
           
@@ -921,6 +1028,7 @@ runElementR <- function(){ # nocov start
             nameToInsert <- temp[length(temp)]
             
             if(input$text == "Name of your project..."){
+            	
               if(flagStart$temp[2] == 3){
                 if(WhatLoaded$temp == "notExample"){
                   save(myProject, file = paste0(nameToInsert, ".RData"))
@@ -958,7 +1066,8 @@ runElementR <- function(){ # nocov start
                   write.table(currentProject()$standards[[1]]$rep_dataFinale, file = "SummaryStandard.csv", sep = sep)
                 }
                 else{
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_dataFinale), file = paste0("SummaryStandard",input$exportFormatData), sep = sep)
+                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_dataFinale), 
+                  		file = paste0("SummaryStandard",input$exportFormatData), sep = sep)
                 }
               }
               
@@ -987,7 +1096,9 @@ runElementR <- function(){ # nocov start
             setwd(espace1)
             setwd(paste0(projPath$temp,"/Results/standards"))
             
-            lapply(1:length(currentProject()$standards[[1]]$rep_Files), function(x){suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards/", currentProject()$standards[[1]]$rep_Files[x])))})
+            lapply(1:length(currentProject()$standards[[1]]$rep_Files), function(x){
+            	suppressWarnings(dir.create(paste0(projPath$temp,"/Results/standards/", currentProject()$standards[[1]]$rep_Files[x])))
+            	})
             
             lapply(1:length(currentProject()$standards[[1]]$rep_Files),function(x){
               
@@ -997,6 +1108,7 @@ runElementR <- function(){ # nocov start
               setTkProgressBar(pb, round(20 + x*10/length(currentProject()$standards[[1]]$rep_Files)), sprintf("Export (%s)", info), info)
               
               if(currentProject()$flag_stand[x] == 0){
+              	
                 ToRemove <- list.files(, pattern = ".csv")
                 invisible(file.remove(ToRemove))
                 ToRemove <- list.files(, pattern = ".xls")
@@ -1012,33 +1124,39 @@ runElementR <- function(){ # nocov start
                 ToRemove <- list.files(, pattern = ".tiff", recursive = T)
                 invisible(file.remove(ToRemove))
               }
+              
               if(currentProject()$flag_stand[x] != 0){
+              	
+              	dat <- currentProject()$standards[[1]]$rep_data[[x]]
+              	
                 if(is.null(input$exportFormatData)){
                   
-                  write.csv(currentProject()$standards[[1]]$rep_data[[x]]$dataBlank, file = paste0("data_Blank_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
-                  write.csv(currentProject()$standards[[1]]$rep_data[[x]]$dataPlateau, file = paste0("data_Plateau_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
-                  write.csv(currentProject()$standards[[1]]$rep_data[[x]]$dataSuppBlank, file = paste0("data_SuppBlank_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
-                  write.csv(currentProject()$standards[[1]]$rep_data[[x]]$dataSupLOD, file = paste0("data_SupLOD_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
-                  write.csv(currentProject()$standards[[1]]$rep_data[[x]]$dataNorm, file = paste0("data_Norm_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
-                  write.csv(currentProject()$standards[[1]]$rep_data[[x]]$dataOutlierFree, file = paste0("data_OutlierFree_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
+                  write.csv(dat$dataBlank, file = paste0("data_Blank_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
+                  write.csv(dat$dataPlateau, file = paste0("data_Plateau_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
+                  write.csv(dat$dataSuppBlank, file = paste0("data_SuppBlank_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
+                  write.csv(dat$dataSupLOD, file = paste0("data_SupLOD_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
+                  write.csv(dat$dataNorm, file = paste0("data_Norm_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
+                  write.csv(dat$dataOutlierFree, file = paste0("data_OutlierFree_",currentProject()$standards[[1]]$rep_Files[x],".csv"))
                   
                 } else if(input$exportFormatData == ".csv"){
                   
-                  write.table(currentProject()$standards[[1]]$rep_data[[x]]$dataBlank, file = paste0("data_Blank_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
-                  write.table(currentProject()$standards[[1]]$rep_data[[x]]$dataPlateau, file = paste0("data_Plateau_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
-                  write.table(currentProject()$standards[[1]]$rep_data[[x]]$dataSuppBlank, file = paste0("data_SuppBlank_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
-                  write.table(currentProject()$standards[[1]]$rep_data[[x]]$dataSupLOD, file = paste0("data_SupLOD_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
-                  write.table(currentProject()$standards[[1]]$rep_data[[x]]$dataNorm, file = paste0("data_Norm_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
-                  write.table(currentProject()$standards[[1]]$rep_data[[x]]$dataOutlierFree, file = paste0("data_OutlierFree_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
+                  write.table(dat$dataBlank, file = paste0("data_Blank_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
+                  write.table(dat$dataPlateau, file = paste0("data_Plateau_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
+                  write.table(dat$dataSuppBlank, file = paste0("data_SuppBlank_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
+                  write.table(dat$dataSupLOD, file = paste0("data_SupLOD_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
+                  write.table(dat$dataNorm, file = paste0("data_Norm_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
+                  write.table(dat$dataOutlierFree, file = paste0("data_OutlierFree_",currentProject()$standards[[1]]$rep_Files[x],".csv"), sep = sep)
                   
                 } else {
+                	
+                	format <- input$exportFormatData
                   
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_data[[x]]$dataBlank), file = paste0("data_Blank_",currentProject()$standards[[1]]$rep_Files[x],input$exportFormatData), sep = sep)
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_data[[x]]$dataPlateau), file = paste0("data_Plateau_",currentProject()$standards[[1]]$rep_Files[x],input$exportFormatData), sep = sep)
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_data[[x]]$dataSuppBlank), file = paste0("data_SuppBlank_",currentProject()$standards[[1]]$rep_Files[x],input$exportFormatData), sep = sep)
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_data[[x]]$dataSupLOD), file = paste0("data_SupLOD_",currentProject()$standards[[1]]$rep_Files[x],input$exportFormatData), sep = sep)
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_data[[x]]$dataNorm), file = paste0("data_Norm_",currentProject()$standards[[1]]$rep_Files[x],input$exportFormatData), sep = sep)
-                  write.table(as.data.frame(currentProject()$standards[[1]]$rep_data[[x]]$dataOutlierFree), file = paste0("data_OutlierFree_",currentProject()$standards[[1]]$rep_Files[x],input$exportFormatData), sep = sep)
+                  write.table(as.data.frame(dat$dataBlank), file = paste0("data_Blank_",currentProject()$standards[[1]]$rep_Files[x],format), sep = sep)
+                  write.table(as.data.frame(dat$dataPlateau), file = paste0("data_Plateau_",currentProject()$standards[[1]]$rep_Files[x],format), sep = sep)
+                  write.table(as.data.frame(dat$dataSuppBlank), file = paste0("data_SuppBlank_",currentProject()$standards[[1]]$rep_Files[x],format), sep = sep)
+                  write.table(as.data.frame(dat$dataSupLOD), file = paste0("data_SupLOD_",currentProject()$standards[[1]]$rep_Files[x],format), sep = sep)
+                  write.table(as.data.frame(dat$dataNorm), file = paste0("data_Norm_",currentProject()$standards[[1]]$rep_Files[x],format), sep = sep)
+                  write.table(as.data.frame(dat$dataOutlierFree), file = paste0("data_OutlierFree_",currentProject()$standards[[1]]$rep_Files[x],format), sep = sep)
                   
                 }
               }
@@ -1054,7 +1172,8 @@ runElementR <- function(){ # nocov start
                 setwd(espace1)
                 
                 info <- sprintf("%d%% done", round(30 + (x*70/length(currentProject()$samplesFiles))*y/length(currentProject()$samples[[x]]$rep_Files)))
-                setTkProgressBar(pb, round(30 + (x*70/length(currentProject()$samplesFiles))*y/length(currentProject()$samples[[x]]$rep_Files)), sprintf("Export (%s)", info), info)
+                setTkProgressBar(pb, round(30 + (x*70/length(currentProject()$samplesFiles))*y/length(currentProject()$samples[[x]]$rep_Files)), 
+                		     sprintf("Export (%s)", info), info)
                 
                 temporaire <- currentProject()$samples[[x]]$rep_Files[y]
                 suppressWarnings(dir.create(paste0(projPath$temp,"/Results/samples/",currentProject()$samplesFiles[x],"/",temporaire)))
@@ -1077,35 +1196,38 @@ runElementR <- function(){ # nocov start
                   invisible(file.remove(ToRemove))
                 }
                 if(currentProject()$flag_Sample[[x]][y] != 0){
+                	
+                	dat <- currentProject()$samples[[x]]$rep_data[[y]]
+                	
                   if(is.null(input$exportFormatData)){
                     
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataBlank, file = paste0("data_Blank_",temporaire,".csv"))
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataPlateau, file = paste0("data_Plateau_",temporaire,".csv"))
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataSuppBlank, file = paste0("data_SuppBlank_",temporaire,".csv"))
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataSupLOD, file = paste0("data_SupLOD_",temporaire,".csv"))
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataNorm, file = paste0("data_Norm_",temporaire,".csv"))
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataConc, file = paste0("data_Conc_",temporaire,".csv"))
-                    write.csv(currentProject()$samples[[x]]$rep_data[[y]]$dataConcCorr, file = paste0("data_ConcCorr_",temporaire,".csv"))
+                    write.csv(dat$dataBlank, file = paste0("data_Blank_",temporaire,".csv"))
+                    write.csv(dat$dataPlateau, file = paste0("data_Plateau_",temporaire,".csv"))
+                    write.csv(dat$dataSuppBlank, file = paste0("data_SuppBlank_",temporaire,".csv"))
+                    write.csv(dat$dataSupLOD, file = paste0("data_SupLOD_",temporaire,".csv"))
+                    write.csv(dat$dataNorm, file = paste0("data_Norm_",temporaire,".csv"))
+                    write.csv(dat$dataConc, file = paste0("data_Conc_",temporaire,".csv"))
+                    write.csv(dat$dataConcCorr, file = paste0("data_ConcCorr_",temporaire,".csv"))
                     
                   } else if(input$exportFormatData == ".csv"){
                     
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataBlank, file = paste0("data_Blank_",temporaire,".csv"), sep = sep)
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataPlateau, file = paste0("data_Plateau_",temporaire,".csv"), sep = sep)
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataSuppBlank, file = paste0("data_SuppBlank_",temporaire,".csv"), sep = sep)
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataSupLOD, file = paste0("data_SupLOD_",temporaire,".csv"), sep = sep)
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataNorm, file = paste0("data_Norm_",temporaire,".csv"), sep = sep)
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataConc, file = paste0("data_Conc_",temporaire,".csv"), sep = sep)
-                    write.table(currentProject()$samples[[x]]$rep_data[[y]]$dataConcCorr, file = paste0("data_ConcCorr_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataBlank, file = paste0("data_Blank_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataPlateau, file = paste0("data_Plateau_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataSuppBlank, file = paste0("data_SuppBlank_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataSupLOD, file = paste0("data_SupLOD_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataNorm, file = paste0("data_Norm_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataConc, file = paste0("data_Conc_",temporaire,".csv"), sep = sep)
+                    write.table(dat$dataConcCorr, file = paste0("data_ConcCorr_",temporaire,".csv"), sep = sep)
                     
                   } else {
                     
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataBlank), file = paste0("data_Blank_",temporaire,input$exportFormatData), sep = sep)
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataPlateau), file = paste0("data_Plateau_",temporaire,input$exportFormatData), sep = sep)
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataSuppBlank), file = paste0("data_SuppBlank_",temporaire,input$exportFormatData), sep = sep)
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataSupLOD), file = paste0("data_SupLOD_",temporaire,input$exportFormatData), sep = sep)
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataNorm), file = paste0("data_Norm_",temporaire,input$exportFormatData), sep = sep)
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataConc), file = paste0("data_Conc_",temporaire,input$exportFormatData), sep = sep)
-                    write.table(as.data.frame(currentProject()$samples[[x]]$rep_data[[y]]$dataConcCorr), file = paste0("data_ConcCorr_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataBlank), file = paste0("data_Blank_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataPlateau), file = paste0("data_Plateau_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataSuppBlank), file = paste0("data_SuppBlank_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataSupLOD), file = paste0("data_SupLOD_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataNorm), file = paste0("data_Norm_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataConc), file = paste0("data_Conc_",temporaire,input$exportFormatData), sep = sep)
+                    write.table(as.data.frame(dat$dataConcCorr), file = paste0("data_ConcCorr_",temporaire,input$exportFormatData), sep = sep)
                     
                   }
                 }
@@ -1117,33 +1239,63 @@ runElementR <- function(){ # nocov start
               if((flagRealign$temp[[x]][2]%%4) == 1|(flagRealign$temp[[x]][2]%%4) == 3|(flagRealign$temp[[x]][1]%%2) == 1){
                 
                 if(!is.na(currentProject()$samples[[x]]$rep_type2)){
+                	
                   if(currentProject()$samples[[x]]$rep_type2 == "spot"){
+                  	
                     invisible(file.remove(list.files()[which(str_detect(list.files(), "finalReplicates") == TRUE)]))
+                  	
                     if(is.null(input$exportFormatData)){
+                    	
                       write.csv(currentProject()$samples[[x]]$rep_dataFinalSpot, file = paste0("final_",currentProject()$samplesFiles[x],".csv"))
+                    	
                     } else if(input$exportFormatData == ".csv"){
+                    	
                       write.table(currentProject()$samples[[x]]$rep_dataFinalSpot, file = paste0("final_",currentProject()$samplesFiles[x],".csv"), sep = sep)
+                    	
                     } else {
-                      write.table(as.data.frame(currentProject()$samples[[x]]$rep_dataFinalSpot), file = paste0("final_",currentProject()$samplesFiles[x],input$exportFormatData), sep = sep)
+                    	
+                      write.table(as.data.frame(currentProject()$samples[[x]]$rep_dataFinalSpot), 
+                      		file = paste0("final_",currentProject()$samplesFiles[x],input$exportFormatData), sep = sep)
+                    	
                     }
                   } else if(currentProject()$samples[[x]]$rep_type2 == "raster"){
                     
                     if(is.null(input$exportFormatData)){
+                    	
                       lapply(1:length(currentProject()$samples[[x]]$rep_dataIntermRaster), function(k){
-                        write.csv(currentProject()$samples[[x]]$rep_dataIntermRaster[[k]], file = paste0("finalReplicates_",names(currentProject()$samples[[x]]$rep_dataIntermRaster)[k],".csv"))
+                      	
+                        write.csv(currentProject()$samples[[x]]$rep_dataIntermRaster[[k]], 
+                        	    file = paste0("finalReplicates_",names(currentProject()$samples[[x]]$rep_dataIntermRaster)[k],".csv"))
+                      	
                       })
                       
-                      write.csv(currentProject()$samples[[x]]$rep_dataFinalRaster, file = paste0("final_",currentProject()$samplesFiles[x],".csv"))
+                      write.csv(currentProject()$samples[[x]]$rep_dataFinalRaster, 
+                      	    file = paste0("final_",currentProject()$samplesFiles[x],".csv"))
+                      
                     } else if(input$exportFormatData == ".csv"){
+                    	
                       lapply(1:length(currentProject()$samples[[x]]$rep_dataIntermRaster), function(k){
-                        write.table(currentProject()$samples[[x]]$rep_dataIntermRaster[[k]], file = paste0("finalReplicates_",names(currentProject()$samples[[x]]$rep_dataIntermRaster)[k],".csv"), sep = sep)
+                      	
+                        write.table(currentProject()$samples[[x]]$rep_dataIntermRaster[[k]], 
+                        		file = paste0("finalReplicates_",names(currentProject()$samples[[x]]$rep_dataIntermRaster)[k],".csv"), 
+                        		sep = sep)
                       })
-                      write.table(currentProject()$samples[[x]]$rep_dataFinalRaster, file = paste0("final_",currentProject()$samplesFiles[x],".csv"), sep = sep)
+                    	
+                      write.table(currentProject()$samples[[x]]$rep_dataFinalRaster, 
+                      		file = paste0("final_",currentProject()$samplesFiles[x],".csv"), sep = sep)
+                      
                     } else {
+                    	
                       lapply(1:length(currentProject()$samples[[x]]$rep_dataIntermRaster), function(k){
-                        write.table(as.data.frame(currentProject()$samples[[x]]$rep_dataIntermRaster[[k]]), file = paste0("finalReplicates_",names(currentProject()$samples[[x]]$rep_dataIntermRaster)[k],input$exportFormatData), sep = sep)
+                      	
+                        write.table(as.data.frame(currentProject()$samples[[x]]$rep_dataIntermRaster[[k]]), 
+                        		file = paste0("finalReplicates_",names(currentProject()$samples[[x]]$rep_dataIntermRaster)[k],input$exportFormatData),
+                        		sep = sep)
                       })
-                      write.table(as.data.frame(currentProject()$samples[[x]]$rep_dataFinalRaster), file = paste0("final_",currentProject()$samplesFiles[x],input$exportFormatData), sep = sep)
+                    	
+                      write.table(as.data.frame(currentProject()$samples[[x]]$rep_dataFinalRaster), 
+                      		file = paste0("final_",currentProject()$samplesFiles[x],input$exportFormatData), sep = sep)
+                      
                     }
                   } else {}
                 }
@@ -1214,24 +1366,37 @@ runElementR <- function(){ # nocov start
                                     0, 100, 0)
                 
                 #### Raw Data exporting #####
+                
                 if(is.null(input$exportFormat)){
                   jpeg(filename = paste0("RawData_",temporaire ,".jpg"), width = 760, height = 400)
                 } else {
                   
                   if(input$exportFormat == ".jpeg"){
-                    jpeg(filename = paste0("RawData_",temporaire ,".jpg"), width = input$exportwidth, height = input$exportheight)
+                  	
+                    jpeg(filename = paste0("RawData_",temporaire ,".jpg"), 
+                         width = input$exportwidth, height = input$exportheight)
+                  	
                   } else {}
                   
                   if(input$exportFormat == ".bpm"){
-                    bmp(filename = paste0("RawData_",temporaire ,".bmp"), width = input$exportwidth, height = input$exportheight)
+                  	
+                    bmp(filename = paste0("RawData_",temporaire ,".bmp"),
+                        width = input$exportwidth, height = input$exportheight)
+                  	
                   } else {}
                   
                   if(input$exportFormat == ".png"){
-                    png(filename = paste0("RawData_",temporaire ,".png"), width = input$exportwidth, height = input$exportheight)
+                  	
+                    png(filename = paste0("RawData_",temporaire ,".png"), 
+                        width = input$exportwidth, height = input$exportheight)
+                  	
                   } else {}
                   
                   if(input$exportFormat == ".tiff"){
-                    tiff(filename = paste0("RawData_",temporaire ,".tiff"), width = input$exportwidth, height = input$exportheight)
+                  	
+                    tiff(filename = paste0("RawData_",temporaire ,".tiff"), 
+                         width = input$exportwidth, height = input$exportheight)
+                  	
                   } else {}
                 }
                 
@@ -1241,14 +1406,17 @@ runElementR <- function(){ # nocov start
                 
                 par(mar = c(5.1,5,4.1,1))
                 
-                if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
+                if(length(currentNumber$temp) != 0){
                   
-                  maxY <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data, na.rm = TRUE)
+                  maxY <- max(currentNISTData$temp, na.rm = TRUE)
                   
-                  minX <- min(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
-                  maxX <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
+                  minX <- min(currentNISTData$temp[,1], na.rm = TRUE)
+                  maxX <- max(currentNISTData$temp[,1], na.rm = TRUE)
                   
-                  plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$ElementToExport[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExport[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                  plot(currentNISTData$temp[,1], 
+                       currentNISTData$temp[,input$ElementToExport[1]],
+                       type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExport[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                  
                   mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                   mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                   mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -1257,42 +1425,51 @@ runElementR <- function(){ # nocov start
                     
                     par(new = TRUE)
                     
-                    plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$ElementToExport[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExport[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                    plot(currentNISTData$temp[,1], 
+                         currentNISTData$temp[,input$ElementToExport[x]],
+                         type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExport[x] == names(color$temp))], 
+                         xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                     
                   })
                   
                   if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0){
-                    Temp$t  <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$bins[1])[[2]]
-                    Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$bins[2])[[2]]
-                    Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$plat[[1]])[[2]]
-                    Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$plat[[2]])[[2]]
+                  	
+                    Temp$t  <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$bins[1])[[2]]
+                    Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$bins[2])[[2]]
+                    Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$plat[[1]])[[2]]
+                    Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$plat[[2]])[[2]]
                     
                   } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                    Temp$t <-  currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[1])[[2]]
-                    Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[2])[[2]]
-                    Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[1])[[2]]
-                    Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[2])[[2]]
+                  	
+                    Temp$t <-  currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[1])[[2]]
+                    Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[2])[[2]]
+                    Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[1])[[2]]
+                    Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[2])[[2]]
+                    
                   } else {}
                   
-                  rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                  rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                  rect(currentNISTData$temp[Temp$t,1],-maxY,currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                  rect(currentNISTData$temp[Temp1$t,1],-maxY,currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                   
-                  abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], lty = "dashed", col = "grey", lwd = 2)
-                  abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
-                  abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                  abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                  abline(v = currentNISTData$temp[Temp$t,1], lty = "dashed", col = "grey", lwd = 2)
+                  abline(v = currentNISTData$temp[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
+                  abline(v = currentNISTData$temp[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                  abline(v = currentNISTData$temp[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
                   
-                  lapply(input$ElementToExport, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,x], cex = 3, col ="grey")})
-                  lapply(input$ElementToExport, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,x], cex = 3, col ="grey")})
-                  lapply(input$ElementToExport, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
-                  lapply(input$ElementToExport, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
+                  lapply(input$ElementToExport, function(x){points(currentNISTData$temp[Temp$t,1], currentNISTData$temp[Temp$t,x], cex = 3, col ="grey")})
+                  lapply(input$ElementToExport, function(x){points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,x], cex = 3, col ="grey")})
+                  lapply(input$ElementToExport, function(x){points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
+                  lapply(input$ElementToExport, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
                   
                   
                 } else {}
                 
                 par(mar = c(0,0,2,1))
                 plot(0,0, axes = FALSE, type = "n")
-                legend(-1,1, legend = input$ElementToExport, bty = "n", col = color$temp[sapply(1:length(input$ElementToExport), function(x) {which(input$ElementToExport[x] == names(color$temp))})], pch = 16, cex = 1.5)
+                
+                legend(-1,1, legend = input$ElementToExport, bty = "n", 
+                	 col = color$temp[sapply(1:length(input$ElementToExport), function(x) {which(input$ElementToExport[x] == names(color$temp))})], 
+                	 pch = 16, cex = 1.5)
                 
                 dev.off()
                 
@@ -1331,40 +1508,47 @@ runElementR <- function(){ # nocov start
                     
                     for(j in (6*(i-1)+1):(6*i)){
                       
-                      maxY <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$ElementToExport[j]], na.rm = TRUE)
+                      maxY <- max(currentNISTData$temp[,input$ElementToExport[j]], na.rm = TRUE)
                       
-                      minX <- min(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
-                      maxX <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
+                      minX <- min(currentNISTData$temp[,1], na.rm = TRUE)
+                      maxX <- max(currentNISTData$temp[,1], na.rm = TRUE)
                       
-                      plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$ElementToExport[j]],type ="b", ylab = "", xlab = "", main = paste0("RawData_",input$ElementToExport[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
+                      plot(currentNISTData$temp[,1], currentNISTData$temp[,input$ElementToExport[j]],type ="b", ylab = "", xlab = "", 
+                           main = paste0("RawData_",input$ElementToExport[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
+                      
                       mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                       mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       
                       if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0){
-                        Temp$t  <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$bins[1])[[2]]
-                        Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$bins[2])[[2]]
-                        Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$plat[[1]])[[2]]
-                        Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$plat[[2]])[[2]]
+                      	
+                        Temp$t  <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$bins[1])[[2]]
+                        Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$bins[2])[[2]]
+                        Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$plat[[1]])[[2]]
+                        Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$plat[[2]])[[2]]
                         
                       } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                        Temp$t <-  currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[1])[[2]]
-                        Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[2])[[2]]
-                        Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[1])[[2]]
-                        Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[2])[[2]]
+                      	
+                        Temp$t <-  currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[1])[[2]]
+                        Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[2])[[2]]
+                        Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[1])[[2]]
+                        Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[2])[[2]]
                       } else {}
                       
-                      rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                      rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                      rect(currentNISTData$temp[Temp$t,1],-maxY,
+                           currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
                       
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                      rect(currentNISTData$temp[Temp1$t,1],-maxY,
+                           currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                       
-                      points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,input$ElementToExport[j]],  cex = 3, col ="grey")
-                      points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,input$ElementToExport[j]], cex = 3, col ="grey")
-                      points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
-                      points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
+                      abline(v = currentNISTData$temp[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
+                      abline(v = currentNISTData$temp[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
+                      abline(v = currentNISTData$temp[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                      abline(v = currentNISTData$temp[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                      
+                      points(currentNISTData$temp[Temp$t,1],  currentNISTData$temp[Temp$t,input$ElementToExport[j]],  cex = 3, col ="grey")
+                      points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,input$ElementToExport[j]], cex = 3, col ="grey")
+                      points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
+                      points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
                       
                     }
                     
@@ -1400,40 +1584,45 @@ runElementR <- function(){ # nocov start
                   
                   for(j in (6*nbGraph+1): (6*nbGraph + nRest)){
                     
-                    maxY <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$ElementToExport[j]], na.rm = TRUE)
+                    maxY <- max(currentNISTData$temp[,input$ElementToExport[j]], na.rm = TRUE)
                     
-                    minX <- min(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
-                    maxX <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
+                    minX <- min(currentNISTData$temp[,1], na.rm = TRUE)
+                    maxX <- max(currentNISTData$temp[,1], na.rm = TRUE)
                     
-                    plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$ElementToExport[j]],type ="b", ylab = "", xlab = "",main = paste0("RawData_",input$ElementToExport[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
+                    plot(currentNISTData$temp[,1], currentNISTData$temp[,input$ElementToExport[j]],type ="b", ylab = "", xlab = "",
+                         main = paste0("RawData_",input$ElementToExport[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
+                    
                     mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                     mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                     
                     if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0){
-                      Temp$t  <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$bins[1])[[2]]
-                      Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$bins[2])[[2]]
-                      Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$plat[[1]])[[2]]
-                      Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = input$plat[[2]])[[2]]
+                    	
+                      Temp$t  <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$bins[1])[[2]]
+                      Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$bins[2])[[2]]
+                      Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$plat[[1]])[[2]]
+                      Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = input$plat[[2]])[[2]]
                       
                     } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                      Temp$t <-  currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[1])[[2]]
-                      Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[2])[[2]]
-                      Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[1])[[2]]
-                      Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[2])[[2]]
+                    	
+                      Temp$t <-  currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[1])[[2]]
+                      Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[2])[[2]]
+                      Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[1])[[2]]
+                      Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[2])[[2]]
+                      
                     } else {}
                     
-                    rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], -maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                    rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                    rect(currentNISTData$temp[Temp$t,1], -maxY,currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                    rect(currentNISTData$temp[Temp1$t,1],-maxY,currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                     
-                    abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
-                    abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
-                    abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                    abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                    abline(v = currentNISTData$temp[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
+                    abline(v = currentNISTData$temp[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
+                    abline(v = currentNISTData$temp[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                    abline(v = currentNISTData$temp[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
                     
-                    points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,input$ElementToExport[j]],  cex = 3, col ="grey")
-                    points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,input$ElementToExport[j]], cex = 3, col ="grey")
-                    points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
-                    points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
+                    points(currentNISTData$temp[Temp$t,1],  currentNISTData$temp[Temp$t,input$ElementToExport[j]],  cex = 3, col ="grey")
+                    points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,input$ElementToExport[j]], cex = 3, col ="grey")
+                    points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
+                    points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,input$ElementToExport[j]], cex = 3, col ="#4F3CBC50")
                     
                   }
                   
@@ -1492,11 +1681,14 @@ runElementR <- function(){ # nocov start
                       } else if(is.null(Temp2$t)){
                       }else{
                         if(is.finite(Temp$t)){
-                          curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                        	
+                          curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), 
+                          						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                          
                         } else {}
                       }
                     } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                      curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$renderData(curve = input$courveToExport[j])
+                      curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[j])
                     } else {}
                     
                     if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
@@ -1555,11 +1747,13 @@ runElementR <- function(){ # nocov start
                         }else if(is.null(Temp2$t)){
                         } else{
                           if(is.finite(Temp$t)){
-                            curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                          	
+                            curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), 
+                            						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
                           }
                         }
                       } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                        curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$renderData(curve = input$courveToExport[j])
+                        curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[j])
                       } else {}
                       
                       if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
@@ -1608,11 +1802,13 @@ runElementR <- function(){ # nocov start
                         }else if(is.null(Temp2$t)){
                         } else{
                           if(is.finite(Temp$t)){
-                            curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                          	
+                            curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), 
+                            						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
                           }
                         }
                       } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                        curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$renderData(curve = input$courveToExport[j])
+                        curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[j])
                       } else {}
                       
                       if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
@@ -1658,11 +1854,12 @@ runElementR <- function(){ # nocov start
                       } else if(is.null(Temp2$t)){
                       } else {
                         if(is.finite(Temp$t)){
-                          curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$courveToExport[length(input$courveToExport)], bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                          curve <- currentNISTRep$temp$getData(curve = input$courveToExport[length(input$courveToExport)], 
+                          						 bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
                         } else {}
                       }
                     } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-                      curve <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$renderData(curve = input$courveToExport[length(input$courveToExport)])
+                      curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[length(input$courveToExport)])
                     } else {}
                     if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
                       plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
@@ -1750,14 +1947,16 @@ runElementR <- function(){ # nocov start
                 
                 par(mar = c(5.1,4.1,4.1,2))
                 
-                if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) != 0){
+                if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) != 0){
                   
-                  maxY <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data, na.rm = TRUE)
+                  maxY <- max(currentSampleData$temp, na.rm = TRUE)
                   
-                  minX <- min(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
-                  maxX <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
+                  minX <- min(currentSampleData$temp[,1], na.rm = TRUE)
+                  maxX <- max(currentSampleData$temp[,1], na.rm = TRUE)
                   
-                  plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$ElementToExportS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExportS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                  plot(currentSampleData$temp[,1], currentSampleData$temp[,input$ElementToExportS[1]],type ="b", ylab = "", xlab = "", main = "", 
+                       col = color$temp[which(input$ElementToExportS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                  
                   mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                   mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                   mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -1766,36 +1965,38 @@ runElementR <- function(){ # nocov start
                     
                     par(new = TRUE)
                     
-                    plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$ElementToExportS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExportS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                    plot(currentSampleData$temp[,1], currentSampleData$temp[,input$ElementToExportS[x]],type ="b", 
+                         ylab = "", xlab = "", main = "", col = color$temp[which(input$ElementToExportS[x] == names(color$temp))], 
+                         xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                     
                   })
                   
-                  if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
-                    TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[1])[[2]]
-                    Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[2])[[2]]
-                    Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[1])[[2]]
-                    Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[2])[[2]]
+                  if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
+                    TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[1])[[2]]
+                    Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[2])[[2]]
+                    Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[1])[[2]]
+                    Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[2])[[2]]
                   } else {
-                    TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[1])[[2]]
-                    Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[2])[[2]]
-                    Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[1])[[2]]
-                    Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[2])[[2]]
+                    TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[1])[[2]]
+                    Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[2])[[2]]
+                    Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[1])[[2]]
+                    Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[2])[[2]]
                     
                   }
                   
                   
-                  rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                  rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1],(1+10/100)*maxY, col = "#4F3CBC30", border = NA)
+                  rect(currentSampleData$temp[TempS$t,1],-maxY,currentSampleData$temp[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                  rect(currentSampleData$temp[Temp1S$t,1],-maxY,currentSampleData$temp[Temp2S$t,1],(1+10/100)*maxY, col = "#4F3CBC30", border = NA)
                   
-                  abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
-                  abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
-                  abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
-                  abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                  abline(v = currentSampleData$temp[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
+                  abline(v = currentSampleData$temp[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
+                  abline(v = currentSampleData$temp[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                  abline(v = currentSampleData$temp[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
                   
-                  lapply(1:length(input$ElementToExportS), function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,x],  cex = 3, col ="grey")})
-                  lapply(1:length(input$ElementToExportS), function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,x], cex = 3, col ="grey")})
-                  lapply(1:length(input$ElementToExportS), function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
-                  lapply(1:length(input$ElementToExportS), function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
+                  lapply(1:length(input$ElementToExportS), function(x){points(currentSampleData$temp[TempS$t,1],  currentSampleData$temp[TempS$t,x],  cex = 3, col ="grey")})
+                  lapply(1:length(input$ElementToExportS), function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
+                  lapply(1:length(input$ElementToExportS), function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
+                  lapply(1:length(input$ElementToExportS), function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
                   
                 } else {}
                 
@@ -1840,39 +2041,39 @@ runElementR <- function(){ # nocov start
                     
                     for(j in (6*(i-1)+1):(6*i)){
                       
-                      maxY <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[, input$ElementToExportS[j]], na.rm = TRUE)
+                      maxY <- max(currentSampleData$temp[, input$ElementToExportS[j]], na.rm = TRUE)
                       
-                      minX <- min(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
-                      maxX <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
+                      minX <- min(currentSampleData$temp[,1], na.rm = TRUE)
+                      maxX <- max(currentSampleData$temp[,1], na.rm = TRUE)
                       
-                      plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$ElementToExportS[j]],type ="b", ylab = "", xlab = "", main = paste0("RawData_",input$ElementToExportS[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
+                      plot(currentSampleData$temp[,1], currentSampleData$temp[,input$ElementToExportS[j]],type ="b", ylab = "", xlab = "", main = paste0("RawData_",input$ElementToExportS[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
                       mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                       mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       
-                      if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
-                        TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[1])[[2]]
-                        Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[2])[[2]]
-                        Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[1])[[2]]
-                        Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[2])[[2]]
+                      if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
+                        TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[1])[[2]]
+                        Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[2])[[2]]
+                        Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[1])[[2]]
+                        Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[2])[[2]]
                       } else {
-                        TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[1])[[2]]
-                        Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[2])[[2]]
-                        Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[1])[[2]]
-                        Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[2])[[2]]
+                        TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[1])[[2]]
+                        Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[2])[[2]]
+                        Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[1])[[2]]
+                        Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[2])[[2]]
                         
                       }
-                      rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                      rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                      rect(currentSampleData$temp[TempS$t,1],-maxY,currentSampleData$temp[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                      rect(currentSampleData$temp[Temp1S$t,1],-maxY,currentSampleData$temp[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                       
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                      abline(v = currentSampleData$temp[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
+                      abline(v = currentSampleData$temp[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
+                      abline(v = currentSampleData$temp[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                      abline(v = currentSampleData$temp[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
                       
-                      points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,input$ElementToExportS[j]],  cex = 3, col ="grey")
-                      points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,input$ElementToExportS[j]], cex = 3, col ="grey")
-                      points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
-                      points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
+                      points(currentSampleData$temp[TempS$t,1],  currentSampleData$temp[TempS$t,input$ElementToExportS[j]],  cex = 3, col ="grey")
+                      points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,input$ElementToExportS[j]], cex = 3, col ="grey")
+                      points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
+                      points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
                       
                     }
                     
@@ -1908,40 +2109,40 @@ runElementR <- function(){ # nocov start
                   
                   for(j in (6*nbGraph+1): (6*nbGraph + nRest)){
                     
-                    maxY <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[, input$ElementToExportS[j]], na.rm = TRUE)
+                    maxY <- max(currentSampleData$temp[, input$ElementToExportS[j]], na.rm = TRUE)
                     
-                    minX <- min(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
-                    maxX <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
+                    minX <- min(currentSampleData$temp[,1], na.rm = TRUE)
+                    maxX <- max(currentSampleData$temp[,1], na.rm = TRUE)
                     
-                    plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$ElementToExportS[j]],type ="b", ylab = "", xlab = "", main = paste0("RawData_",input$ElementToExportS[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
+                    plot(currentSampleData$temp[,1], currentSampleData$temp[,input$ElementToExportS[j]],type ="b", ylab = "", xlab = "", main = paste0("RawData_",input$ElementToExportS[j]), col = "black", xlim = c(minX, maxX), ylim =c(0,maxY))
                     mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                     mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                     
-                    if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
-                      TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[1])[[2]]
-                      Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[2])[[2]]
-                      Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[1])[[2]]
-                      Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[2])[[2]]
+                    if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
+                      TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[1])[[2]]
+                      Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[2])[[2]]
+                      Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[1])[[2]]
+                      Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[2])[[2]]
                     } else {
-                      TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[1])[[2]]
-                      Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[2])[[2]]
-                      Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[1])[[2]]
-                      Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[2])[[2]]
+                      TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[1])[[2]]
+                      Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[2])[[2]]
+                      Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[1])[[2]]
+                      Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[2])[[2]]
                       
                     }
                     
-                    rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                    rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                    rect(currentSampleData$temp[TempS$t,1],-maxY,currentSampleData$temp[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                    rect(currentSampleData$temp[Temp1S$t,1],-maxY,currentSampleData$temp[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                     
-                    abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], lty = "dashed", col = ("grey"), lwd = 2)
-                    abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
-                    abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
-                    abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                    abline(v = currentSampleData$temp[TempS$t,1], lty = "dashed", col = ("grey"), lwd = 2)
+                    abline(v = currentSampleData$temp[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
+                    abline(v = currentSampleData$temp[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                    abline(v = currentSampleData$temp[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
                     
-                    points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,input$ElementToExportS[j]],  cex = 3, col ="grey")
-                    points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,input$ElementToExportS[j]], cex = 3, col ="grey")
-                    points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
-                    points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
+                    points(currentSampleData$temp[TempS$t,1],  currentSampleData$temp[TempS$t,input$ElementToExportS[j]],  cex = 3, col ="grey")
+                    points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,input$ElementToExportS[j]], cex = 3, col ="grey")
+                    points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
+                    points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,input$ElementToExportS[j]], cex = 3, col ="#4F3CBC50")
                     
                   }
                   
@@ -1990,12 +2191,12 @@ runElementR <- function(){ # nocov start
                       } else {}
                     }
                     
-                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
+                    if(length(currentSampleRep$temp) != 0){
                       
-                      if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) == 0){
                         
                       } else {
-                        if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
+                        if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
                           if(is.null(input$bins)){
                           } else if(is.null(input$plat)){
                           } else if(is.null(TempS$t)){
@@ -2004,13 +2205,13 @@ runElementR <- function(){ # nocov start
                           } else if(is.null(Temp2S$t)){
                           } else {
                             if(is.finite(TempS$t)){
-                              curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                              curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
                               
                             } else {}
                           }
-                        } else if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1){
+                        } else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
                           if(is.finite(TempS$t)){
-                            curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$renderData(curve = input$courveToExportS[j])
+                            curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
                           } else {}
                           
                         } else {}
@@ -2066,10 +2267,10 @@ runElementR <- function(){ # nocov start
                     par(mfrow = c(2,3))
                     for(j in 1:length(input$courveToExportS)){
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) == 0){
                           
-                        }else if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
+                        }else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
                           if(is.null(input$bins)){
                           } else if(is.null(input$plat)){
                           } else if(is.null(TempS$t)){
@@ -2077,13 +2278,13 @@ runElementR <- function(){ # nocov start
                           } else if(is.null(Temp1S$t)){
                           } else if(is.null(Temp2S$t)){
                           } else{
-                            if(is.finite(TempS$t)){curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
                             } else {}
                           }
-                        } else if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1){
+                        } else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
                           
                           if(is.finite(TempS$t)){
-                            curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$renderData(curve = input$courveToExportS[j])
+                            curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
                           } else {}
                           
                         } else {}
@@ -2133,10 +2334,10 @@ runElementR <- function(){ # nocov start
                     par(mfrow = c(2,3))
                     for(j in 1:length(input$courveToExportS)){
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) == 0){
                           
-                        }else if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
+                        }else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
                           if(is.null(input$bins)){
                           } else if(is.null(input$plat)){
                           } else if(is.null(TempS$t)){
@@ -2144,13 +2345,13 @@ runElementR <- function(){ # nocov start
                           } else if(is.null(Temp1S$t)){
                           } else if(is.null(Temp2S$t)){
                           } else{
-                            if(is.finite(TempS$t)){curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
                             } else {}
                           }
-                        } else if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1){
+                        } else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
                           
                           if(is.finite(TempS$t)){
-                            curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$renderData(curve = input$courveToExportS[j])
+                            curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
                           } else {}
                           
                         } else {}
@@ -2198,10 +2399,10 @@ runElementR <- function(){ # nocov start
                     par(mfrow = c(2,3))
                     for(j in (length(input$courveToExportS)-2): (length(input$courveToExportS))){
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) == 0){
                         }else{
-                          if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
+                          if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
                             
                             if(is.null(input$bins)){
                             } else if(is.null(input$plat)){
@@ -2210,12 +2411,12 @@ runElementR <- function(){ # nocov start
                             } else if(is.null(Temp1S$t)){
                             } else if(is.null(Temp2S$t)){
                             }else{
-                              if(is.finite(TempS$t)){curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                              if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
                               } else {}
                             }
                             
-                          } else if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1){
-                            if(is.finite(TempS$t)){curveS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$renderData(curve = input$courveToExportS[j])
+                          } else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
+                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
                             }
                             
                           } else {}
@@ -4989,10 +5190,40 @@ runElementR <- function(){ # nocov start
     Temp2 <- reactiveValues(t = NULL) # a numerical value which corresponds to the nearest value in the time analysis for the slinderInput of input$plat[2]
     dataPlot2 <- reactiveValues(dat = NULL) # a matrix corresponding to the filtered
     
+    currentNISTData <- reactiveValues(temp = NULL)
+    currentNISTRep <- reactiveValues(temp = NULL)
+    currentNumber <- reactiveValues(temp = NULL)
+    
     elemUsed <- reactiveValues(temp = 0) # elements to display in plot
     
     BAV <- reactiveValues(temp = 0)
     LOD <- reactiveValues(temp = 0)
+    
+    observe({
+    	if(!is.null(currentProject())){
+    		if(!is.null(input$standardIn)){
+    			currentNumber$temp <-  grep(input$standardIn, currentProject()$standardsFiles)
+    		}
+    	}
+    })
+    
+    observe({
+    	if(!is.null(currentProject())){
+    		if(!is.null(input$standardIn)){
+    			currentNISTData$temp <-  currentProject()$standards[[1]]$rep_data[[currentNumber$temp]]$data
+    		}
+    	}
+    })
+    
+    observe({
+    	if(!is.null(currentProject())){
+    		if(!is.null(input$standardIn)){
+    			currentNISTRep$temp <-  currentProject()$standards[[1]]$rep_data[[currentNumber$temp]]
+    		}
+    	}
+    })
+    
+
     
     # set elemUsed
     observe({
@@ -5073,8 +5304,8 @@ runElementR <- function(){ # nocov start
         } else if(input$CourbeNIST == "Blank removed"){
           div(
             div(style = "display: inline-block;",
-                div(p(paste0("B.A.V.*: ", " ",  " ",round(BAV$temp[grep(input$listeElem, names(BAV$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px"),
-                div(p(paste0("L.O.D.**: ", " ",  " ",round(LOD$temp[grep(input$listeElem, names(LOD$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px")
+                div(p(paste0("B.A.V.*: ", " ",  " ", round(BAV$temp[grep(input$listeElem, names(BAV$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px"),
+                div(p(paste0("L.O.D.**: ", " ",  " ", round(LOD$temp[grep(input$listeElem, names(LOD$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px")
             ),
             div(style = "display: inline-block; vertical-align: top; margin-top: 10px",
                 div(style = "width:70px; vertical-align:top; margin-left: 50px; height: 30px; display: inline-block; background-color: rgba(232,26,29,0.5); border-style:solid; border-top: dotted 1px rgb(232,26,29); border-bottom: white; border-right: white; border-left:white"),
@@ -5104,7 +5335,7 @@ runElementR <- function(){ # nocov start
       }else if(is.null(startSession$temp)){
       }else{
         
-        if(length(which(as.matrix(currentProject()$standardsFiles) == input$standardIn)) != 0 & length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
+        if(length(which(as.matrix(currentProject()$standardsFiles) == input$standardIn)) != 0 & length(currentNumber$temp) != 0){
           
           if(startSession$temp == 0){
             output$Standards1 <- renderUI({NULL})
@@ -5163,13 +5394,13 @@ runElementR <- function(){ # nocov start
                 
                 output$Standards2 <- renderUI({
                   
-                  if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
+                  if(length(currentNumber$temp) != 0){
                     
-                    minB <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[1,1]
-                    maxB <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[dim(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)[1],1]
+                    minB <- currentNISTData$temp[1,1]
+                    maxB <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
-                    minP <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[1,1]
-                    maxP <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[dim(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)[1],1]
+                    minP <- currentNISTData$temp[1,1]
+                    maxP <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
                     value1 <- c(minB, minB + (maxB - minB)/6)
                     value2 <- c(minB + (maxP - minP)*2/6,minB + (maxP - minP)*4/6)
@@ -5271,16 +5502,16 @@ runElementR <- function(){ # nocov start
                   
                   par(mar = c(3,3.5,1.75,0))
                   
-                  if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
+                  if(length(currentNumber$temp) != 0){
                     
-                    maxY <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data, na.rm = TRUE)
+                    maxY <- max(currentNISTData$temp, na.rm = TRUE)
                     
-                    minX <- min(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
-                    maxX <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
+                    minX <- min(currentNISTData$temp[,1], na.rm = TRUE)
+                    maxX <- max(currentNISTData$temp[,1], na.rm = TRUE)
                     
                     if(is.null(input$checkGroup)){}
                     else{
-                      plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$checkGroup[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                      plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
                       mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                       mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -5288,35 +5519,35 @@ runElementR <- function(){ # nocov start
                       if(length(input$checkGroup) > 1){
                         lapply(2:length(input$checkGroup), function(x){
                           par(new = TRUE)
-                          plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                          plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                         })
                       }
                       
                       if(!is.null(input$bins) & !is.null(input$plat)){
                         if(is.na(input$bins[1]) | is.na(input$bins[2])| is.na(input$plat[1]) | is.na(input$plat[2])){}
                         else{
-                          Temp$t  <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$bins[1])[[2]]
-                          Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$bins[2])[[2]]
-                          Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$plat[1])[[2]]
-                          Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$plat[2])[[2]]
+                          Temp$t  <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$bins[1])[[2]]
+                          Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$bins[2])[[2]]
+                          Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$plat[1])[[2]]
+                          Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$plat[2])[[2]]
                           
                         }
                       }
                       
                       if(!is.null(Temp2$t)){
                         
-                        rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                        rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                        rect(currentNISTData$temp[Temp$t,1],-maxY,currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                        rect(currentNISTData$temp[Temp1$t,1],-maxY,currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                         
-                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
-                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
-                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                        abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                        abline(v = currentNISTData$temp[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
+                        abline(v = currentNISTData$temp[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
+                        abline(v = currentNISTData$temp[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                        abline(v = currentNISTData$temp[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
                         
-                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,x],  cex = 3, col ="grey")})
-                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,x], cex = 3, col ="grey")})
-                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
-                        lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
+                        lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp$t,1],  currentNISTData$temp[Temp$t,x],  cex = 3, col ="grey")})
+                        lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,x], cex = 3, col ="grey")})
+                        lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
+                        lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
                         
                       } else {}
                     }
@@ -5340,24 +5571,24 @@ runElementR <- function(){ # nocov start
                       mtext("Time (s)",side=1,line=2.3, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       mtext(paste0("Data ",input$CourbeNIST),side=3,line=0.75, cex=1.2, font = 2)
                       
-                      if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
-                        if(length(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge) == 1){
-                          if(!is.na(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge)){
+                      if(length(currentNumber$temp) != 0){
+                        if(length(currentNISTRep$temp$BlankAverarge) == 1){
+                          if(!is.na(currentNISTRep$temp$BlankAverarge)){
                             if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
-                              abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                              abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                             } else if(input$CourbeNIST == "Blank removed"){
-                              abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], col = "#FF000064", border = NA)
+                              abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
                             } else {}
                           } else {}
                         } else {
                           if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
-                            abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                            abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                           } else if(input$CourbeNIST == "Blank removed"){
-                            abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], col = "#FF000064", border = NA)
+                            abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
                           } else {}
                         }
                       } else {}
@@ -5393,18 +5624,18 @@ runElementR <- function(){ # nocov start
                 
                 output$Standards2 <- renderUI({
                   
-                  if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
+                  if(length(currentNumber$temp) != 0){
                     
                     input$standardIn
                     
-                    minB <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[1,1]
-                    maxB <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[dim(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)[1],1]
+                    minB <- currentNISTData$temp[1,1]
+                    maxB <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
-                    minP <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[1,1]
-                    maxP <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[dim(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)[1],1]
+                    minP <- currentNISTData$temp[1,1]
+                    maxP <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
-                    value1 <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins
-                    value2 <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat
+                    value1 <- currentNISTRep$temp$bins
+                    value2 <- currentNISTRep$temp$plat
                     step <- currentProject()$standards[[1]]$rep_pas
                     
                     fluidRow(
@@ -5498,20 +5729,20 @@ runElementR <- function(){ # nocov start
                   
                   par(mar = c(3,3.5,1.75,0))
                   
-                  if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
-                    if(!is.matrix(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data) & !is.data.frame(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)){
+                  if(length(currentNumber$temp) != 0){
+                    if(!is.matrix(currentNISTData$temp) & !is.data.frame(currentNISTData$temp)){
                       
                     }else{
                       
-                      maxY <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data, na.rm = TRUE)
+                      maxY <- max(currentNISTData$temp, na.rm = TRUE)
                       
-                      minX <- min(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
-                      maxX <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
+                      minX <- min(currentNISTData$temp[,1], na.rm = TRUE)
+                      maxX <- max(currentNISTData$temp[,1], na.rm = TRUE)
                       
                       if(is.null(input$checkGroup)){
                         
                       }else{
-                        plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$checkGroup[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                        plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
                         mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                         mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                         mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -5519,7 +5750,7 @@ runElementR <- function(){ # nocov start
                         if(length(input$checkGroup) > 1){
                           lapply(2:length(input$checkGroup), function(x){
                             par(new = TRUE)
-                            plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                            plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                           })
                         } else {}
                         
@@ -5529,27 +5760,27 @@ runElementR <- function(){ # nocov start
                           if(is.na(input$bins[1]) | is.na(input$bins[2]) | is.na(input$plat[1]) | is.na(input$plat[2])){
                             
                           }else{
-                            Temp$t  <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$bins[1])[[2]]
-                            Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$bins[2])[[2]]
-                            Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$plat[1])[[2]]
-                            Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = input$plat[2])[[2]]
+                            Temp$t  <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$bins[1])[[2]]
+                            Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$bins[2])[[2]]
+                            Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$plat[1])[[2]]
+                            Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = input$plat[2])[[2]]
                           }
                         }
                         
-                        if(length(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1]) != 0){
+                        if(length(currentNISTData$temp[Temp0$t,1]) != 0){
                           
-                          rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                          rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                          rect(currentNISTData$temp[Temp$t,1],-maxY,currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                          rect(currentNISTData$temp[Temp1$t,1],-maxY,currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                           
-                          abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
-                          abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
-                          abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                          abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                          abline(v = currentNISTData$temp[Temp$t,1],  lty = "dashed", col = "grey", lwd = 2)
+                          abline(v = currentNISTData$temp[Temp0$t,1], lty = "dashed", col = "grey", lwd = 2)
+                          abline(v = currentNISTData$temp[Temp1$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                          abline(v = currentNISTData$temp[Temp2$t,1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
                           
-                          lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1],  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,x],  cex = 3, col ="grey")})
-                          lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,x], cex = 3, col ="grey")})
-                          lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
-                          lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
+                          lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp$t,1],  currentNISTData$temp[Temp$t,x],  cex = 3, col ="grey")})
+                          lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,x], cex = 3, col ="grey")})
+                          lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
+                          lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
                         }   else {}
                       }
                       
@@ -5574,24 +5805,24 @@ runElementR <- function(){ # nocov start
                       mtext("Time (s)",side=1,line=2.3, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       mtext(paste0("Data ",input$CourbeNIST),side=3,line=0.75, cex=1.2, font = 2)
                       
-                      if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
-                        if(length(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge) == 1){
-                          if(!is.na(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge)){
+                      if(length(currentNumber$temp) != 0){
+                        if(length(currentNISTRep$temp$BlankAverarge) == 1){
+                          if(!is.na(currentNISTRep$temp$BlankAverarge)){
                             if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
-                              abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                              abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                             } else if(input$CourbeNIST == "Blank removed"){
-                              abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], col = "#FF000064", border = NA)
+                              abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
                             } else {}
                           } else {}
                         } else {
                           if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
-                            abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                            abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                           } else if(input$CourbeNIST == "Blank removed"){
-                            abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], col = "#FF000064", border = NA)
+                            abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
                           } else {}
                         }
                       } else {}
@@ -5629,17 +5860,17 @@ runElementR <- function(){ # nocov start
                   
                   input$standardIn
                   
-                  if(length(grep(input$standardIn, currentProject()$standardsFiles)) == 0){}
+                  if(length(currentNumber$temp) == 0){}
                   else{
                     
-                    minB <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[1,1]
-                    maxB <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[dim(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)[1],1]
+                    minB <- currentNISTData$temp[1,1]
+                    maxB <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
-                    minP <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[1,1]
-                    maxP <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[dim(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data)[1],1]
+                    minP <- currentNISTData$temp[1,1]
+                    maxP <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
-                    value1 <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins
-                    value2 <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat
+                    value1 <- currentNISTRep$temp$bins
+                    value2 <- currentNISTRep$temp$plat
                     
                     step <- currentProject()$standards[[1]]$rep_pas
                     
@@ -5729,18 +5960,18 @@ runElementR <- function(){ # nocov start
                   
                   par(mar = c(3,3.5,1.75,0))
                   
-                  if(length(grep(input$standardIn, currentProject()$standardsFiles)) == 0){
+                  if(length(currentNumber$temp) == 0){
                     
                   }else{
                     
-                    maxY <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data, na.rm = TRUE)
-                    minX <- min(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
-                    maxX <- max(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], na.rm = TRUE)
+                    maxY <- max(currentNISTData$temp, na.rm = TRUE)
+                    minX <- min(currentNISTData$temp[,1], na.rm = TRUE)
+                    maxX <- max(currentNISTData$temp[,1], na.rm = TRUE)
                     
                     if(is.null(input$checkGroup)){
                       
                     }else{
-                      plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$checkGroup[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                      plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
                       mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                       mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -5748,7 +5979,7 @@ runElementR <- function(){ # nocov start
                       if(length(input$checkGroup) > 1){
                         lapply(2:length(input$checkGroup), function(x){
                           par(new = TRUE)
-                          plot(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                          plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                           
                         })
                       }  else {}
@@ -5759,25 +5990,25 @@ runElementR <- function(){ # nocov start
                         if(is.na(input$bins[1]) | is.na(input$bins[2]) | is.na(input$plat[1]) | is.na(input$plat[2])){
                           
                         }else{
-                          Temp$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[1])[[2]]
-                          Temp0$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[2])[[2]]
-                          Temp1$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[1])[[2]]
-                          Temp2$t <- currentProject()$closest(x = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[,1],y = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[2])[[2]]
+                          Temp$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = currentNISTRep$temp$bins[1])[[2]]
+                          Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = currentNISTRep$temp$bins[2])[[2]]
+                          Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = currentNISTRep$temp$plat[1])[[2]]
+                          Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1],y = currentNISTRep$temp$plat[2])[[2]]
                         }
                       }
                       
-                      rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[2],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                      rect(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[1],-maxY,currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[2],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                      rect(currentNISTRep$temp$bins[1],-maxY,currentNISTRep$temp$bins[2],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                      rect(currentNISTRep$temp$plat[1],-maxY,currentNISTRep$temp$plat[2],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                       
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[1], lty = "dashed", col = "grey", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$bins[2], lty = "dashed", col = "grey", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
-                      abline(v = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$plat[2], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                      abline(v = currentNISTRep$temp$bins[1], lty = "dashed", col = "grey", lwd = 2)
+                      abline(v = currentNISTRep$temp$bins[2], lty = "dashed", col = "grey", lwd = 2)
+                      abline(v = currentNISTRep$temp$plat[1], lty = "dashed", col = "#4F3CBC50", lwd = 2)
+                      abline(v = currentNISTRep$temp$plat[2], lty = "dashed", col = "#4F3CBC50", lwd = 2)
                       
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,x], cex = 3, col ="grey")})
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,x], cex = 3, col ="grey")})
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
-                      lapply(input$checkGroup, function(x){points(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
+                      lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp$t,1], currentNISTData$temp[Temp$t,x], cex = 3, col ="grey")})
+                      lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,x], cex = 3, col ="grey")})
+                      lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
+                      lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
                       
                     }
                     
@@ -5800,24 +6031,24 @@ runElementR <- function(){ # nocov start
                       mtext("Time (s)",side=1,line=2.3, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       mtext(paste0("Data ",input$CourbeNIST),side=3,line=0.75, cex=1.2, font = 2)
                       
-                      if(length(grep(input$standardIn, currentProject()$standardsFiles)) != 0){
-                        if(length(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge) == 1){
-                          if(!is.na(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge)){
+                      if(length(currentNumber$temp) != 0){
+                        if(length(currentNISTRep$temp$BlankAverarge) == 1){
+                          if(!is.na(currentNISTRep$temp$BlankAverarge)){
                             if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
-                              abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                              abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                             } else if(input$CourbeNIST == "Blank removed"){
-                              abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], col = "#FF000064", border = NA)
+                              abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                              rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
                             } else {}
                           } else {}
                         } else {
                           if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
-                            abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                            abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                           } else if(input$CourbeNIST == "Blank removed"){
-                            abline(a = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD[grep(input$listeElem, names(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD))], col = "#FF000064", border = NA)
+                            abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                            rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
                           } else {}
                         }
                       } else {}
@@ -5854,16 +6085,16 @@ runElementR <- function(){ # nocov start
             } else if(is.null(Temp2$t)){
             }else{
               if(is.finite(Temp$t)){
-                dataPlot2$dat <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$getData(curve = input$CourbeNIST, bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
-                BAV$temp <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge
-                LOD$temp <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD
+                dataPlot2$dat <- currentNISTRep$temp$getData(curve = input$CourbeNIST, bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                BAV$temp <- currentNISTRep$temp$BlankAverarge
+                LOD$temp <- currentNISTRep$temp$LOD
               } else{}
             }
           } else{}
           if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
-            dataPlot2$dat <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$renderData(curve = input$CourbeNIST)
-            BAV$temp <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge
-            LOD$temp <- currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD
+            dataPlot2$dat <- currentNISTRep$temp$renderData(curve = input$CourbeNIST)
+            BAV$temp <- currentNISTRep$temp$BlankAverarge
+            LOD$temp <- currentNISTRep$temp$LOD
           } else{}
           
         }
@@ -5960,10 +6191,10 @@ runElementR <- function(){ # nocov start
             if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)]%%2) == 1){
               isolate({
                 currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 1)
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setBins(bins = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1]))
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setPlat(plat = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1]))
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
-                currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], bins2 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], plat1 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], plat2 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], average = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge, LOD = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD)
+                currentNISTRep$temp$setBins(bins = c(currentNISTData$temp[Temp$t,1], currentNISTData$temp[Temp0$t,1]))
+                currentNISTRep$temp$setPlat(plat = c(currentNISTData$temp[Temp1$t,1],currentNISTData$temp[Temp2$t,1]))
+                currentNISTRep$temp$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentNISTData$temp[Temp$t,1], bins2 = currentNISTData$temp[Temp0$t,1], plat1 = currentNISTData$temp[Temp1$t,1], plat2 = currentNISTData$temp[Temp2$t,1], average = currentNISTRep$temp$BlankAverarge, LOD = currentNISTRep$temp$LOD)
                 currentProject()$standards[[1]]$setRep_pas()
               })
               
@@ -5994,10 +6225,10 @@ runElementR <- function(){ # nocov start
             if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)]%%2) == 1 & input$saveNists >0){
               isolate({
                 currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 1)
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setBins(bins = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1]))
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setPlat(plat = c(currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1],currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1]))
-                currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
-                currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp$t,1], bins2 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp0$t,1], plat1 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp1$t,1], plat2 = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data[Temp2$t,1], average = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$BlankAverarge, LOD = currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$LOD)
+                currentNISTRep$temp$setBins(bins = c(currentNISTData$temp[Temp$t,1], currentNISTData$temp[Temp0$t,1]))
+                currentNISTRep$temp$setPlat(plat = c(currentNISTData$temp[Temp1$t,1],currentNISTData$temp[Temp2$t,1]))
+                currentNISTRep$temp$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentNISTData$temp[Temp$t,1], bins2 = currentNISTData$temp[Temp0$t,1], plat1 = currentNISTData$temp[Temp1$t,1], plat2 = currentNISTData$temp[Temp2$t,1], average = currentNISTRep$temp$BlankAverarge, LOD = currentNISTRep$temp$LOD)
                 currentProject()$standards[[1]]$setRep_pas()
               })
               
@@ -6951,14 +7182,64 @@ runElementR <- function(){ # nocov start
     Temp2S <- reactiveValues(t = NULL)  # a numerical value which corresponds to the nearest value in the time analysis for the slinderInput of input$platSample[2]
     dataPlot2Sample <- reactiveValues(datS = NULL)   # a matrix corresponding to the filtered
     
+    currentSampleData <- reactiveValues(temp = NULL)
+    currentSampleRep <- reactiveValues(temp = NULL)
+    currentSampleNumberRep <- reactiveValues(temp = NULL)
+    currentSampleNumberSam <- reactiveValues(temp = NULL)
+    
     BAV_Sample <- reactiveValues(temp = 0)
     LOD_Sample <- reactiveValues(temp = 0)
+    
+    observe({
+    	if(!is.null(currentProject())){
+    		if(!is.null(input$SampleIn)){
+    				currentSampleNumberRep$temp <- grep(input$SampleIn,currentProject()$samplesFiles)
+    				
+    		}
+    	}
+    })
+    
+    observe({
+    	if(!is.null(currentProject())){
+    		if(!is.null(input$SampleIn)){
+    			if(!is.null(input$SampleIn2)){
+    				currentSampleNumberSam$temp <-  grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)
+    			}
+    		}
+    	}
+    })
+    
+    observe({
+    	if(!is.null(currentProject())){
+
+    		if(!is.null(input$SampleIn)){
+    			if(!is.null(input$SampleIn2)){
+    				if(!currentProject()$is.integer0(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files))){
+    					currentSampleRep$temp <-  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]	
+    				}
+    			}
+    		}
+    	}
+    })
+    
+    observe({
+    	if(!is.null(currentProject())){
+    		if(!is.null(input$SampleIn)){
+    			if(!is.null(input$SampleIn2)){
+    				if(!currentProject()$is.integer0(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files))){
+    				currentSampleData$temp <-  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data 
+    				}
+    			}
+    		}
+    	}
+    })
+    
+
     
     #signiS
     observe({
       validCorrection$temp
       output$signiS <- renderUI({
-        
         
         if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
           div(
@@ -6978,8 +7259,8 @@ runElementR <- function(){ # nocov start
         } else if(input$CourbeSample == "Blank removed"){
           div(
             div(style = "display: inline-block;",
-                div(p(paste0("B.A.V.*: ", " ",  " ",round(BAV_Sample$temp[grep(input$listeElemSample, names(BAV_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px;"),
-                div(p(paste0("L.O.D.**: ", " ",  " ",round(LOD_Sample$temp[grep(input$listeElemSample, names(LOD_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px")
+                div(p(paste0("B.A.V.*: ", " ",  " ", round(BAV_Sample$temp[grep(input$listeElemSample, names(BAV_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px;"),
+                div(p(paste0("L.O.D.**: ", " ",  " ", round(LOD_Sample$temp[grep(input$listeElemSample, names(LOD_Sample$temp))],0), " cps/sec"), style = "margin-bottom: 0px"), style = "margin-left:20px")
             ),
             div(style = "display: inline-block; vertical-align: top; margin-top: 10px",
                 div(style = "width:70px; vertical-align:top; margin-left: 50px; height: 30px; display: inline-block; background-color: rgba(232,26,29,0.5); border-style:solid; border-top: dotted 1px rgb(232,26,29); border-bottom: white; border-right: white; border-left:white"),
@@ -7044,16 +7325,19 @@ runElementR <- function(){ # nocov start
             }) # eo output$sample2
             
             output$sample3 <- renderUI({
-              if(is.null(input$SampleIn)){}
-              else{
-                if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                  div(class = "class1",
-                      p(icon("eye"),"Select sample replicate"),
-                      div( selectInput("SampleIn2", "", as.matrix(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files), multiple = FALSE, width = '100%' ), style = "margin-top: -20px")
-                      
-                  )
-                }
-              }
+            	
+              if(!is.null(input$SampleIn)){
+              	if(!is.null(currentSampleNumberRep$temp)){
+              		
+              		div(class = "class1",
+              		    p(icon("eye"),"Select sample replicate"),
+              		    div( selectInput("SampleIn2", "", as.matrix(currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files), multiple = FALSE, width = '100%' ), style = "margin-top: -20px")
+              		    
+              		)
+              		
+              	}
+              } else {}
+            	
             })  # eo output$sample3
             
           }else{
@@ -7084,8 +7368,8 @@ runElementR <- function(){ # nocov start
         }else{
           
           if(currentProject()$flagMachineCorrection == 1 & !is.null(input$SampleIn) & !is.null(input$SampleIn2)){
-            if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-              if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+            if(length(currentSampleRep$temp) != 0){
+              if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) == 0){
                 
                 output$sample4 <- renderUI({NULL}) # eo input$Sample4
                 
@@ -7098,7 +7382,7 @@ runElementR <- function(){ # nocov start
                 
                 
                 
-                if(flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)] == 0){
+                if(flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)] == 0){
                   
                   output$sample4 <- renderUI({
                     actionButton("saveSample", "Save")
@@ -7110,19 +7394,19 @@ runElementR <- function(){ # nocov start
                       input$SampleIn
                       input$SampleIn2
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)) == 0){
                         }else{
                           
-                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
-                          
-                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minBS <- currentSampleData$temp[1,1]
+                          maxBS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
+                                   
+                          minPS <- currentSampleData$temp[1,1]
+                          maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
                           value1S <- c(minBS, minBS + (maxBS - minBS)/6)
                           value2S <- c(minBS + (maxPS - minPS)*2/6, minBS + (maxPS - minPS)*4/6)
-                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+                          step <- currentProject()$samples[[currentSampleNumberRep$temp]]$setRep_pas()
                           
                           fluidRow(
                             column(8,style  = "padding-right: 5px",
@@ -7217,19 +7501,19 @@ runElementR <- function(){ # nocov start
                       input$SampleIn2
                       
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(currentSampleRep$temp) == 0){
                         }else{
                           
-                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minBS <- currentSampleData$temp[1,1]
+                          maxBS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minPS <- currentSampleData$temp[1,1]
+                          maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
                           value1S <- c(minBS, minBS + (maxBS - minBS)/6)
                           value2S <- c(minBS + (maxPS - minPS)*2/6,minBS + (maxPS - minPS)*4/6)
-                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+                          step <- currentProject()$samples[[currentSampleNumberRep$temp]]$setRep_pas()
                           
                           fluidRow(
                             column(8,style  = "padding-right: 5px",
@@ -7322,17 +7606,17 @@ runElementR <- function(){ # nocov start
                     
                     par(mar = c(3,3.5,1.75,0))
                     
-                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                      if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                    if(length(currentSampleRep$temp) != 0){
+                      if(length(currentSampleRep$temp) == 0){
                         
                       }else{
                         
-                        maxY <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data, na.rm = TRUE)
+                        maxY <- max(currentSampleData$temp, na.rm = TRUE)
                         
-                        minX <- min(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
-                        maxX <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
+                        minX <- min(currentSampleData$temp[,1], na.rm = TRUE)
+                        maxX <- max(currentSampleData$temp[,1], na.rm = TRUE)
                         
-                        plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$checkGroupS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                        plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
                         mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                         mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                         mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -7340,33 +7624,33 @@ runElementR <- function(){ # nocov start
                         if(length(input$checkGroupS) > 1){
                           lapply(2:length(input$checkGroupS), function(x){
                             par(new = TRUE)
-                            plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                            plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                           })
                         }  else {}
                         
                         if(!is.null(input$binsSample) & !is.null(input$platSample)){
                           if(is.na(input$binsSample[1]) | is.na(input$binsSample[2])| is.na(input$platSample[1]) | is.na(input$platSample[2])){}
                           else{
-                            TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[1])[[2]]
-                            Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[2])[[2]]
-                            Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[1])[[2]]
-                            Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[2])[[2]]
+                            TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[1])[[2]]
+                            Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[2])[[2]]
+                            Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[1])[[2]]
+                            Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[2])[[2]]
                           }
                         }
                         
                         if(!is.null(Temp2S$t)){
-                          rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], -maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                          rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                          rect(currentSampleData$temp[TempS$t,1], -maxY,currentSampleData$temp[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                          rect(currentSampleData$temp[Temp1S$t,1],-maxY,currentSampleData$temp[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                           
-                          abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
-                          abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
-                          abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
-                          abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                          abline(v = currentSampleData$temp[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
+                          abline(v = currentSampleData$temp[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
+                          abline(v = currentSampleData$temp[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                          abline(v = currentSampleData$temp[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
                           
-                          lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,x],  cex = 3, col ="grey")})
-                          lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,x], cex = 3, col ="grey")})
-                          lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
-                          lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
+                          lapply(input$checkGroupS, function(x){points(currentSampleData$temp[TempS$t,1], currentSampleData$temp[TempS$t,x],  cex = 3, col ="grey")})
+                          lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
+                          lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
+                          lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
                         } else {}
                         
                       }
@@ -7392,25 +7676,25 @@ runElementR <- function(){ # nocov start
                         mtext("Time (s)",side=1,line=2.3, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                         mtext(paste0("Data ",input$CourbeSample),side=3,line=0.75, cex=1.2, font = 2)
                         
-                        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) != 0){
-                            if(length(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge) == 1){
-                              if(!is.na(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge)){
+                        if(length(currentSampleRep$temp) != 0){
+                          if(length(currentSampleRep$temp) != 0){
+                            if(length(currentSampleRep$temp$BlankAverarge) == 1){
+                              if(!is.na(currentSampleRep$temp$BlankAverarge)){
                                 if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
-                                  abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                                  abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                                 } else if(input$CourbeSample == "Blank removed"){
-                                  abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], col = "#FF000064", border = NA)
+                                  abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
                                 } else {}
                               } else {}
                             } else {
                               if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
-                                abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                                abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                               } else if(input$CourbeSample == "Blank removed"){
-                                abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], col = "#FF000064", border = NA)
+                                abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
                               } else {}
                             }
                           } else {}
@@ -7421,7 +7705,7 @@ runElementR <- function(){ # nocov start
                   })# eo input$distPlot2Sample
                   
                 } else {}
-                if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0 & flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)] != 0){
+                if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 0 & flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp] != 0){
                   
                   output$sample4 <- renderUI({
                     actionButton("saveSample", "Save")
@@ -7434,18 +7718,18 @@ runElementR <- function(){ # nocov start
                       input$SampleIn
                       input$SampleIn2
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){ }else{
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(currentSampleRep$temp) == 0){ }else{
                           
-                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minBS <- currentSampleData$temp[1,1]
+                          maxBS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minPS <- currentSampleData$temp[1,1]
+                          maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          value1S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins
-                          value2S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat
-                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+                          value1S <- currentSampleRep$temp$bins
+                          value2S <- currentSampleRep$temp$plat
+                          step <- currentProject()$samples[[currentSampleNumberRep$temp]]$setRep_pas()
                           
                           fluidRow(
                             column(8, style  = "padding-right: 5px",
@@ -7540,18 +7824,18 @@ runElementR <- function(){ # nocov start
                       input$SampleIn
                       input$SampleIn2
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                        if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){ }else{
+                      if(length(currentSampleRep$temp) != 0){
+                        if(length(currentSampleRep$temp) == 0){ }else{
                           
-                          minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minBS <- currentSampleData$temp[1,1]
+                          maxBS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                          maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                          minPS <- currentSampleData$temp[1,1]
+                          maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          value1S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins
-                          value2S <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat
-                          step <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$setRep_pas()
+                          value1S <- currentSampleRep$temp$bins
+                          value2S <- currentSampleRep$temp$plat
+                          step <- currentProject()$samples[[currentSampleNumberRep$temp]]$setRep_pas()
                           
                           fluidRow(
                             column(8, style  = "padding-right: 5px",
@@ -7644,17 +7928,17 @@ runElementR <- function(){ # nocov start
                     
                     par(mar = c(3,3.5,1.75,0))
                     
-                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                      if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                    if(length(currentSampleRep$temp) != 0){
+                      if(length(currentSampleRep$temp) == 0){
                         
                       }else{
                         
-                        maxY <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data, na.rm = TRUE)
+                        maxY <- max(currentSampleData$temp, na.rm = TRUE)
                         
-                        minX <- min(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
-                        maxX <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
+                        minX <- min(currentSampleData$temp[,1], na.rm = TRUE)
+                        maxX <- max(currentSampleData$temp[,1], na.rm = TRUE)
                         
-                        plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$checkGroupS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                        plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
                         mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                         mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                         mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -7663,31 +7947,31 @@ runElementR <- function(){ # nocov start
                           
                           lapply(2:length(input$checkGroupS), function(x){
                             par(new = TRUE)
-                            plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                            plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                           })
                           
                         } else {}
                         
                         if(is.null(input$binsSample)){
                         }else{
-                          TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[1])[[2]]
-                          Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$binsSample[2])[[2]]
-                          Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[1])[[2]]
-                          Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = input$platSample[2])[[2]]
+                          TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[1])[[2]]
+                          Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$binsSample[2])[[2]]
+                          Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[1])[[2]]
+                          Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = input$platSample[2])[[2]]
                         }
                         
-                        rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], -maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                        rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                        rect(currentSampleData$temp[TempS$t,1], -maxY,currentSampleData$temp[Temp0S$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                        rect(currentSampleData$temp[Temp1S$t,1],-maxY,currentSampleData$temp[Temp2S$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                         
-                        abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
-                        abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
-                        abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
-                        abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                        abline(v = currentSampleData$temp[TempS$t,1],  lty = "dashed", col = ("grey"), lwd = 2)
+                        abline(v = currentSampleData$temp[Temp0S$t,1], lty = "dashed", col = ("grey"), lwd = 2)
+                        abline(v = currentSampleData$temp[Temp1S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                        abline(v = currentSampleData$temp[Temp2S$t,1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
                         
-                        lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,x],  cex = 3, col ="grey")})
-                        lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,x], cex = 3, col ="grey")})
-                        lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
-                        lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
+                        lapply(input$checkGroupS, function(x){points(currentSampleData$temp[TempS$t,1], currentSampleData$temp[TempS$t,x],  cex = 3, col ="grey")})
+                        lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
+                        lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
+                        lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
                       }
                     } else {}
                     
@@ -7712,25 +7996,25 @@ runElementR <- function(){ # nocov start
                         mtext("Time (s)",side=1,line=2.3, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                         mtext(paste0("Data ",input$CourbeSample),side=3,line=0.75, cex=1.2, font = 2)
                         
-                        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) != 0){
-                            if(length(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge) == 1){
-                              if(!is.na(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge)){
+                        if(length(currentSampleRep$temp) != 0){
+                          if(length(currentSampleRep$temp) != 0){
+                            if(length(currentSampleRep$temp$BlankAverarge) == 1){
+                              if(!is.na(currentSampleRep$temp$BlankAverarge)){
                                 if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
-                                  abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                                  abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                                 } else if(input$CourbeSample == "Blank removed"){
-                                  abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], col = "#FF000064", border = NA)
+                                  abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
                                 } else {}
                               } else {}
                             } else {
                               if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
-                                abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                                abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                               } else if(input$CourbeSample == "Blank removed"){
-                                abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], col = "#FF000064", border = NA)
+                                abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
                               } else {}
                             }
                           } else {}
@@ -7743,9 +8027,9 @@ runElementR <- function(){ # nocov start
                   
                   
                 }  else {}
-                if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1){
+                if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1){
                   
-                  currentProject()$setflagSample(sample = grep(input$SampleIn,currentProject()$samplesFiles), replicate = grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files), value = 1)
+                  currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 1)
                   
                   output$sample4 <- renderUI({
                     actionButton("saveSample", "Delete")
@@ -7758,15 +8042,15 @@ runElementR <- function(){ # nocov start
                       input$SampleIn
                       input$SampleIn2
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) == 0){
-                      }else if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) == 0){
+                      }else if(length(currentSampleRep$temp) == 0){
                       }else{
                         
-                        minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                        maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                        minBS <- currentSampleData$temp[1,1]
+                        maxBS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                         
-                        minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                        maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                        minPS <- currentSampleData$temp[1,1]
+                        maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                         
                         fluidRow(
                           column(8, style  = "padding-right: 5px",
@@ -7851,15 +8135,15 @@ runElementR <- function(){ # nocov start
                       input$SampleIn
                       input$SampleIn2
                       
-                      if(length(grep(input$SampleIn,currentProject()$samplesFiles)) == 0){
-                      }else if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                      if(length(currentSampleRep$temp) == 0){
+                      }else if(length(currentSampleRep$temp) == 0){
                       }else{
                         
-                        minBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                        maxBS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                        minBS <- currentSampleData$temp[1,1]
+                        maxBS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                         
-                        minPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[1,1]
-                        maxPS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[dim(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data)[1],1]
+                        minPS <- currentSampleData$temp[1,1]
+                        maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                         
                         fluidRow(
                           column(8, style  = "padding-right: 5px",
@@ -7943,16 +8227,16 @@ runElementR <- function(){ # nocov start
                     
                     par(mar = c(3,3.5,1.75,0))
                     
-                    if(length(grep(input$SampleIn,currentProject()$samplesFiles)) == 0){
-                    }else if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+                    if(length(currentSampleRep$temp) == 0){
+                    }else if(length(currentSampleRep$temp) == 0){
                     }else{
                       
-                      maxY <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data, na.rm = TRUE)
+                      maxY <- max(currentSampleData$temp, na.rm = TRUE)
                       
-                      minX <- min(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
-                      maxX <- max(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], na.rm = TRUE)
+                      minX <- min(currentSampleData$temp[,1], na.rm = TRUE)
+                      maxX <- max(currentSampleData$temp[,1], na.rm = TRUE)
                       
-                      plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$checkGroupS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
+                      plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[1]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[1] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY))
                       mtext("Signal intensity (cps)",side=2,line=2.4,  cex=1.2)
                       mtext("Time (s)",side=1,line=1.5, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                       mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
@@ -7961,27 +8245,27 @@ runElementR <- function(){ # nocov start
                         
                         lapply(2:length(input$checkGroupS), function(x){
                           par(new = TRUE)
-                          plot(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
+                          plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
                         })
                       } else {}
                       
-                      TempS$t  <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[1])[[2]]
-                      Temp0S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[2])[[2]]
-                      Temp1S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[1])[[2]]
-                      Temp2S$t <- currentProject()$closest(x = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[,1],y = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[2])[[2]]
+                      TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[1])[[2]]
+                      Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[2])[[2]]
+                      Temp1S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[1])[[2]]
+                      Temp2S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$plat[2])[[2]]
                       
-                      rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[2],(1+10/100)*maxY, col = "#8B735564", border = NA)
-                      rect(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[1],-maxY,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[2],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
+                      rect(currentSampleRep$temp$bins[1],-maxY,currentSampleRep$temp$bins[2],(1+10/100)*maxY, col = "#8B735564", border = NA)
+                      rect(currentSampleRep$temp$plat[1],-maxY,currentSampleRep$temp$plat[2],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
                       
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[1], lty = "dashed", col = ("grey"), lwd = 2)
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$bins[2], lty = "dashed", col = ("grey"), lwd = 2)
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
-                      abline(v = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$plat[2], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                      abline(v = currentSampleRep$temp$bins[1], lty = "dashed", col = ("grey"), lwd = 2)
+                      abline(v = currentSampleRep$temp$bins[2], lty = "dashed", col = ("grey"), lwd = 2)
+                      abline(v = currentSampleRep$temp$plat[1], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
+                      abline(v = currentSampleRep$temp$plat[2], lty = "dashed", col = ("#4F3CBC50"), lwd = 2)
                       
-                      lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1],  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,x],  cex = 3, col ="grey")})
-                      lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,x], cex = 3, col ="grey")})
-                      lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
-                      lapply(input$checkGroupS, function(x){points(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
+                      lapply(input$checkGroupS, function(x){points(currentSampleData$temp[TempS$t,1],  currentSampleData$temp[TempS$t,x],  cex = 3, col ="grey")})
+                      lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
+                      lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
+                      lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
                     }
                   }) # eo input$distPlotSample
                   
@@ -8001,25 +8285,25 @@ runElementR <- function(){ # nocov start
                         mtext("Time (s)",side=1,line=2.3, at=par("usr")[2]-0.05*diff(par("usr")[1:2]), cex=1.2)
                         mtext(paste0("Data ",input$CourbeSample),side=3,line=0.75, cex=1.2, font = 2)
                         
-                        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-                          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) != 0){
-                            if(length(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge) == 1){
-                              if(!is.na(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge)){
+                        if(length(currentSampleRep$temp) != 0){
+                          if(length(currentSampleRep$temp) != 0){
+                            if(length(currentSampleRep$temp$BlankAverarge) == 1){
+                              if(!is.na(currentSampleRep$temp$BlankAverarge)){
                                 if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
-                                  abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                                  abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                                 } else if(input$CourbeSample == "Blank removed"){
-                                  abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], col = "#FF000064", border = NA)
+                                  abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                  rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
                                 } else {}
                               } else {}
                             } else {
                               if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
-                                abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge))], col = "#FF000064", border = NA)
+                                abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], col = "#FF000064", border = NA)
                               } else if(input$CourbeSample == "Blank removed"){
-                                abline(a = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
-                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD[grep(input$listeElem, names(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD))], col = "#FF000064", border = NA)
+                                abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
+                                rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
                               } else {}
                             }
                             
@@ -8062,12 +8346,15 @@ runElementR <- function(){ # nocov start
       }else if(is.null(input$SampleIn2)){
       }else if(is.null(input$CourbeSample)){
       }else if(is.null(flagSampleDetail$temp)){
+      }else if(currentProject()$is.integer0(currentSampleNumberRep$temp)){
+      }else if(currentProject()$is.integer0(currentSampleNumberSam$temp)){
       }else{
-        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+        if(length(currentSampleRep$temp) != 0){
+          if(length(currentSampleRep$temp) == 0){
           }else{
             
-            if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
+            if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 0){
+            	
               if(is.null(input$binsSample)){
               }else if(is.null(input$platSample)){
               }else if(is.null(TempS$t)){
@@ -8076,19 +8363,19 @@ runElementR <- function(){ # nocov start
               }else if(is.null(Temp2S$t)){
               }else{
                 if(is.finite(TempS$t)){
-                  dataPlot2Sample$datS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$getData(curve = input$CourbeSample, bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
-                  BAV_Sample$temp <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge
-                  LOD_Sample$temp <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD
+                  dataPlot2Sample$datS <- currentSampleRep$temp$getData(curve = input$CourbeSample, bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  BAV_Sample$temp <- currentSampleRep$temp$BlankAverarge
+                  LOD_Sample$temp <- currentSampleRep$temp$LOD
                 } else {}
               }
             } else {}
-            if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1){
+            if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1){
               if(is.null(TempS$t)){
               }else{
                 if(is.finite(TempS$t)){
-                  dataPlot2Sample$datS <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$renderData(curve = input$CourbeSample)
-                  BAV_Sample <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge
-                  LOD_Sample <- currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD
+                  dataPlot2Sample$datS <- currentSampleRep$temp$renderData(curve = input$CourbeSample)
+                  BAV_Sample <- currentSampleRep$temp$BlankAverarge
+                  LOD_Sample <- currentSampleRep$temp$LOD
                 } else {}
               }
             } else {}
@@ -8125,12 +8412,12 @@ runElementR <- function(){ # nocov start
       }else if(is.null(input$SuppDonne)){
       }else if(is.null(input$saveSample)){
       }else{
-        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+        if(length(currentSampleRep$temp) != 0){
+          if(length(currentSampleRep$temp) == 0){
           }else{
             if(input$saveSample > 0){
               isolate({
-                flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)] <- flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)] + 1
+                flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp] <- flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp] + 1
                 updateSelectInput(session, "listeElemSample", selected = input$listeElemSample)
                 updateSelectInput(session, "CourbeSample", selected = input$CourbeSample)
                 loadS$temp <- loadS$temp +1
@@ -8169,62 +8456,64 @@ runElementR <- function(){ # nocov start
       }else if(is.null(Temp0S$t)){
       }else if(is.null(Temp1S$t)){
       }else if(is.null(Temp2S$t)){
+      }else if(currentProject()$is.integer0(currentSampleNumberRep$temp)){
+      }else if(currentProject()$is.integer0(currentSampleNumberSam$temp)){
       }else{
-        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+        if(length(currentSampleRep$temp) != 0){
+          if(length(currentSampleRep$temp) == 0){
           }else{
             
             if(projChar$temp[1] == 2 & loadS$temp == 1){
               
-              if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0){
+              if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 0){
                 isolate({
-                  currentProject()$setflagSample(sample = grep(input$SampleIn,currentProject()$samplesFiles), replicate = grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files), value = 0)
-                  currentProject()$set_flagRealign(replicate = grep(input$SampleIn,currentProject()$samplesFiles), type = "spot", value = 0)
-                  currentProject()$set_flagRealign(replicate = grep(input$SampleIn,currentProject()$samplesFiles), type = "raster", value = 0)
+                  currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 0)
+                  currentProject()$set_flagRealign(replicate = currentSampleNumberRep$temp, type = "spot", value = 0)
+                  currentProject()$set_flagRealign(replicate = currentSampleNumberRep$temp, type = "raster", value = 0)
                   flagRealign$temp <- currentProject()$flagRealign
                   currentProject()$set_summarySettings(name = input$SampleIn2, rank = NA, bins1 = NA, bins2 = NA, plat1 = NA, plat2 = NA, average = rep(NA, length(currentProject()$listeElem)), LOD = rep(NA, length(currentProject()$listeElem)))
                 })
               } else {}
               
-              if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1 & is.finite(TempS$t)){
+              if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1 & is.finite(TempS$t)){
                 isolate({
-                  currentProject()$setflagSample(sample = grep(input$SampleIn,currentProject()$samplesFiles), replicate = grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files), value = 1)
-                  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setBins(bins = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1]))
-                  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setPlat(plat = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1]))
-                  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 1)
+                  currentSampleRep$temp$setBins(bins = c(currentSampleData$temp[TempS$t,1], currentSampleData$temp[Temp0S$t,1]))
+                  currentSampleRep$temp$setPlat(plat = c(currentSampleData$temp[Temp1S$t,1],currentSampleData$temp[Temp2S$t,1]))
+                  currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
                   
                   if(currentProject()$ChoiceUserCorr == F | (currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) == 0)) {
-                    currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$reset()
+                    currentSampleRep$temp$reset()
                   } else {}
-                  currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], bins2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], plat1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], plat2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], average = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge, LOD = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD)
+                  currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentSampleData$temp[TempS$t,1], bins2 = currentSampleData$temp[Temp0S$t,1], plat1 = currentSampleData$temp[Temp1S$t,1], plat2 = currentSampleData$temp[Temp2S$t,1], average = currentSampleRep$temp$BlankAverarge, LOD = currentSampleRep$temp$LOD)
                 })
               } else {}
               
               
             } else {
-              
-              if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 0 & input$saveSample > 0){
+              if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 0 & input$saveSample > 0){
                 isolate({
-                  currentProject()$setflagSample(sample = grep(input$SampleIn,currentProject()$samplesFiles), replicate = grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files), value = 0)
-                  currentProject()$set_flagRealign(replicate = grep(input$SampleIn,currentProject()$samplesFiles), type = "spot", value = 0)
-                  currentProject()$set_flagRealign(replicate = grep(input$SampleIn,currentProject()$samplesFiles), type = "raster", value = 0)
+                  currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 0)
+                  currentProject()$set_flagRealign(replicate = currentSampleNumberRep$temp, type = "spot", value = 0)
+                  currentProject()$set_flagRealign(replicate = currentSampleNumberRep$temp, type = "raster", value = 0)
                   flagRealign$temp <- currentProject()$flagRealign
                   currentProject()$set_summarySettings(name = input$SampleIn2, rank = NA, bins1 = NA, bins2 = NA, plat1 = NA, plat2 = NA, average = rep(NA, length(currentProject()$listeElem)), LOD = rep(NA, length(currentProject()$listeElem)))
                 })
               } else {}
               
-              if((flagSampleDetail$temp[[grep(input$SampleIn,currentProject()$samplesFiles)]][grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]%%2) == 1 & is.finite(TempS$t) & input$saveSample > 0){
+              if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1 & is.finite(TempS$t) & input$saveSample > 0){
                 isolate({
-                  currentProject()$setflagSample(sample = grep(input$SampleIn,currentProject()$samplesFiles), replicate = grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files), value = 1)
-                  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setBins(bins = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1]))
-                  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setPlat(plat = c(currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1],currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1]))
-                  currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                	
+                  currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 1)
+                  currentSampleRep$temp$setBins(bins = c(currentSampleData$temp[TempS$t,1], currentSampleData$temp[Temp0S$t,1]))
+                  currentSampleRep$temp$setPlat(plat = c(currentSampleData$temp[Temp1S$t,1],currentSampleData$temp[Temp2S$t,1]))
+                  currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
 
                   if(currentProject()$ChoiceUserCorr == F | (currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) == 0)) {
-                    currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$reset()
+                    currentSampleRep$temp$reset()
                   } else {}
-                  currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[TempS$t,1], bins2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp0S$t,1], plat1 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp1S$t,1], plat2 = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data[Temp2S$t,1], average = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$BlankAverarge, LOD = currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$LOD)
-                  passageS <- names(currentProject()$flag_Sample[[grep(input$SampleIn,currentProject()$samplesFiles)]] == 0)[currentProject()$flag_Sample[[grep(input$SampleIn,currentProject()$samplesFiles)]] == 0][1]
+                  currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentSampleData$temp[TempS$t,1], bins2 = currentSampleData$temp[Temp0S$t,1], plat1 = currentSampleData$temp[Temp1S$t,1], plat2 = currentSampleData$temp[Temp2S$t,1], average = currentSampleRep$temp$BlankAverarge, LOD = currentSampleRep$temp$LOD)
+                  passageS <- names(currentProject()$flag_Sample[[currentSampleNumberRep$temp]] == 0)[currentProject()$flag_Sample[[currentSampleNumberRep$temp]] == 0][1]
                   if(!is.na(passageS)){
                     delay(2000,updateSelectInput(session, "SampleIn2", selected = passageS))
                   } else {}
@@ -8255,8 +8544,8 @@ runElementR <- function(){ # nocov start
       }else if(is.null(Temp1S$t)){
       }else if(is.null(Temp2S$t)){
       }else{
-        if(length(grep(input$SampleIn,currentProject()$samplesFiles)) != 0){
-          if(length(grep(input$SampleIn2,currentProject()$samples[[grep(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)) == 0){
+        if(length(currentSampleRep$temp) != 0){
+          if(length(currentSampleRep$temp) == 0){
           }else{
             
           }
