@@ -538,7 +538,17 @@ elementR_project <- R6Class("elementR_project",
                               elemStand = NA, # A character string indicating the chemical element considered as internal standard (by default = Ca)
                               summarySettings = matrix(), # A matrix summarizing all the parameters set by user for each replicate (sample and standard)
                               ChoiceUserCorr = NA, # a logical value corresponding to the choice of the user to correct or no the session based on the first step of configuration
+                              R2Threshold = NA, #the threshold to pass from a machien drift correction from a linear to a neighbor correction
                               
+                              ##################################################################################################
+                              # Name: setR2Threshold
+                              # Function: set R2Threshold
+                              # inputs: x a value between 0 and 1
+                              ##################################################################################################
+                              
+                              setR2Threshold = function(x){
+                              	self$R2Threshold <- x
+                              },
                               
                               ##################################################################################################
                               # Name: insert.at
@@ -865,8 +875,8 @@ elementR_project <- R6Class("elementR_project",
                                 
                                 Nbelem <- length(self$listeElem)
                                 
-                                self$regressionModel <- matrix(data = NA, nrow = Nbelem, ncol = 6)
-                                colnames(self$regressionModel) <- c("Norm.", "Homosc.","Indep.", "Regress.Test", "intercept","A")
+                                self$regressionModel <- matrix(data = NA, nrow = Nbelem, ncol = 7)
+                                colnames(self$regressionModel) <- c("Norm.", "Homosc.","Indep.", "Regress.Test", "intercept","A", "R2")
                                 rownames(self$regressionModel) <- self$listeElem
                                 
                                 # construction du model
@@ -890,7 +900,7 @@ elementR_project <- R6Class("elementR_project",
                                   
                                   if(self$nbCalib[j] == 0){ 
                                     
-                                    self$regressionModel[j, 1:6] <- rep(NA, 6)
+                                    self$regressionModel[j, 1:7] <- rep(NA, 7)
                                     
                                   } else if(self$nbCalib[j] == 1){
                                     
@@ -913,8 +923,9 @@ elementR_project <- R6Class("elementR_project",
                                     
                                     res_test[1:4] <- NA
                                     res_test[5:6] <- c(intercept , slope)
+                                    res_test[7] <- NA
                                     
-                                    self$regressionModel[j, 1:6] <- res_test
+                                    self$regressionModel[j, 1:7] <- res_test
                                     
                                   } else if(self$nbCalib[j] == 2){
                                     
@@ -938,17 +949,17 @@ elementR_project <- R6Class("elementR_project",
                                     
                                     res_test[1:4] <- NA
                                     res_test[5:6] <- c(intercept , slope)
+                                    res_test[7] <- NA
                                     
-                                    self$regressionModel[j, 1:6] <- res_test
+                                    self$regressionModel[j, 1:7] <- res_test
                                     
                                   } else if(self$nbCalib[j] == 3){
                                     
                                     if(length(which(Y != 1)) == 0){
-                                      res_test <- c(NA,NA,NA,NA,1, 0)
-                                      self$regressionModel[j, 1:6] <- res_test
+                                      res_test <- c(NA,NA,NA,NA,1, 0, NA)
+                                      self$regressionModel[j, 1:7] <- res_test
                                       
                                     } else {
-                                      
                                       model <- lm(Y~X)
                                       
                                       # tests 
@@ -961,15 +972,16 @@ elementR_project <- R6Class("elementR_project",
                                       res_test[3] <- dwtest(model)$p.value
                                       res_test[4] <- summary(model)$coefficients[2,4]                                      
                                       res_test[5:6] <- summary(model)$coefficients[,1]
+                                      res_test[7] <- summary(model)$r.squared
                                       
-                                      self$regressionModel[j, 1:6] <- res_test
+                                      self$regressionModel[j, 1:7] <- res_test
                                     }
                                     
                                   } else if(self$nbCalib[j] > 3){
                                     
                                     if(length(which(Y != 1)) == 0){
-                                      res_test <- c(NA,NA,NA,NA,1, 0)
-                                      self$regressionModel[j, 1:6] <- res_test
+                                      res_test <- c(NA,NA,NA,NA,1, 0, NA)
+                                      self$regressionModel[j, 1:7] <- res_test
                                     } else {
                                       
                                       model <- lm(Y~X)
@@ -984,13 +996,15 @@ elementR_project <- R6Class("elementR_project",
                                       res_test[3] <- dwtest(model)$p.value
                                       res_test[4] <- summary(model)$coefficients[2,4]                                      
                                       res_test[5:6] <- summary(model)$coefficients[,1]
-                                      
-                                      self$regressionModel[j, 1:6] <- res_test
+                                      res_test[7] <- summary(model)$r.squared
+
+                                      self$regressionModel[j, 1:7] <- res_test
                                     }
                                     
                                   } else {}
                                   
-                                }
+                                  }
+                                
                                 
                                 names(self$nbCalib) <- self$listeElem
                                 

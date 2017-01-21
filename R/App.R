@@ -312,10 +312,11 @@ runElementR <- function(){ # nocov start
                       
               ), #eo tab realign
               tabItem("Config",
-                      uiOutput("config0"),
-                      uiOutput("config2"),
-                      uiOutput("config3"),
-                      uiOutput("config1")
+              	  uiOutput("config0"),
+              	  uiOutput("config4"),
+              	  uiOutput("config2"),
+              	  uiOutput("config3"),
+              	  uiOutput("config1")
                       
               ) #eo tab Config
               
@@ -3755,7 +3756,7 @@ runElementR <- function(){ # nocov start
         
       }
     }) #observe
-    
+
     # finalize the creation of the project by setting elements, calibration files, rank etc
     observe({
       if(is.null(input$validDonne)){
@@ -5178,6 +5179,18 @@ runElementR <- function(){ # nocov start
         
       }
     })
+    
+    # set R2Threshold
+    observe({
+    	if(startSession$temp == 1){
+    		if(!is.null(input$R2)){
+    			currentProject()$setR2Threshold(input$R2)
+    		} else {
+    			currentProject()$setR2Threshold(0.75)
+    		}
+    	} else {}
+    })
+    
     }
     
     #######################
@@ -9615,6 +9628,53 @@ runElementR <- function(){ # nocov start
       } else {}
       
     })
+    
+    # define output$config4
+    output$config4 <- renderUI({
+    	
+    	if(startSession$temp == 0){
+    		fluidRow(
+    			box(
+    				solidHeader = TRUE,
+    				collapsible = FALSE,
+    				width = 6,
+    				status = "primary",
+    				title = "Machine drift verification & correction",
+    				p("Choose the R2 treshold to change the machine drift correction from a linear to a neighbor correction"),
+    				numericInput("R2", label = "", value = 0.75, min = 0, max = 1, step = 0.01, width = '15%')
+    			),
+    			box(
+    				solidHeader = TRUE,
+    				collapsible = FALSE,
+    				width = 6,
+    				status = "primary",
+    				title = "Outlier detection",
+    				p("Choose the method to detect outliers"),
+    				radioButtons("outlierDetect", label = "",
+    						 choices = c("SD criterion", "Grubber's test", "Rosner's test"), 
+    						 selected = "SD criterion", inline = T),
+    				uiOutput("nbOutlier")
+    			)
+    		)
+    	} else {NULL}
+    	
+    })
+    
+    output$nbOutlier <- renderUI({
+    	
+    	if(!is.null(input$outlierDetect)){
+    		if(!input$outlierDetect == "SD criterion"){
+    			div(
+    			br(),
+    			p("Choose the number of outliers to detect"),
+    			numericInput("numOutlier", label = "", value = 3, min = 0, max = 10, step = 1, width = '15%')
+    			)
+    			
+    		} else {NULL}
+    	} else {NULL}
+    	
+    })
+    
     }
     
     }#eo server
