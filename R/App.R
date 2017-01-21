@@ -5223,8 +5223,6 @@ runElementR <- function(){ # nocov start
     	}
     })
     
-
-    
     # set elemUsed
     observe({
       if(is.null(input$selectall)){
@@ -5402,8 +5400,8 @@ runElementR <- function(){ # nocov start
                     minP <- currentNISTData$temp[1,1]
                     maxP <- currentNISTData$temp[dim(currentNISTData$temp)[1],1]
                     
-                    value1 <- c(minB, minB + (maxB - minB)/6)
-                    value2 <- c(minB + (maxP - minP)*2/6,minB + (maxP - minP)*4/6)
+                    value1 <- currentProject()$detectBlank(currentNISTData$temp, col = grep(currentProject()$elemStand, colnames(currentNISTData$temp)))
+                    value2 <- currentProject()$detectPlateau(currentNISTData$temp, col = grep(currentProject()$elemStand, colnames(currentNISTData$temp)))
                     step <- currentProject()$standards[[1]]$setRep_pas()
                     
                     
@@ -7404,8 +7402,8 @@ runElementR <- function(){ # nocov start
                           minPS <- currentSampleData$temp[1,1]
                           maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          value1S <- c(minBS, minBS + (maxBS - minBS)/6)
-                          value2S <- c(minBS + (maxPS - minPS)*2/6, minBS + (maxPS - minPS)*4/6)
+                          value1S <- currentProject()$detectBlank(currentSampleData$temp, col = grep(currentProject()$elemStand, colnames(currentSampleData$temp)))
+                          value2S <- currentProject()$detectPlateau(currentSampleData$temp, col = grep(currentProject()$elemStand, colnames(currentSampleData$temp)))
                           step <- currentProject()$samples[[currentSampleNumberRep$temp]]$setRep_pas()
                           
                           fluidRow(
@@ -7511,8 +7509,8 @@ runElementR <- function(){ # nocov start
                           minPS <- currentSampleData$temp[1,1]
                           maxPS <- currentSampleData$temp[dim(currentSampleData$temp)[1],1]
                           
-                          value1S <- c(minBS, minBS + (maxBS - minBS)/6)
-                          value2S <- c(minBS + (maxPS - minPS)*2/6,minBS + (maxPS - minPS)*4/6)
+                          value1S <- currentProject()$detectBlank(currentSampleData$temp, col = grep(currentProject()$elemStand, colnames(currentSampleData$temp)))
+                          value2S <- currentProject()$detectPlateau(currentSampleData$temp, col = grep(currentProject()$elemStand, colnames(currentSampleData$temp)))
                           step <- currentProject()$samples[[currentSampleNumberRep$temp]]$setRep_pas()
                           
                           fluidRow(

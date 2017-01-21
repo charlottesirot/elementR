@@ -539,6 +539,80 @@ elementR_project <- R6Class("elementR_project",
                               summarySettings = matrix(), # A matrix summarizing all the parameters set by user for each replicate (sample and standard)
                               ChoiceUserCorr = NA, # a logical value corresponding to the choice of the user to correct or no the session based on the first step of configuration
                               
+                              
+                              ##################################################################################################
+                              # Name: insert.at
+                              # Function: insert values in vectors
+                              # inputs: a = a vector, pos =  the position to insert,  toInsert = a vector to insert
+                              ##################################################################################################
+                              
+                              insert.at = function(a, pos, toInsert){
+                              	dots <- list(toInsert)
+                              	stopifnot(length(dots)==length(pos))
+                              	result <- vector("list",2*length(pos)+1)
+                              	result[c(TRUE,FALSE)] <- split(a, cumsum(seq_along(a) %in% (pos)))
+                              	result[c(FALSE,TRUE)] <- dots
+                              	unlist(result)
+                              },
+                              
+                              ##################################################################################################
+                              # Name: detectPlateau
+                              # Function: detection of the plateau limits
+                              # inputs: dat = the data to proceed, col =  the column which is used for the detection 
+                              ##################################################################################################
+                              
+                              detectPlateau = function(dat, col){
+                              	
+                              	naLines <- which(is.na(dat[,col]))
+                              	
+                              	kmean <- kmeans(na.omit(dat[,col]),2, algorithm = "Hartigan-Wong")
+                              	
+                              	if(!self$is.integer0(naLines)){
+                              		temp <- self$insert.at(kmean$cluster, naLines, rep(NA, length(naLines)))
+                              	} else {
+                              		temp <- kmean$cluster
+                              	}
+                              	
+                              	dat1 <- cbind(dat, temp)
+                              	
+                              	datList <- list(dat1[which(dat1[,ncol(dat1)] == 1),], dat1[which(dat1[,ncol(dat1)] == 2),])
+                              	
+                              	meanStand <- sapply(1:length(datList), function(x){
+                              		mean(datList[[x]][,col])
+                              	})
+                              	
+                              	plateau <- which(meanStand == max(meanStand))
+                              	
+                              	limitPlateau <- c(dat1[which(kmean$cluster == plateau)[1]+1,1], dat1[which(kmean$cluster == plateau)[length(which(kmean$cluster == plateau))]-1,1])
+                              	
+                              	return(limitPlateau)
+                              	
+                              },
+                              
+                              ##################################################################################################
+                              # Name: detectBlank
+                              # Function: detection of the blank limits
+                              # inputs: dat = the data to proceed, col =  the column which is used for the detection 
+                              ##################################################################################################
+                              
+                              detectBlank = function(dat, col){
+                              	
+                              	rolMedian <- rollmedian(dat[,col], 3)
+                              	
+                              	deriv1 <- sapply(1:length(rolMedian), function(x){
+                              		
+                              		(rolMedian[x+1] - rolMedian[x])/(dat[x+1,1] - dat[x,1])
+                              		
+                              	})
+                              	
+                              	maxDeriv1 <- max(deriv1, na.rm = T)
+                              	
+                              	endBlank <- which(deriv1 == maxDeriv1)[1] - 1
+                              	
+                              	return(c(1,dat[endBlank,1]))
+                              	
+                              },
+                              
                               ##################################################################################################
                               # Name: set_ChoiceUserCorr
                               # Function: set self$ChoiceUserCorr
