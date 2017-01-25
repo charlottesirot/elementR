@@ -1,6 +1,7 @@
 exportPattern("^[[:alpha:]]+")
 
 importFrom(R6, R6Class)
+importFrom(outliers, grubbs.test)
 importFrom(zoo, rollmedian)
 importFrom(shinyjs, colourInput)
 importFrom(shinyjs, delay)

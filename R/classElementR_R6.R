@@ -272,7 +272,7 @@ elementR_standard <- R6Class("elementR_standard",
                                   dataOutlierFree = NA, # A matrix corresponding to the self$dataNorm without abnomalities
                                   data_standFinalMean = NA, # A vector corresponding to the average of self$dataOutlierFree per chemical element
                                   data_standFinalSD = NA, # A vector corresponding to the standard deviation of self$dataOutlierFree per chemical element
-                                  type = "standard", # A character string indicating the type of replicate (here, "standard")             
+                                  type = "standard", # A character string indicating the type of replicate (here, "standard")   
                                   
                                   ##################################################################################################
                                   # Name: setDataOutlierFree
@@ -281,24 +281,24 @@ elementR_standard <- R6Class("elementR_standard",
                                   ##################################################################################################
                                   
                                   setDataOutlierFree = function(bins, plat, rempl){
-                                    
-                                    self$setDataNorm(bins,plat, rempl)
-                                    
-                                    ValMax <- apply(self$dataNorm[,-1], 2, function(k){mean(k, na.rm = TRUE) + 2*sd(k,na.rm = TRUE)})
-                                                                        
-                                    ValMin <- apply(self$dataNorm[,-1], 2, function(k){mean(k, na.rm = TRUE) - 2*sd(k,na.rm = TRUE)})
-                                                                        
-                                    subDat <- do.call(rbind,lapply(1:dim(self$dataNorm[,-1])[1], function(z){
-                                      
-                                      l <- self$dataNorm[z,-1]
-                                      l[l < ValMin | l > ValMax] <- NA
-                                      l
-                                      
-                                    }))
-                                    
-                                    self$dataOutlierFree <- cbind(as.matrix(self$dataNorm[,1]),subDat)
-                                    
-                                  }, 
+                                  	
+                                  	self$setDataNorm(bins,plat, rempl)
+                                  	
+                                  	ValMax <- apply(self$dataNorm[,-1], 2, function(k){mean(k, na.rm = TRUE) + 2*sd(k,na.rm = TRUE)})
+                                  	
+                                  	ValMin <- apply(self$dataNorm[,-1], 2, function(k){mean(k, na.rm = TRUE) - 2*sd(k,na.rm = TRUE)})
+                                  	
+                                  	subDat <- do.call(rbind,lapply(1:dim(self$dataNorm[,-1])[1], function(z){
+                                  		
+                                  		l <- self$dataNorm[z,-1]
+                                  		l[l < ValMin | l > ValMax] <- NA
+                                  		l
+                                  		
+                                  	}))
+                                  	
+                                  	self$dataOutlierFree <- cbind(as.matrix(self$dataNorm[,1]),subDat)
+                                  	
+                                  },
                                   
                                   ##################################################################################################
                                   # Name: setdata_standFinal
@@ -410,11 +410,15 @@ elementR_sample <- R6Class("elementR_sample",
                              # Input: bins = a numerical value corresponding to the time at which end the blank values, plat = a vector of two numerical values corresponding respectively to the time at which begin and end the plateau, name = a character string corresponding to the name of the sample replicates, calibFile = a matrix corresponding to the the calibration file, meanStand = a vector containing the averaged signal intensity per chemical element for all standard replicates of the running session, rank = a vector containing the rank of each sample in ICPMS analysis, correction = a vector indicating the chemical elements to correct from machine drift, model = the matrix containing the parameters of the linear regression corresponding to machine drift for all chemical elements
                              ##################################################################################################
 
-                             setDataConcCorr = function(bins, plat, name, calibFile, meanStand, rank, model, correction, rempl){
+                             setDataConcCorr = function(bins, plat, name, calibFile, meanStand, rankSample, rankStandard, model, correction, rempl,threshold){
+                             	
+                             	if(is.null(threshold)){
+                             		threshold <- 0.75
+                             	} else {}
                                
                                self$setDataConc(bins = bins, plat = plat, calibFile = calibFile, meanStand = meanStand, rempl = rempl)
                                
-                               rank <- rank[which(names(rank) == name)]
+                               rankSample <- rankSample[which(names(rankSample) == name)]
                                
                                temp <- sapply(2:ncol(self$dataNorm), function(x){
                                  
@@ -423,18 +427,47 @@ elementR_sample <- R6Class("elementR_sample",
                                    return(self$dataNorm[,x] * calibFile[1,x]/ meanStand[x-1])
                                    
                                  }
+                               	
                                  if(correction[x-1] == TRUE){
+                                 	
+                                 	if(!is.na(model[x-1,7])){
+                                 		
+                                 		if(model[x-1,7] < threshold){
+                                 			
+                                 			Standard1 <- which(abs(rankStandard - rankSample) == min(abs(rankStandard - rankSample)))
+                                 			
+                                 			if(rankSample < rankStandard[Standard1]){
+                                 				
+                                 				Standard2 <- rankStandard[Standard1-1]
+                                 				
+                                 			} else {
+                                 				Standard2 <- rankStandard[Standard1+1]
+                                 			}
+                                 			
+                                 			modelneighbor <- lm(c(meanStand[Standard1], meanStand[Standard2]) ~ c(Standard1, Standard2))
+                                 			
+                                 			StandTheoric <- modelneighbor$coefficients[1] + rankSample * modelneighbor$coefficients[2]
+                                 			
+                                 			return(self$dataNorm[,x] * calibFile[1,x] / StandTheoric)
+                                 			
+                                 		} else {
+                                 			
+                                 			StandTheoric <- model[x-1,5] + rankSample * model[x-1, 6]
+                                 			
+                                 			return(self$dataNorm[,x] * calibFile[1,x] / StandTheoric)	
+                                 			
+                                 		}
+                                 		
+                                 	} else {}
                                    
-                                   StandTheoric <- model[x-1,5] + rank * model[x-1, 6]
-                                   
-                                   return(self$dataNorm[,x] * calibFile[1,x] / StandTheoric)
-                                   
-                                 }           
+                                 }      
+                               	
                                })
                                
                                tabTemp <- cbind(as.matrix(self$dataNorm[,1]),temp)
                                
                                colnames(tabTemp) <- colnames(self$dataNorm)
+                               
                                self$dataConcCorr <- tabTemp
                                
                                
@@ -447,7 +480,7 @@ elementR_sample <- R6Class("elementR_sample",
                              # Output: a matrix of the required data
                              ##################################################################################################
                              
-                             getData = function(curve, bins, plat, name, meanStand, rank, model, calibFile, correction, rempl){
+                             getData = function(curve, bins, plat, name, meanStand, rankSample, rankStandard, model, calibFile, correction, rempl,threshold){
                               
                                if(curve =="Blank") {self$setDataBlanc(bins = bins)
                                                          return(self$dataBlank)}
@@ -470,7 +503,7 @@ elementR_sample <- R6Class("elementR_sample",
                                if(curve =="Concentration") {self$setDataConc(bins = bins, plat = plat, calibFile = calibFile, meanStand = meanStand, rempl = rempl)
                                                                  return(self$dataConc) }
                                
-                               if(curve == "Conc. corrected") {self$setDataConcCorr(bins = bins, plat, name, calibFile = calibFile, meanStand = meanStand, rank = rank, model = model, correction = correction, rempl = rempl)
+                               if(curve == "Conc. corrected") {self$setDataConcCorr(bins = bins, plat, name, calibFile = calibFile, meanStand = meanStand, rankSample = rankSample, rankStandard = rankStandard, model = model, correction = correction, rempl = rempl, threshold = threshold)
                                                                     return(self$dataConcCorr)}
                                
                              },
@@ -593,7 +626,7 @@ elementR_project <- R6Class("elementR_project",
                               	
                               	plateau <- which(meanStand == max(meanStand))
                               	
-                              	limitPlateau <- c(dat1[which(kmean$cluster == plateau)[1]+1,1], dat1[which(kmean$cluster == plateau)[length(which(kmean$cluster == plateau))]-1,1])
+                              	limitPlateau <- c(dat1[which(kmean$cluster == plateau)[1],1], dat1[which(kmean$cluster == plateau)[length(which(kmean$cluster == plateau))],1])
                               	
                               	return(limitPlateau)
                               	
@@ -1003,8 +1036,7 @@ elementR_project <- R6Class("elementR_project",
                                     
                                   } else {}
                                   
-                                  }
-                                
+                                }
                                 
                                 names(self$nbCalib) <- self$listeElem
                                 
@@ -1026,6 +1058,7 @@ elementR_project <- R6Class("elementR_project",
                                 }
                                 
                               },
+                              
                               
                               ##################################################################################################
                               # Name: initialize
@@ -1177,6 +1210,7 @@ elementR_project <- R6Class("elementR_project",
                                 
 
                               }
+                              
                             ),#public
                             private = list(
                               aMethod = function() self$name
@@ -1513,8 +1547,134 @@ elementR_repSample <- R6Class("elementR_repSample",
                                  colnames(MatTemp) <- colnames(self$rep_data[[1]]$data)
                                  
                                  self$rep_dataFinalRaster <- MatTemp
-                               }                               
+                               },                               
 
+                               ##################################################################################################
+                               # Name: RealignCol
+                               # Function: realign two tables according to one column
+                               # Input: 
+                               # 	dat1 & dat2: matrix to realign
+                               # 	col: the column to realign
+                               # 	step: the step between two consecutive analysis
+                               ##################################################################################################
+                               
+                               RealignCol = function(dat1, dat2, col, step){
+                               	
+                               	dat1[is.na(dat1[,col]),col] <- 0
+                               	dat2[is.na(dat2[,col]),col] <- 0
+                               	
+                               	N <- which(convolve(dat2[,col], dat1[,col], type = "open") == max(convolve(dat2[,col], dat1[,col], type = "open")))[1] - 1
+                               	
+                               	essN <- dat2[,1] + (length(min(dat2[,1]) : max(dat1[,1])) - 1) - N*step
+                               	
+                               	dat2[,1] <- essN
+                               	
+                               	data <- list(dat1, dat2)
+                               	
+                               	return(data)
+                               },
+                               
+                               ##################################################################################################
+                               # Name: RealignColList
+                               # Function: realign many tables according to one column
+                               # Input: 
+                               # 	listRealig a list of matrix to realign
+                               # 	col: the column to realign
+                               # 	step: the step between two consecutive analysis
+                               ##################################################################################################
+                               
+                               RealignColList = function(listRealig, col, step){
+                               	
+                               	realignList <- lapply(1:length(listRealig), function(x){
+                               		
+                               		if(x == 1){
+                               			
+                               			dat1 <- listRealig[[1]]
+                               			dat2 <- listRealig[[1]]
+                               			
+                               			RealignCol(dat1, dat2, col, step)[[2]]
+                               			
+                               		}else {
+                               			
+                               			dat1 <- listRealig[[1]]
+                               			dat2 <- listRealig[[x]]
+                               			
+                               			RealignCol(dat1, dat2, col, step)[[2]]
+                               		}
+                               	})
+                               	
+                               	names(realignList) <- self$rep_Files
+                               	
+                               	return(realignList)
+                               },
+                               
+                               ##################################################################################################
+                               # Name: RealignAll
+                               # Function: realign two tables according to all columns
+                               # Input: 
+                               # 	dat1 & dat2: matrix to realign
+                               # 	step: the step between two consecutive analysis
+                               ##################################################################################################
+                               
+                               RealignAll = function(dat1, dat2, step){
+                               	
+                               	listConv <- sapply(2:ncol(dat1), function(x){
+                               		
+                               		dat1[is.na(dat1[,x]),x] <- 0
+                               		dat2[is.na(dat2[,x]),x] <- 0
+                               		
+                               		convolve(dat2[,x], dat1[,x], type = "open")
+                               		
+                               	})
+                               	
+                               	convResult <- apply(listConv, 1, sum)
+                               	
+                               	N <- which(convResult == max(convResult))[1] -1
+                               	
+                               	essN <- dat2[,1] + (length(min(dat2[,1]) : max(dat1[,1])) - 1) - N*step
+                               	
+                               	dat2[,1] <- essN
+                               	
+                               	data <- list(dat1, dat2)
+                               	
+                               	return(data)
+                               },
+                               
+                               ##################################################################################################
+                               # Name: RealignListAll
+                               # Function: realign many tables according to all columns
+                               # Input: 
+                               # 	listRealig a list of matrix to realign
+                               # 	step: the step between two consecutive analysis
+                               ##################################################################################################
+                               
+                               RealignListAll = function(listRealig, step){
+                               	
+                               	realignList <- lapply(1:length(listRealig), function(x){
+                               		
+                               		if(x == 1){
+                               			
+                               			dat1 <- listRealig[[1]]
+                               			dat2 <- listRealig[[1]]
+                               			
+                               			RealignAll(dat1, dat2, step)[[2]]
+                               			
+                               		}else {
+                               			
+                               			dat1 <- listRealig[[1]]
+                               			dat2 <- listRealig[[x]]
+                               			
+                               			RealignAll(dat1, dat2, step)[[2]]
+                               		}
+                               	})
+                               	
+                               	names(realignList) <- self$rep_Files
+                               	
+                               	return(realignList)
+                               	
+                               }
+                               
+                               
                                
                              ) # list
 ) # elementR_repstand

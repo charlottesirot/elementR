@@ -2206,7 +2206,17 @@ runElementR <- function(){ # nocov start
                           } else if(is.null(Temp2S$t)){
                           } else {
                             if(is.finite(TempS$t)){
-                              curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                              curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], 
+                              						    bins = c(TempS$t, Temp0S$t), 
+                              						    plat = c(Temp1S$t,Temp2S$t), 
+                              						    name = input$SampleIn2, 
+                              						    meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                              						    rankSample = currentProject()$sampleRank, 
+                              						    rankStandard = currentProject()$standardRank,
+                              						    model = currentProject()$regressionModel, 
+                              						    calibFile = currentProject()$EtalonData, 
+                              						    correction = currentProject()$machineCorrection, 
+                              						    rempl = input$valRemplace,threshold = input$R2)
                               
                             } else {}
                           }
@@ -2279,7 +2289,18 @@ runElementR <- function(){ # nocov start
                           } else if(is.null(Temp1S$t)){
                           } else if(is.null(Temp2S$t)){
                           } else{
-                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], 
+                            										   bins = c(TempS$t, Temp0S$t), 
+                            										   plat = c(Temp1S$t,Temp2S$t), 
+                            										   name = input$SampleIn2, 
+                            										   meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                            										   rankSample = currentProject()$sampleRank, 
+                            										   rankStandard = currentProject()$standardRank,
+                            										   model = currentProject()$regressionModel, 
+                            										   calibFile = currentProject()$EtalonData, 
+                            										   correction = currentProject()$machineCorrection, 
+                            										   rempl = input$valRemplace, 
+                            										   threshold = input$R2)
                             } else {}
                           }
                         } else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
@@ -2346,7 +2367,17 @@ runElementR <- function(){ # nocov start
                           } else if(is.null(Temp1S$t)){
                           } else if(is.null(Temp2S$t)){
                           } else{
-                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                            if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], 
+                            										   bins = c(TempS$t, Temp0S$t), 
+                            										   plat = c(Temp1S$t,Temp2S$t), 
+                            										   name = input$SampleIn2,
+                            										   meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                            										   rankSample = currentProject()$sampleRank, 
+                            										   rankStandard = currentProject()$standardRank,
+                            										   model = currentProject()$regressionModel, 
+                            										   calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, 
+                            										   rempl = input$valRemplace, 
+                            										   threshold = input$R2)
                             } else {}
                           }
                         } else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
@@ -2412,7 +2443,18 @@ runElementR <- function(){ # nocov start
                             } else if(is.null(Temp1S$t)){
                             } else if(is.null(Temp2S$t)){
                             }else{
-                              if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                              if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], 
+                              										   bins = c(TempS$t, Temp0S$t), 
+                              										   plat = c(Temp1S$t,Temp2S$t), 
+                              										   name = input$SampleIn2, 
+                              										   meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                              										   rankSample = currentProject()$sampleRank, 
+                              										   rankStandard = currentProject()$standardRank,
+                              										   model = currentProject()$regressionModel, 
+                              										   calibFile = currentProject()$EtalonData, 
+                              										   correction = currentProject()$machineCorrection, 
+                              										   rempl = input$valRemplace,
+                              										   threshold = input$R2)
                               } else {}
                             }
                             
@@ -5223,7 +5265,7 @@ runElementR <- function(){ # nocov start
     observe({
     	if(!is.null(currentProject())){
     		if(!is.null(input$standardIn)){
-    			currentNISTData$temp <-  currentProject()$standards[[1]]$rep_data[[currentNumber$temp]]$data
+    			currentNISTData$temp <-  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]$data
     		}
     	}
     })
@@ -5231,7 +5273,7 @@ runElementR <- function(){ # nocov start
     observe({
     	if(!is.null(currentProject())){
     		if(!is.null(input$standardIn)){
-    			currentNISTRep$temp <-  currentProject()$standards[[1]]$rep_data[[currentNumber$temp]]
+    			currentNISTRep$temp <-  currentProject()$standards[[1]]$rep_data[[grep(input$standardIn, currentProject()$standardsFiles)]]
     		}
     	}
     })
@@ -7245,8 +7287,6 @@ runElementR <- function(){ # nocov start
     	}
     })
     
-
-    
     #signiS
     observe({
       validCorrection$temp
@@ -7389,6 +7429,7 @@ runElementR <- function(){ # nocov start
                 output$distPlotSample <- renderPlot({}) # eo input$distPlotSample
                 
                 output$distPlot2Sample <- renderPlot({})# eo input$distPlot2Sample
+                
               }else{
                 
                 
@@ -8374,7 +8415,30 @@ runElementR <- function(){ # nocov start
               }else if(is.null(Temp2S$t)){
               }else{
                 if(is.finite(TempS$t)){
-                  dataPlot2Sample$datS <- currentSampleRep$temp$getData(curve = input$CourbeSample, bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2, meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  dataPlot2Sample$datS <- currentSampleRep$temp$getData(curve = input$CourbeSample, 
+                  									bins = c(TempS$t, Temp0S$t), 
+                  									plat = c(Temp1S$t,Temp2S$t), 
+                  									name = input$SampleIn2, 
+                  									meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                  									rankSample = currentProject()$sampleRank, 
+                  									rankStandard = currentProject()$standardRank,
+                  									model = currentProject()$regressionModel, 
+                  									calibFile = currentProject()$EtalonData, 
+                  									correction = currentProject()$machineCorrection, 
+                  									rempl = input$valRemplace, threshold = input$R2)
+                  
+                  # A <- currentSampleRep$temp$getData(curve = "Conc. corrected", 
+                  # 						bins = c(TempS$t, Temp0S$t), 
+                  # 						plat = c(Temp1S$t,Temp2S$t), 
+                  # 						name = input$SampleIn2, 
+                  # 						meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                  # 						rankSample = currentProject()$sampleRank, 
+                  # 					      rankStandard = currentProject()$standardRank,
+                  # 						model = currentProject()$regressionModel, 
+                  # 						calibFile = currentProject()$EtalonData, 
+                  # 						correction = currentProject()$machineCorrection, 
+                  # 						rempl = input$valRemplace, threshold = input$R2)
+                  
                   BAV_Sample$temp <- currentSampleRep$temp$BlankAverarge
                   LOD_Sample$temp <- currentSampleRep$temp$LOD
                 } else {}
@@ -8491,7 +8555,16 @@ runElementR <- function(){ # nocov start
                   currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 1)
                   currentSampleRep$temp$setBins(bins = c(currentSampleData$temp[TempS$t,1], currentSampleData$temp[Temp0S$t,1]))
                   currentSampleRep$temp$setPlat(plat = c(currentSampleData$temp[Temp1S$t,1],currentSampleData$temp[Temp2S$t,1]))
-                  currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), 
+                  						  name = input$SampleIn2,
+                  						  meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                  						  rankSample = currentProject()$sampleRank, 
+                  						  rankStandard = currentProject()$standardRank,
+                  						  model = currentProject()$regressionModel, 
+                  						  calibFile = currentProject()$EtalonData,
+                  						  correction = currentProject()$machineCorrection, 
+                  						  rempl = input$valRemplace, 
+                  						  threshold = input$R2)
                   
                   if(currentProject()$ChoiceUserCorr == F | (currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) == 0)) {
                     currentSampleRep$temp$reset()
@@ -8518,16 +8591,32 @@ runElementR <- function(){ # nocov start
                   currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 1)
                   currentSampleRep$temp$setBins(bins = c(currentSampleData$temp[TempS$t,1], currentSampleData$temp[Temp0S$t,1]))
                   currentSampleRep$temp$setPlat(plat = c(currentSampleData$temp[Temp1S$t,1],currentSampleData$temp[Temp2S$t,1]))
-                  currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), name = input$SampleIn2,meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], rank = currentProject()$sampleRank, model = currentProject()$regressionModel, calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection, rempl = input$valRemplace)
+                  currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), 
+                  						  name = input$SampleIn2,
+                  						  meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+                  						  rankSample = currentProject()$sampleRank, 
+                  						  rankStandard = currentProject()$standardRank,
+                  						  model = currentProject()$regressionModel, 
+                  						  calibFile = currentProject()$EtalonData, 
+                  						  correction = currentProject()$machineCorrection, 
+                  						  rempl = input$valRemplace, 
+                  						  threshold =  input$R2)
 
                   if(currentProject()$ChoiceUserCorr == F | (currentProject()$ChoiceUserCorr == T & length(which(currentProject()$machineCorrection == T)) == 0)) {
+                  	
                     currentSampleRep$temp$reset()
+                  	
                   } else {}
+                  
                   currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentSampleData$temp[TempS$t,1], bins2 = currentSampleData$temp[Temp0S$t,1], plat1 = currentSampleData$temp[Temp1S$t,1], plat2 = currentSampleData$temp[Temp2S$t,1], average = currentSampleRep$temp$BlankAverarge, LOD = currentSampleRep$temp$LOD)
                   passageS <- names(currentProject()$flag_Sample[[currentSampleNumberRep$temp]] == 0)[currentProject()$flag_Sample[[currentSampleNumberRep$temp]] == 0][1]
+                  
                   if(!is.na(passageS)){
+                  	
                     delay(2000,updateSelectInput(session, "SampleIn2", selected = passageS))
+                  	
                   } else {}
+                  
                 })
               } else {}
               
@@ -8670,7 +8759,7 @@ runElementR <- function(){ # nocov start
                                      div("Averaged", style = "display: inline-block")
                                  ),
                                  br(),
-                                 p("Replicates to average"),
+                                 h3("1. Replicates to average"),
                                  div(checkboxGroupInput("ReplicateSpot", label = "",
                                                         choices = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files),
                                                         selected = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)),style = "margin-top: -10px"),
@@ -8876,113 +8965,126 @@ runElementR <- function(){ # nocov start
                   } else {}
                   
                   if(input$typeTraitement == "raster" & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 0 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
-                    
-                    currentProject()$set_flagRealign(replicate = grep(input$selectRealign,currentProject()$samplesFiles), type = "raster", value = 0)
-                    
-                    output$realign4 <- renderTable({NULL}) # eo output$realign4
-                    
-                    output$realign3 <- renderUI({
-                      
-                      fluidRow(
-                        box(
-                          solidHeader = TRUE,
-                          status = "warning",
-                          width = 12,
-                          
-                          title = list(icon("area-chart"), "Raster realignment"),
-                          column(3,
-                                 br(),
-                                 p("Replicates to average"),
-                                 div(checkboxGroupInput("ReplicateSample", label = "",
-                                                        choices = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files),
-                                                        selected = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)),style = "margin-top: -10px"),
-                                 selectInput("elemRaster","Element to realign",choices = currentProject()$listeElem, selected = currentProject()$listeElem[1]),
-                                 uiOutput('replicates'),
-                                 br(),
-                                 actionButton("MoyenneRaster", "Mean")
-                          ),
-                          column(9,
-                                 plotOutput("realign5")
-                          )
-                        )
-                        
-                      )
-                      
-                    }) # eo output$realign3
-                    
-                    for (i in 1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)) {
-                      local({
-                        my_i <- i
-                        plotname <- paste("plot", my_i, sep="")
-                        
-                        output[[plotname]] <- renderUI({
-                          numericInput(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][i],paste0("realign", currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files[i]),value = 0)
-                        })
-                      })
-                    }
-                    
-                    output$realign5 <- renderPlot({
-                      
-                      deplace$val
-                      
-                      par(mar = c(5.1,4.1,1.5,1.5))
-                      
-                      if(!is.null(input$ReplicateSample)){
-                        if(is.list(tabProvSample$temp)){
-                          if(length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
-                            if(length(which(!is.na(unlist(lapply(1:length(tabProvSample$temp), function(x){tabProvSample$temp[[x]][,input$elemRaster]}))))) == 0){
-                              plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
-                              text(1,0.5, labels = "No data different from NA for this element", cex = 2)
-                            } else {
-                              if(length(grep(input$selectRealign,currentProject()$samplesFiles)) == 0){
-                                
-                              } else {
-                                
-                                ylim <- c(min(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,input$elemRaster]})), na.rm = TRUE))
-                                
-                                xlim <- c(min(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,1]}))),max(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,1]}))))
-                                
-                                lapply(1:length(input$ReplicateSample), function(x){
-                                  
-                                  if(length(which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])) == 0){
-                                    
-                                  }else{
-                                    plot(tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,1],tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,input$elemRaster] , xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", main = "", col = colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])] )
-                                    
-                                    par(new = TRUE)
-                                  }
-                                  
-                                })
-                                
-                                legend("topright", legend = input$ReplicateSample, col = sapply(1:length(input$ReplicateSample), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])]}), pch = 1, lwd=1, lty=1)
-                              }
-                            }
-                          } else {}
-                        } else {}
-                      } else {}
-                    }) # eo output$realign5
-                    
-                    output$realign2 <- renderUI({
-                      fluidRow(
-                        box(
-                          title = list(icon("floppy-o"),"Graphic export"),
-                          status = "warning",
-                          solidHeader = TRUE,
-                          collapsible = TRUE,
-                          collapsed = TRUE,
-                          width = 12,
-                          column(10, selectizeInput("RealignElementToExport", label = "Element(s) to export",
-                                                    choices = currentProject()$listeElem,
-                                                    selected = currentProject()$listeElem, multiple = TRUE)),
-                          column(2, br(), actionButton("RealignExportGraph","Export graphics"))
-                        )
-                      )
-                    }) # eo output$realign2
+                  	
+                  	updateSelectInput(session, "elemRaster", selected = input$elemRaster)
+                   
+                  	currentProject()$set_flagRealign(replicate = grep(input$selectRealign,currentProject()$samplesFiles), type = "raster", value = 0)
+                  	
+                  	output$realign4 <- renderTable({NULL}) # eo output$realign4
+                  	
+                  	output$realign3 <- renderUI({
+                  		
+                  		fluidRow(
+                  			box(
+                  				solidHeader = TRUE,
+                  				status = "warning",
+                  				width = 12,
+                  				
+                  				title = list(icon("area-chart"), "Raster realignment"),
+                  				column(3,
+                  					 br(),
+                  					 h3("1. Replicates to average"),
+                  					 div(checkboxGroupInput("ReplicateSample", label = "",
+                  					 			     choices = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files),
+                  					 			     selected = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)),style = "margin-top: -10px"),
+                  					 h3("2. Outlier detection"),
+                  					 uiOutput("DetectOutlier"),
+                  					 h3("3. Realignment of replicates"),
+                  					 selectInput("elemRaster","",choices = currentProject()$listeElem, selected = currentProject()$listeElem[1]),
+                  					 column(width = 6, actionButton("ReplicatCol", "This element")),
+                  					 column(width = 6, actionButton("ReplicatAll", "All element")),
+                  					 br(),
+                  					 br(),
+                  					 br(),
+                  					 br(),
+                  					 uiOutput('replicates'),
+                  					 br(),
+                  					 actionButton("MoyenneRaster", "Mean")
+                  				),
+                  				column(9,
+                  					 plotOutput("realign5")
+                  				)
+                  			)
+                  			
+                  		)
+                  		
+                  	}) # eo output$realign3
+                  	
+                  	for (i in 1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)) {
+                  		local({
+                  			my_i <- i
+                  			plotname <- paste("plot", my_i, sep="")
+                  			
+                  			output[[plotname]] <- renderUI({
+                  				numericInput(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][i],paste0("realign", currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files[i]),value = 0)
+                  			})
+                  		})
+                  	}
+                  	
+                  	output$realign5 <- renderPlot({
+                  		
+                  		deplace$val
+                  		
+                  		par(mar = c(5.1,4.1,1.5,1.5))
+                  		
+                  		if(!is.null(input$ReplicateSample)){
+                  			if(is.list(tabProvSample$temp)){
+                  				if(length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
+                  					if(length(which(!is.na(unlist(lapply(1:length(tabProvSample$temp), function(x){tabProvSample$temp[[x]][,input$elemRaster]}))))) == 0){
+                  						plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
+                  						text(1,0.5, labels = "No data different from NA for this element", cex = 2)
+                  					} else {
+                  						if(length(grep(input$selectRealign,currentProject()$samplesFiles)) == 0){
+                  							
+                  						} else {
+                  							
+                  							ylim <- c(min(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,input$elemRaster]})), na.rm = TRUE))
+                  							
+                  							xlim <- c(min(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,1]}))),max(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[i]][,1]}))))
+                  							
+                  							lapply(1:length(input$ReplicateSample), function(x){
+                  								
+                  								if(length(which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])) == 0){
+                  									
+                  								}else{
+                  									plot(tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,1],tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,input$elemRaster] , xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", main = "", col = colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])] )
+                  									
+                  									par(new = TRUE)
+                  								}
+                  								
+                  							})
+                  							
+                  							legend("topright", legend = input$ReplicateSample, col = sapply(1:length(input$ReplicateSample), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])]}), pch = 1, lwd=1, lty=1)
+                  						}
+                  					}
+                  				} else {}
+                  			} else {}
+                  		} else {}
+                  	}) # eo output$realign5
+                  	
+                  	output$realign2 <- renderUI({
+                  		fluidRow(
+                  			box(
+                  				title = list(icon("floppy-o"),"Graphic export"),
+                  				status = "warning",
+                  				solidHeader = TRUE,
+                  				collapsible = TRUE,
+                  				collapsed = TRUE,
+                  				width = 12,
+                  				column(10, selectizeInput("RealignElementToExport", label = "Element(s) to export",
+                  								  choices = currentProject()$listeElem,
+                  								  selected = currentProject()$listeElem, multiple = TRUE)),
+                  				column(2, br(), actionButton("RealignExportGraph","Export graphics"))
+                  			)
+                  		)
+                  	}) # eo output$realign2
                     
                   } else {}
                   
                   if(input$typeTraitement == "raster" & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 2 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
                     
+                  	updateSelectInput(session, "elemRaster", selected = input$elemRaster)
+                  	
                     output$realign4 <- renderTable({NULL})  # eo output$realign4
                     
                     output$realign3 <- renderUI({
@@ -9229,6 +9331,63 @@ runElementR <- function(){ # nocov start
       
           }) # observe
     
+    output$DetectOutlier <- renderUI({
+
+    	if(!is.null(input$outlierDetect)){
+    		
+    		if(input$outlierDetect != "SD criterion"){
+    			div(
+    				br(),
+    				numericInput("numOutlier", label = "", value = 3, min = 0, max = 10, step = 1, width = '15%')
+    			)
+    		} else {NULL}
+    	} else {NULL}
+
+    })
+    
+    observe({
+    	if(is.null(input$outlierDetect)){
+    		print(1)
+    	} else {
+    		if(input$outlierDetect == "SD criterion"){
+    			print(2)
+    		} else if(input$outlierDetect == "Tietjen.Moore Test" & !is.null(input$numOutlier)){
+    			print(3)
+    		} else if(input$outlierDetect == "Rosner's test" & !is.null(input$numOutlier)){
+    			print(4)
+    		} else {} 
+    	}
+    })
+    
+    observe({
+    	if(!is.null(input$ReplicatCol)){
+    		if(input$ReplicatCol > 0){
+    			isolate({
+    				tabProvSample$temp <- currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$RealignColList(
+    					listRealig = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre, 
+    					col = input$elemRaster,
+    					step = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_pas)
+    				
+    				updateSelectInput(session, "elemRaster", selected = input$elemRaster)
+    			})
+    		} else {}
+    	} else {}
+    })
+    
+    observe({
+    	if(!is.null(input$ReplicatAll)){
+    		if(input$ReplicatAll > 0){
+    			isolate({
+    				tabProvSample$temp <- currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$RealignListAll(
+    					listRealig = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre, 
+    					step = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_pas)
+    				
+    				updateSelectInput(session, "elemRaster", selected = input$elemRaster)
+    			})
+    		} else {}
+    	} else {}
+    })
+    
     # define the numericInput widgets for the realignement (raster mode)
     output$replicates <- renderUI({
       if(!is.null(input$ReplicateSample)){
@@ -9236,7 +9395,7 @@ runElementR <- function(){ # nocov start
           if(length(which(is.element(input$ReplicateSample, names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])) == FALSE)) == 0){
             plot_output_list <- lapply(1:length(input$ReplicateSample), function(i) {
               plotname <- paste("plot", i, sep="")
-              numericInput(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[i])],paste0("realign of", currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files[which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[i])]),value = 0)
+              numericInput(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[i])], currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files[which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[i])],value = 0)
             })
           } else {}
         }else{}
@@ -9354,6 +9513,7 @@ runElementR <- function(){ # nocov start
             if(length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
               
               tabProvSample$temp <- currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$intermStepRaster(decalage = deplace$val, input = input$ReplicateSample)
+              
             } else {}
             
           }    else {}
@@ -9651,29 +9811,15 @@ runElementR <- function(){ # nocov start
     				title = "Outlier detection",
     				p("Choose the method to detect outliers"),
     				radioButtons("outlierDetect", label = "",
-    						 choices = c("SD criterion", "Grubber's test", "Rosner's test"), 
-    						 selected = "SD criterion", inline = T),
-    				uiOutput("nbOutlier")
+    						 choices = c("SD criterion", "Tietjen.Moore Test", "Rosner's test"), 
+    						 selected = "SD criterion", inline = T)
     			)
     		)
     	} else {NULL}
     	
     })
     
-    output$nbOutlier <- renderUI({
-    	
-    	if(!is.null(input$outlierDetect)){
-    		if(!input$outlierDetect == "SD criterion"){
-    			div(
-    			br(),
-    			p("Choose the number of outliers to detect"),
-    			numericInput("numOutlier", label = "", value = 3, min = 0, max = 10, step = 1, width = '15%')
-    			)
-    			
-    		} else {NULL}
-    	} else {NULL}
-    	
-    })
+
     
     }
     
