@@ -1684,7 +1684,7 @@ runElementR <- function(){ # nocov start
                         if(is.finite(Temp$t)){
                         	
                           curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), 
-                          						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                          						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                           
                         } else {}
                       }
@@ -1750,7 +1750,7 @@ runElementR <- function(){ # nocov start
                           if(is.finite(Temp$t)){
                           	
                             curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), 
-                            						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                            						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                           }
                         }
                       } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
@@ -1805,7 +1805,7 @@ runElementR <- function(){ # nocov start
                           if(is.finite(Temp$t)){
                           	
                             curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t), 
-                            						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                            						 plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                           }
                         }
                       } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
@@ -1856,7 +1856,7 @@ runElementR <- function(){ # nocov start
                       } else {
                         if(is.finite(Temp$t)){
                           curve <- currentNISTRep$temp$getData(curve = input$courveToExport[length(input$courveToExport)], 
-                          						 bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                          						 bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                         } else {}
                       }
                     } else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
@@ -6138,7 +6138,7 @@ runElementR <- function(){ # nocov start
             } else if(is.null(Temp2$t)){
             }else{
               if(is.finite(Temp$t)){
-                dataPlot2$dat <- currentNISTRep$temp$getData(curve = input$CourbeNIST, bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                dataPlot2$dat <- currentNISTRep$temp$getData(curve = input$CourbeNIST, bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                 BAV$temp <- currentNISTRep$temp$BlankAverarge
                 LOD$temp <- currentNISTRep$temp$LOD
               } else{}
@@ -6246,7 +6246,7 @@ runElementR <- function(){ # nocov start
                 currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 1)
                 currentNISTRep$temp$setBins(bins = c(currentNISTData$temp[Temp$t,1], currentNISTData$temp[Temp0$t,1]))
                 currentNISTRep$temp$setPlat(plat = c(currentNISTData$temp[Temp1$t,1],currentNISTData$temp[Temp2$t,1]))
-                currentNISTRep$temp$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                currentNISTRep$temp$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                 currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentNISTData$temp[Temp$t,1], bins2 = currentNISTData$temp[Temp0$t,1], plat1 = currentNISTData$temp[Temp1$t,1], plat2 = currentNISTData$temp[Temp2$t,1], average = currentNISTRep$temp$BlankAverarge, LOD = currentNISTRep$temp$LOD)
                 currentProject()$standards[[1]]$setRep_pas()
               })
@@ -6280,7 +6280,7 @@ runElementR <- function(){ # nocov start
                 currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 1)
                 currentNISTRep$temp$setBins(bins = c(currentNISTData$temp[Temp$t,1], currentNISTData$temp[Temp0$t,1]))
                 currentNISTRep$temp$setPlat(plat = c(currentNISTData$temp[Temp1$t,1],currentNISTData$temp[Temp2$t,1]))
-                currentNISTRep$temp$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace)
+                currentNISTRep$temp$setDataOutlierFree(bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = input$valRemplace, method = input$outlierDetect, nbOutliers = 3)
                 currentProject()$set_summarySettings(name = input$standardIn, rank = currentProject()$standardRank[which(names(currentProject()$standardRank) == input$standardIn)], bins1 = currentNISTData$temp[Temp$t,1], bins2 = currentNISTData$temp[Temp0$t,1], plat1 = currentNISTData$temp[Temp1$t,1], plat2 = currentNISTData$temp[Temp2$t,1], average = currentNISTRep$temp$BlankAverarge, LOD = currentNISTRep$temp$LOD)
                 currentProject()$standards[[1]]$setRep_pas()
               })
@@ -8667,6 +8667,8 @@ runElementR <- function(){ # nocov start
     
     ChosenElement <- reactiveValues(temp = NULL) # the element chosen for the realignement (raster mode)
     
+    outlierValues <- reactiveValues(temp = NULL)
+    
     # set flagSample$temp
     observe({
       if(is.null(input$saveNists)){
@@ -9055,6 +9057,15 @@ runElementR <- function(){ # nocov start
                   							})
                   							
                   							legend("topright", legend = input$ReplicateSample, col = sapply(1:length(input$ReplicateSample), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])]}), pch = 1, lwd=1, lty=1)
+                  							
+                  							if(!is.null(outlierValues$temp)){
+                  								lapply(1:length(outlierValues$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]), function(x){
+
+                  									points(names(outlierValues$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]])[x], outlierValues$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]][x], cex = 3, col ="deeppink")
+
+                  								})
+
+                  							} else{}
                   						}
                   					}
                   				} else {}
@@ -9217,6 +9228,8 @@ runElementR <- function(){ # nocov start
                               plot(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRaster[,1],currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRaster[,input$elemRaster], xlim = xlim, ylim = ylim, xlab = "", ylab = "", type = "l", lwd = 2)
                               
                               legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), NA), lwd = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), 2))
+                              
+                              
                             }
                           } else {}
                         } else {}
@@ -9337,28 +9350,50 @@ runElementR <- function(){ # nocov start
     		
     		if(input$outlierDetect != "SD criterion"){
     			div(
-    				br(),
-    				numericInput("numOutlier", label = "", value = 3, min = 0, max = 10, step = 1, width = '15%')
+    				numericInput("nbOutliers", label = "", value = 1, min = 0, max = 10, step = 1, width = '15%')
     			)
     		} else {NULL}
-    	} else {NULL}
+    	} else {
+    		div(
+    			numericInput("nbOutliers", label = "", value = 1, min = 0, max = 10, step = 1, width = '15%')
+    		)
+    	}
 
     })
     
     observe({
-    	if(is.null(input$outlierDetect)){
-    		print(1)
-    	} else {
-    		if(input$outlierDetect == "SD criterion"){
-    			print(2)
-    		} else if(input$outlierDetect == "Tietjen.Moore Test" & !is.null(input$numOutlier)){
-    			print(3)
-    		} else if(input$outlierDetect == "Rosner's test" & !is.null(input$numOutlier)){
-    			print(4)
-    		} else {} 
-    	}
+    	if(!is.null(input$nbOutliers)){
+    		if(!is.null(tabProvSample$temp)){
+    			
+    			dat <- do.call(what = rbind, args = tabProvSample$temp)
+    			
+    			if(is.null(input$outlierDetect)){
+    				method = "Rosner's test"
+    			} else {}
+    			
+    			Outliers <- currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_data[[1]]$detectOutlierMatrix(dat, method = method, nbOutliers = input$nbOutliers)
+    			
+    			OutlierValues <- lapply(1:length(Outliers), function(x){
+    				
+    				temp <- dat[Outliers[[x]], x]
+    				
+    				names(temp) <- dat[Outliers[[x]], 1]
+    				
+    				return(temp)
+    			})
+    			
+    			names(OutlierValues) <- colnames(tabProvSample$temp)
+    			
+    			outlierValues$temp <- OutlierValues
+    			
+    			# output$renderOUtlier <- renderUI({
+    			# 	lapply()
+    			# })
+    			
+    		} else {}
+    	} else{}
     })
-    
+
     observe({
     	if(!is.null(input$ReplicatCol)){
     		if(input$ReplicatCol > 0){
@@ -9367,6 +9402,8 @@ runElementR <- function(){ # nocov start
     					listRealig = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre, 
     					col = input$elemRaster,
     					step = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_pas)
+    				
+    				
     				
     				updateSelectInput(session, "elemRaster", selected = input$elemRaster)
     			})
@@ -9513,7 +9550,7 @@ runElementR <- function(){ # nocov start
             if(length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
               
               tabProvSample$temp <- currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$intermStepRaster(decalage = deplace$val, input = input$ReplicateSample)
-              
+
             } else {}
             
           }    else {}
@@ -9812,7 +9849,7 @@ runElementR <- function(){ # nocov start
     				p("Choose the method to detect outliers"),
     				radioButtons("outlierDetect", label = "",
     						 choices = c("SD criterion", "Tietjen.Moore Test", "Rosner's test"), 
-    						 selected = "SD criterion", inline = T)
+    						 selected = "Rosner's test", inline = T)
     			)
     		)
     	} else {NULL}

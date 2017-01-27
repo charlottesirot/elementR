@@ -251,7 +251,180 @@ elementR_data <- R6Class("elementR_data",
                              
                              self$dataNorm <- subDat
                              
-                           },#setDataNorm   
+                           },#setDataNorm  
+                           
+                           ##################################################################################################
+                           # Name: OutlierDetectTietjen
+                           # Function: return the place of the outlier according to Tietjen and outlier methods
+                           # Input: 
+                           # 	x: a vector of data
+                           # 	nbOutliers: number of oulier to detect
+                           #################################################################################################
+                           
+                           OutlierDetectTietjen = function(x, nbOutliers){
+                           	
+                           	flag <- 0
+                           	
+                           	for(i in nbOutliers:1){
+                           		
+                           		test <- FindOutliersTietjenMooreTest(x, i)
+                           		
+                           		if(test$T < test$Talpha & flag == 0){
+                           			
+                           			datTemp <- x
+                           			
+                           			posOutlier <- NULL
+                           			
+                           			for(j in 1:i){
+                           				
+                           				Outlier <- outlier(datTemp)
+                           				
+                           				positionX <- which(x == Outlier)
+                           				
+                           				positionTemp <- which(datTemp == Outlier)
+                           				
+                           				datTemp <- datTemp[-positionTemp]
+                           				
+                           				posOutlier <- c(posOutlier, positionX)
+                           			}
+                           			
+                           			flag <- 1
+                           			
+                           		} else {}
+                           	}
+                           	
+                           	return(posOutlier)
+                           },
+                           
+                           ##################################################################################################
+                           # Name: outlierDetection
+                           # Function: return the place of the outlier 
+                           # Input: 
+                           # 	dat: a vector of data
+                           # 	method: method of detection of the outlier
+                           # 	nbOutliers: number of oulier to detect
+                           #################################################################################################
+                           
+                           outlierDetection = function(dat, method, nbOutliers){
+                           	
+                           	if(method == "SD criterion"){
+                           		
+                           		ValMax <- mean(dat, na.rm = TRUE) + 2*sd(dat,na.rm = TRUE)
+                           		
+                           		ValMin <- mean(dat, na.rm = TRUE) - 2*sd(dat,na.rm = TRUE)
+                           		
+                           		position <- which(dat > ValMax | dat < ValMin)[1:nbOutliers]
+                           		
+                           	} else if(method == "Tietjen.Moore Test"){
+                           		
+                           		position <- self$OutlierDetectTietjen(x = dat, nbOutliers)
+                           		
+                           	} else if(method == "Rosner's test"){
+                           		
+                           		test <- suppressWarnings(rosnerTest(dat, k = nbOutliers, alpha = 0.05, warn = TRUE))
+                           		
+                           		Outliers <- test$all.stats[which(test$all.stats[,8] == T), 4]
+                           		
+                           		position <- sapply(1:length(Outliers), function(x){
+                           			
+                           			which(dat == Outliers[x])
+                           			
+                           		})
+                           		
+                           		if(is.integer0(unlist(position))){
+                           			position <- NULL
+                           		} else {}
+                           		
+                           	} else {}
+                           	
+                           	return(position)
+                           	
+                           },
+                           
+                           ##################################################################################################
+                           # Name: detectOutlierMatrix
+                           # Function: return the place of the outlier for each column of a matrix
+                           # Input: 
+                           # 		dat: a vector of data
+                           # 		method: method of detection of the outlier
+                           # 		nbOutliers: number of oulier to detect
+                           #################################################################################################
+                           
+                           detectOutlierMatrix = function(dat, method, nbOutliers){
+                           	
+                           	res <- lapply(1:ncol(dat), function(x){
+                           		
+                           		if(x == 1){
+                           			
+                           			NULL
+                           			
+                           		} else if(!is.integer0(which(!is.na(dat[,x]) == T))){
+                           			
+                           			if(self$is.possibleOutlier(dat = dat[,x])){
+                           				
+                           				self$outlierDetection(dat = dat[,x], method = method, nbOutliers)
+                           				
+                           			}else {NULL}
+                           			
+                           		} else {NULL}
+                           		
+                           		
+                           		
+                           	})
+                           	
+                           	return(res)
+                           	
+                           },
+                           
+                           ##################################################################################################
+                           # Name: outlierReplace
+                           # Function: return the place of the outlier for each column of a matrix
+                           # Input: 
+                           # 	dat: a vector of data
+                           # 	outlierList: a list showing the place of the outlier for each column
+                           # 	rempl: the value to replace if outliers
+                           #################################################################################################
+                           
+                           outlierReplace = function(dat, outlierList, rempl){
+                           	
+                           	subDat <- sapply(1:ncol(dat), function(x){
+                           		
+                           		if(!is.null(outlierList[[x]])){
+                           			
+                           			dat[outlierList[[x]],x] <- rempl
+                           			
+                           			return(dat[,x])
+                           			
+                           		} else {dat[,x]}
+                           	})
+                           	
+                           	colnames(subDat) <- colnames(dat)
+                           	
+                           	return(subDat)
+                           },
+                           
+                           ##################################################################################################
+                           # Name: is.possibleOutlier
+                           # Function: check that the vector fits with the needs for outlier detection (length of data > 30...)
+                           # Input: dat: a vector of data
+                           ##################################################################################################
+                           
+                           is.possibleOutlier = function(dat){
+                           	
+                           	temp <- dat[which(!is.na(dat))]
+                           	
+                           	if(length(temp) < 30){
+                           		FALSE
+                           	} else if(length(which(duplicated(dat) == F)) == 1){
+                           		FALSE
+                           	} else {TRUE}
+                           	
+                           },
+                           
+                           ##################################################################################################
+                           # Name: reset
+                           # Function: Reset the dataConcCorr
+                           ##################################################################################################
                            
                            reset = function(){
                              self$dataConcCorr <- NA
@@ -277,27 +450,27 @@ elementR_standard <- R6Class("elementR_standard",
                                   ##################################################################################################
                                   # Name: setDataOutlierFree
                                   # Function: set self$dataOutlierFree
-                                  # Input: bins = bins = A vector of numerical values corresponding to the time at which begins and ends the blank values, plat = a vector of two numerical values corresponding respectively to the time at which begin and end the plateau
+                                  # Input: bins = A vector of numerical values corresponding to the time at which begins and ends the blank values, plat = a vector of two numerical values corresponding respectively to the time at which begin and end the plateau
                                   ##################################################################################################
                                   
-                                  setDataOutlierFree = function(bins, plat, rempl){
+                                  setDataOutlierFree = function(bins, plat, rempl, method, nbOutliers){
                                   	
                                   	self$setDataNorm(bins,plat, rempl)
                                   	
-                                  	ValMax <- apply(self$dataNorm[,-1], 2, function(k){mean(k, na.rm = TRUE) + 2*sd(k,na.rm = TRUE)})
+                                  	dat <- self$dataNorm
                                   	
-                                  	ValMin <- apply(self$dataNorm[,-1], 2, function(k){mean(k, na.rm = TRUE) - 2*sd(k,na.rm = TRUE)})
+                                  	if(is.null(method)){
+                                  		method = "Rosner's test"
+                                  	} else {}
                                   	
-                                  	subDat <- do.call(rbind,lapply(1:dim(self$dataNorm[,-1])[1], function(z){
-                                  		
-                                  		l <- self$dataNorm[z,-1]
-                                  		l[l < ValMin | l > ValMax] <- NA
-                                  		l
-                                  		
-                                  	}))
+                                  	if(is.null(rempl)){
+                                  		rempl = NA
+                                  	} else {}
                                   	
-                                  	self$dataOutlierFree <- cbind(as.matrix(self$dataNorm[,1]),subDat)
-                                  	
+                                  	outlierList <- self$detectOutlierMatrix(dat, method = method, nbOutliers)
+
+                                  	self$dataOutlierFree <- self$outlierReplace(dat, outlierList, rempl = rempl)
+
                                   },
                                   
                                   ##################################################################################################
@@ -317,7 +490,7 @@ elementR_standard <- R6Class("elementR_standard",
                                   # Output:  a matrix of the required data
                                   ##################################################################################################
                                   
-                                  getData = function(curve, bins, plat, rempl){
+                                  getData = function(curve, bins, plat, rempl, method, nbOutliers){
                                     
                                     if(curve =="Blank") {self$setDataBlanc(bins = bins)
                                                          return(self$dataBlank)} else {}
@@ -337,7 +510,7 @@ elementR_standard <- R6Class("elementR_standard",
                                     if(curve =="Normalized") {self$setDataNorm(bins = bins,plat = plat, rempl = rempl)
                                                               return(self$dataNorm) } else {}
                                     
-                                    if(curve =="Outliers free") {self$setDataOutlierFree(bins = bins,plat = plat, rempl = rempl)
+                                    if(curve =="Outliers free") {self$setDataOutlierFree(bins = bins,plat = plat, rempl = rempl, method, nbOutliers)
                                                                  return(self$dataOutlierFree) } else {}
                                   },
                                   
