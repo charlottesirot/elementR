@@ -1765,14 +1765,14 @@ elementR_repSample <- R6Class("elementR_repSample",
                                			dat1 <- listRealig[[1]]
                                			dat2 <- listRealig[[1]]
                                			
-                               			RealignCol(dat1, dat2, col, step)[[2]]
+                               			self$RealignCol(dat1, dat2, col, step)[[2]]
                                			
                                		}else {
                                			
                                			dat1 <- listRealig[[1]]
                                			dat2 <- listRealig[[x]]
                                			
-                               			RealignCol(dat1, dat2, col, step)[[2]]
+                               			self$RealignCol(dat1, dat2, col, step)[[2]]
                                		}
                                	})
                                	

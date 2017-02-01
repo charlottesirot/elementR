@@ -8969,6 +8969,7 @@ runElementR <- function(){ # nocov start
                   if(input$typeTraitement == "raster" & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 0 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
                   	
                   	updateSelectInput(session, "elemRaster", selected = input$elemRaster)
+                  	updateSelectInput(session, "nbOutliers", selected = input$nbOutliers)
                    
                   	currentProject()$set_flagRealign(replicate = grep(input$selectRealign,currentProject()$samplesFiles), type = "raster", value = 0)
                   	
@@ -8991,6 +8992,7 @@ runElementR <- function(){ # nocov start
                   					 			     selected = as.matrix(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)),style = "margin-top: -10px"),
                   					 h3("2. Outlier detection"),
                   					 uiOutput("DetectOutlier"),
+                  					 uiOutput("PrintOutlier"),
                   					 h3("3. Realignment of replicates"),
                   					 selectInput("elemRaster","",choices = currentProject()$listeElem, selected = currentProject()$listeElem[1]),
                   					 column(width = 6, actionButton("ReplicatCol", "This element")),
@@ -9095,6 +9097,7 @@ runElementR <- function(){ # nocov start
                   if(input$typeTraitement == "raster" & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 2 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
                     
                   	updateSelectInput(session, "elemRaster", selected = input$elemRaster)
+                  	updateSelectInput(session, "nbOutliers", selected = input$nbOutliers)
                   	
                     output$realign4 <- renderTable({NULL})  # eo output$realign4
                     
@@ -9345,20 +9348,52 @@ runElementR <- function(){ # nocov start
           }) # observe
     
     output$DetectOutlier <- renderUI({
-
+    	
     	if(!is.null(input$outlierDetect)){
     		
     		if(input$outlierDetect != "SD criterion"){
     			div(
-    				numericInput("nbOutliers", label = "", value = 1, min = 0, max = 10, step = 1, width = '15%')
+    				numericInput("nbOutliers", label = "Number of outlier(s)", value = 1, min = 1, max = 10, step = 1)
     			)
     		} else {NULL}
     	} else {
     		div(
-    			numericInput("nbOutliers", label = "", value = 1, min = 0, max = 10, step = 1, width = '15%')
+    			numericInput("nbOutliers", label = "Number of outlier(s)", value = 1, min = 1, max = 10, step = 1)
+
     		)
     	}
 
+    })
+    
+    output$PrintOutlier <- renderUI({
+    	
+    	OutputToPrint <- NULL
+    	
+    	if(!is.null(outlierValues$temp)){
+    		
+    		for(i in 2:length(outlierValues$temp)){
+    			for(j in 1:length(outlierValues$temp[[i]])){
+    				
+    				if(length(outlierValues$temp[[i]][j]) != 0){
+    					
+    					if(is.numeric(outlierValues$temp[[i]][j]) & !is.na(outlierValues$temp[[i]][j])){
+    						
+    						temp <- paste0(names(outlierValues$temp)[i], ": ", outlierValues$temp[[i]][j])
+    						
+    						OutputToPrint <- c(OutputToPrint, temp)	
+    					}
+    					
+    				}
+    			}
+    		}
+    	} else {}
+    	
+    	div(style = 'overflow-y: scroll', 
+    	    
+    	    checkboxGroupInput("ChosenOUtlier", label = "Outlier(s) to keep", 
+    	    			 choices = OutputToPrint,
+    	    			 selected = OutputToPrint)
+    	)
     })
     
     observe({
@@ -9382,13 +9417,9 @@ runElementR <- function(){ # nocov start
     				return(temp)
     			})
     			
-    			names(OutlierValues) <- colnames(tabProvSample$temp)
+    			names(OutlierValues) <- colnames(tabProvSample$temp[[1]])
     			
     			outlierValues$temp <- OutlierValues
-    			
-    			# output$renderOUtlier <- renderUI({
-    			# 	lapply()
-    			# })
     			
     		} else {}
     	} else{}
@@ -9564,10 +9595,7 @@ runElementR <- function(){ # nocov start
       if(!is.null(input$selectRealign)){
         if(length(which(flagSample$temp == TRUE)) != 0){
           if(length(grep(input$selectRealign,currentProject()$samplesFiles)) !=0){
-            
             currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$setRep_dataFiltre(x = currentProject()$ChoiceUserCorr)
-            
-            
             if(all(is.na(unlist(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre))) == F){
               tabProvSpot$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$intermStepSpot()
               tabProvSample$temp <-  currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
