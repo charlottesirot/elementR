@@ -1667,7 +1667,7 @@ elementR_repSample <- R6Class("elementR_repSample",
                                # Output: outputList = a list of matrix containing realigned data
                                ##################################################################################################
                                
-                               intermStepRaster = function(decalage, input){
+                               intermStepRaster = function(decalage, input, outliers, replace){
                                  
                                  self$setRep_pas()
                                  
@@ -1690,6 +1690,33 @@ elementR_repSample <- R6Class("elementR_repSample",
                                  names(outputList) <- sapply(1:length(input), function(x){
                                    names(tabTemp)[which(names(tabTemp) == input[x])]
                                  })
+                                 
+                                 if(!is.null(outliers)){
+                                 
+                                 	lapply(2:length(outputList), function(x){
+                                 		
+                                 		for(i in 2:length(outliers)){
+                                 			
+                                 			for(j in 1:length(outliers[[i]])){
+                                 				
+                                 				if(length(outliers[[i]][j]) != 0){
+                                 					
+                                 					if(is.numeric(outliers[[i]][j]) & !is.na(outliers[[i]][j])){
+                                 						
+                                 						temp <- as.numeric(as.character(str_split(outliers[[i]][j], ": ")[[1]][1]))
+                                 						
+                                 					}
+                                 					
+                                 				}
+                                 			}
+                                 			
+                                 		}
+                                 		
+                                 		
+                                 		
+                                 	})
+                                 	
+                                 } else {}
                                  
                                  return(outputList)
                                },
