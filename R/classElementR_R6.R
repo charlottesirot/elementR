@@ -480,11 +480,11 @@ elementR_standard <- R6Class("elementR_standard",
                                   	dat <- self$dataNorm
                                   	
                                   	if(is.null(method)){
-                                  		method = "Rosner's test"
+                                  		method <- "Rosner's test"
                                   	} else {}
                                   	
                                   	if(is.null(rempl)){
-                                  		rempl = NA
+                                  		rempl <- NA
                                   	} else {}
                                   	
                                   	outlierList <- self$detectOutlierMatrix(dat, method = method, nbOutliers)
@@ -912,11 +912,11 @@ elementR_project <- R6Class("elementR_project",
                                 if(is.null(y)){}
                                 else if(is.na(y)){}
                                 else{
-                                  val[[2]] = which(abs(x-y) == min(abs(x-y), na.rm = TRUE))
-                                  val[[1]] = x[val[[2]]]
+                                  val[[2]] <- which(abs(x-y) == min(abs(x-y), na.rm = TRUE))
+                                  val[[1]] <- x[val[[2]]]
                                   
-                                  if (length(val[[1]])!=1){val[[2]] = min(val[[2]], na.rm = TRUE)
-                                                            val[[1]] = x[val[[2]]]
+                                  if (length(val[[1]])!=1){val[[2]] <- min(val[[2]], na.rm = TRUE)
+                                                            val[[1]] <- x[val[[2]]]
                                   } else {}
                                   
                                   names(val) <- c("the nearest", "place")
