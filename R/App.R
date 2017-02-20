@@ -9572,8 +9572,6 @@ runElementR <- function(){ # nocov start
 										names(OutlierValues) <- colnames(tabProvSample$temp[[1]])
 										
 										outlierValues$temp <- OutlierValues
-										
-										
 									} else {}
 								})
 							}
