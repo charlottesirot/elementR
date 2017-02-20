@@ -29,7 +29,7 @@ An \code{R6Class} generator object
 
 
 \section{Methods}{
-\describe{\item{\code{initialize(filePath)}}{Aim: Create and set basic information of the considered replicate; Argument: filePath = the path of the considered replicate data; Output: an R6Class \code{elementR_data} object}}
+\describe{\item{\code{initialize(filePath, sep , dec)}}{Aim: Create and set basic information of the considered replicate; Argument: filePath = the path of the considered replicate data, dec = the decimal system of the data, sep =  the separator character of the data; Output: an R6Class \code{elementR_data} object}}
 \describe{\item{\code{setBins(bins)}}{Aim: set \code{bins}; Argument: bins = A numerical value corresponding to the time at which end the blank values}}
 \describe{\item{\code{setPlat(plat)}}{Aim: set \code{plat}; Argument: plat = A vector containing two numerical values corresponding respectively to the time at which begin and end the plateau values}}
 \describe{\item{\code{setDataBlanc(bins)}}{Aim: set \code{dataBlank}; Argument: bins = A numerical value corresponding to the time at which end the blank values }}
@@ -38,6 +38,11 @@ An \code{R6Class} generator object
 \describe{\item{\code{setDataSupLOD(bins,plat)}}{Aim: set \code{dataSupLOD}; Arguments: bins = A numerical value corresponding to the time at which end the blank values, plat = A vector containing two numerical values corresponding respectively to the time at which begin and end the plateau values}}
 \describe{\item{\code{setDataNorm(bins,plat)}}{Aim: set \code{dataNorm}; Arguments: bins = A numerical value corresponding to the time at which end the blank values, plat = A vector containing two numerical values corresponding respectively to the time at which begin and end the plateau values}}
 \describe{\item{\code{reset()}}{Aim: replace \code{dataConcCorr} by NA}}
+\describe{\item{\code{OutlierDetectTietjen(x, nbOutliers)}}{Aim: return the place of the outlier of a vector according to Tietjen and outlier methods; Arguments: x = a vector, nbOutliers = the number of suspected outliers; Outputs: a vector of the position of the outlier in the vector}}
+\describe{\item{\code{outlierDetection(dat, method, nbOutliers)}}{Aim: return the place of the outlier of a vector; Arguments: dat = a vector, method = the method used for the detection ("Tietjen.Moore Test", "SD criterion", "Rosner's test"), nbOutliers = the number of suspected outliers; Outputs: a vector of the position of the outlier in the vector}}
+\describe{\item{\code{detectOutlierMatrix(dat, method, nbOutliers)}}{Aim: return the place of the outlier for each column of a matrix; Arguments: dat = a matrix, method = the method used for the detection ("Tietjen.Moore Test", "SD criterion", "Rosner's test"), nbOutliers = the number of suspected outliers; Outputs: a list of vector corresponding to the position of the outlier in each column of the matrix}}
+\describe{\item{\code{outlierReplace(dat, outlierList, rempl)}}{Aim: replace the outliers value of a matrix by rempl; Arguments: dat = a matrix, a list showing the place of the outlier for each column, rempl: the value to replace if outliers}}
+\describe{\item{\code{is.possibleOutlier(dat)}}{Aim: check that the vector fits with the needs for outlier detection (length of data > 30 and not all the same); Arguments: dat = a vector of data; OUtputs: TRUE: the investigated vector meets the conditions, FALSE: the investigated vector does not meet the conditions}}
 }
 
 

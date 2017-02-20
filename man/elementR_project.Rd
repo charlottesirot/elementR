@@ -39,6 +39,7 @@ An \code{R6Class} generator object
 \describe{\item{\code{elemStand}}{A character string indicating the chemical element considered as internal standard (by default = Ca)}}
 \describe{\item{\code{summarySettings}}{A matrix summarizing all the parameters set by user for each replicate (sample and standard)}}
 \describe{\item{\code{ChoiceUserCorr}}{A logical value corresponding to the choice of the user to correct or no the session based on the first step of configuration}}
+\describe{\item{\code{R2Threshold}}{the threshold to switch the machine drift correction from a linear to a neighbor correction}}
 }
 
 \section{Methods}{
@@ -47,7 +48,7 @@ An \code{R6Class} generator object
 \describe{\item{\code{is.integer0(x)}}{Aim: test the integer(0); Arguments: x = a vector to test; Outputs:  TRUE or FALSE}}
 \describe{\item{\code{closest(x,y)}}{Aim: find the nearest value among a vector of numerical data; Arguments: x = a vector of numerical values, y = the investigated value; Output: val = a list of two values: the nearest value and its place within the vector}}
 \describe{\item{\code{PlotIC(name, Mean,SD, coord, lengthSeg, xlim, ylim, type = "p", xlab, ylab)}}{Aim: plot mean +/- SD; Arguments: name = a vector of the names to display on xaxis, Mean = a vector of mean, SD = a vector of SD, coord = a vector of coordonnates to place xticks, lengthSeg = a numeric value cooresponding to the length of the top segment of the SD bar, xlim & ylim = the limits of plots, xlab & ylab = the labels of axis}}
-\describe{\item{\code{setEtalon(x)}}{Aim: define \code{EtalonPath} and \code{EtalonData} and check the validity of their data structure; Arguments: x = a character string corresponding to the path of the calibration file}}
+\describe{\item{\code{setEtalon(x, sep, dec)}}{Aim: define \code{EtalonPath} and \code{EtalonData} and check the validity of their data structure; Arguments: x = a character string corresponding to the path of the calibration file, dec = the decimal system of the data, sep =  the separator character of the data}}
 \describe{\item{\code{setflagMachineCorrection(x)}}{Aim: set \code{flagMachineCorrection}; Arguments: x = the numerical value to set}}
 \describe{\item{\code{NonNumericCheck(data, col)}}{Aim: check non numeric characters of data; Arguments: data = a dataframe or a matrix, col = a vector of numerical values corresponding to the column(s) to investigate; Output: errB = a numerical value corresponding to the number of cells containing non numeric characters}}
 \describe{\item{\code{setflagStand(place, value)}}{Aim: set \code{flag_stand}; Arguments: place = a numerical value corresponding to the considered replicate, value = the numerical value to set}}
@@ -57,8 +58,12 @@ An \code{R6Class} generator object
 \describe{\item{\code{setRank(type, value)}}{Aim: set the order in which ICPMS runs each standard (\code{standardRank}) and sample (\code{sampleRank}) replicates; Arguments: type = a character string indicating the type of replicate standard ("standard") or sample ("sample"), value = a numerical value corresponding to the rank of the considered replicate}}
 \describe{\item{\code{set_flagRealign(replicate, type, value)}}{Aim: set \code{flagRealign}; Arguments: replicate = a numerical value corresponding to the number of the considered replicate, type = a character string indicating the raster or spot mode, value = the numerical value to set}}
 \describe{\item{\code{setElemStand(elem)}}{Aim: define \code{elemStand} and transmit this value to all \code{elementR_rep} and \code{elementR_data} objects inlcuded in the project; Arguments: elem = a character string corresponding to the element considered as intern standard}}
-\describe{\item{\code{initialize(folderPath)}}{ Aim: create the project; Arguments: filePath = the path of the considered project; Outputs: R6Class \code{elementR_project}}}
+\describe{\item{\code{initialize(folderPath, sep, dec)}}{ Aim: create the project; Arguments: filePath = the path of the considered project, dec = the decimal system of the data, sep =  the separator character of the data; Outputs: R6Class \code{elementR_project}}}
 \describe{\item{\code{set_ChoiceUserCorr(x)}}{ Aim: information about the will of user to check or not the machine drift; Arguments: x = T (for checking machine drift), F (for not checking machine drift) }}
+\describe{\item{\code{setR2Threshold(x)}}{ Aim: set \code{R2Threshold}; Arguments: x = a value between 0 and 1}}
+\describe{\item{\code{insert.at(a, pos, toInsert)}}{ Aim: insert values in vectors; Arguments: a = a vector, pos =  the position to insert,  toInsert = a vector to insert}}
+\describe{\item{\code{detectPlateau(dat, col)}}{ Aim: detection of the plateau limits of a matrix based on clustering methods and on the internal standard element; Arguments: dat = the data to proceed, col =  the column used for the detection }}
+\describe{\item{\code{detectBlank(dat, col)}}{ Aim: detection of the blank limits of a matrix based on the derivative value and on the internal standard element; Arguments: dat = the data to proceed, col =  the column used for the detection }}
 }
 
 \details{
