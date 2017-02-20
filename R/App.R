@@ -40,7 +40,6 @@ runElementR <- function(){ # nocov start
 		ref <- NULL
 		
 		for(x in seq(from = 1, to = length(files), by = 1)){
-		# for(x in 1:length(files)){
 			
 			if(str_detect(files[x], ".xlsx")){
 				ref <- c(ref, TRUE)
@@ -2740,9 +2739,9 @@ runElementR <- function(){ # nocov start
 											
 											par(mar = c(4.1,4.1,2,2.1), bg = NA)
 											
-											min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) - 20/100 * min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),oneTemp[j]], na.rm = TRUE)
+											min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) - 20/100 * min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE)
 											
-											max <- max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) + 20/100 * max(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),oneTemp[j]], na.rm = TRUE)
+											max <- max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) + 20/100 * max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE)
 											
 											currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),oneTemp[j]],coord =  X, lengthSeg = 0.1, xlim =c(min(X),max(X)),ylim=c(min, max), ylab = paste0("Cps_",currentProject()$listeElem[oneTemp[j]],"/Cps_", currentProject()$elemStand), xlab = "")
 											
@@ -2784,9 +2783,9 @@ runElementR <- function(){ # nocov start
 										
 										par(mar = c(4.1,4.1,2,2.1), bg = NA)
 										
-										min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) - 20/100 * min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),oneTemp[j]], na.rm = TRUE)
+										min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) - 20/100 * min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE)
 										
-										max <- max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) + 20/100 * max(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),oneTemp[j]], na.rm = TRUE)
+										max <- max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE) + 20/100 * max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], na.rm = TRUE)
 										
 										currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),oneTemp[j]], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),oneTemp[j]],coord =  X, lengthSeg = 0.1, xlim =c(min(X),max(X)),ylim=c(min, max), ylab = paste0("Cps_",currentProject()$listeElem[oneTemp[j]],"/Cps_", currentProject()$elemStand), xlab = "")
 										
@@ -2967,7 +2966,7 @@ runElementR <- function(){ # nocov start
 											text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 										} else {
 											
-											ylim <- c(min(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(j){tabProvSample$temp[[j]][,input$RealignElementToExport[i]]})), na.rm = TRUE),max(unlist(lapply(1:length(input$ReplicateSample), function(j){tabProvSample$temp[[j]][,input$RealignElementToExport[i]]})), na.rm = TRUE))
+											ylim <- c(min(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(j){tabProvSample$temp[[j]][,input$RealignElementToExport[i]]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(j){tabProvSample$temp[[j]][,input$RealignElementToExport[i]]})), na.rm = TRUE))
 											
 											xlim <- c(min(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(j){tabProvSample$temp[[j]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(j){tabProvSample$temp[[j]][,1]}))))
 											
@@ -3016,7 +3015,7 @@ runElementR <- function(){ # nocov start
 											text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 										}else{
 											
-											ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE))
+											ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE))
 											
 											xlim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
 											
@@ -3118,7 +3117,7 @@ runElementR <- function(){ # nocov start
 														text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 													} else{
 														
-														ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE))
+														ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$RealignElementToExport[y]]})), na.rm = TRUE))
 														
 														xlim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
 														
@@ -4029,7 +4028,7 @@ runElementR <- function(){ # nocov start
 						if(!is.na(rankStandard$temp[length(standardFile$temp)]) & !is.na(rankSample$temp[length(SampleFile$temp)])){
 							if(!is.null(eval(parse(text = paste0("input$",rankStandard$temp[1]))))){
 								
-								tempCalib <- sapply(1:length(standardFile$temp), function(x){
+								tempCalib <- sapply(seq(from = 1, to = length(standardFile$temp), by = 1), function(x){
 									
 									eval(parse(text = paste0("input$",isolate({rankStandard$temp})[x])))
 									
@@ -4037,7 +4036,7 @@ runElementR <- function(){ # nocov start
 								
 								names(tempCalib) <- standardFile$temp
 								
-								tempSample <- sapply(1:length(SampleFile$temp), function(x){
+								tempSample <- sapply(seq(from = 1, to = length(SampleFile$temp), by = 1), function(x){
 									eval(parse(text = paste0("input$",rankSample$temp[x])))
 								})
 								names(tempSample) <- SampleFile$temp
@@ -4135,7 +4134,7 @@ runElementR <- function(){ # nocov start
 					isolate({
 						standardFile$temp <- dir(paste0(projPath$temp, "/standards"))
 						temp <- dir(paste0(projPath$temp, "/samples"), recursive = TRUE)
-						SampleFile$temp <- sapply(1:length(temp), function(x){str_split(temp, "/")[[x]][2]})
+						SampleFile$temp <- sapply(seq(from = 1, to = length(temp), by = 1), function(x){str_split(temp, "/")[[x]][2]})
 						
 						rankStandard$temp <- geneR(choice = letters, 
 										   lengthComb = 5, 
@@ -4548,7 +4547,7 @@ runElementR <- function(){ # nocov start
 											p("Sort the files in their analyzed rank or indicate the time elapse since the beginning of the analysis (min)"),
 											column(6,
 												 p("Standard files:"),
-												 lapply(1:length(standardFile$temp), function(i){
+												 lapply(seq(from = 1, to = length(standardFile$temp), by = 1), function(i){
 												 	div(style="height: 50px;",
 												 	    column(8,br(),p(standardFile$temp[i])), #column
 												 	    column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
@@ -4557,7 +4556,7 @@ runElementR <- function(){ # nocov start
 											),
 											column(6,
 												 p("Samples files:"),
-												 lapply(1:length(SampleFile$temp), function(i){
+												 lapply(seq(from = 1, to = length(SampleFile$temp), by = 1), function(i){
 												 	div(style="height: 50px;",
 												 	    column(8,br(),p(SampleFile$temp[i])), #column
 												 	    column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
@@ -4612,7 +4611,7 @@ runElementR <- function(){ # nocov start
 											p("Sort the files in their analyzed rank or indicate the time elapse since the beginning of the analysis (min)"),
 											column(6,
 												 p("Standard files:"),
-												 lapply(1:length(standardFile$temp), function(i){
+												 lapply(seq(from = 1, to = length(standardFile$temp), by = 1), function(i){
 												 	div(style="height: 50px;",
 												 	    column(8,br(),p(standardFile$temp[i])), #column
 												 	    column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
@@ -4621,7 +4620,7 @@ runElementR <- function(){ # nocov start
 											),
 											column(6,
 												 p("Samples files:"),
-												 lapply(1:length(SampleFile$temp), function(i){
+												 lapply(seq(from = 1, to = length(SampleFile$temp), by = 1), function(i){
 												 	div(style="height: 50px;",
 												 	    column(8,br(),p(SampleFile$temp[i])), #column
 												 	    column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
@@ -4682,7 +4681,7 @@ runElementR <- function(){ # nocov start
 										p("Sort the files in their analyzed rank or indicate the time elapse since the beginning of the analysis (min)"),
 										column(6,
 											 p("Standard files:"),
-											 lapply(1:length(standardFile$temp), function(i){
+											 lapply(seq(from = 1, to = length(standardFile$temp), by = 1), function(i){
 											 	div(style="height: 50px;",
 											 	    column(8,br(),p(standardFile$temp[i])), #column
 											 	    column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", placeNIST[i], min = 0))) #column
@@ -4691,7 +4690,7 @@ runElementR <- function(){ # nocov start
 										),
 										column(6,
 											 p("Samples files:"),
-											 lapply(1:length(SampleFile$temp), function(i){
+											 lapply(seq(from = 1, to = length(SampleFile$temp), by = 1), function(i){
 											 	div(style="height: 50px;",
 											 	    column(8,br(),p(SampleFile$temp[i])), #column
 											 	    column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "",placeSAMPLE[i], min = 0))) #column
@@ -4862,7 +4861,7 @@ runElementR <- function(){ # nocov start
 								p("Sort the files in their analyzed rank or indicate the time elapse since the beginning of the analysis (min)"),
 								column(6,
 									 p("Standard files:"),
-									 lapply(1:length(standardFile$temp), function(i){
+									 lapply(seq(from = 1, to = length(standardFile$temp), by = 1), function(i){
 									 	div(style="height: 50px;",
 									 	    column(8,br(),p(standardFile$temp[i])), #column
 									 	    column(4,div(style="height: 10px;",numericInput(rankStandard$temp[i], "", currentProject()$standardRank[i], min = 0))) #column
@@ -4871,7 +4870,7 @@ runElementR <- function(){ # nocov start
 								),
 								column(6,
 									 p("Samples files:"),
-									 lapply(1:length(SampleFile$temp), function(i){
+									 lapply(seq(from = 1, to = length(SampleFile$temp), by = 1), function(i){
 									 	div(style="height: 50px;",
 									 	    column(8,br(),p(SampleFile$temp[i])), #column
 									 	    column(4,div(style="height: 10px;",numericInput(rankSample$temp[i], "", currentProject()$sampleRank[i], min = 0))) #column
@@ -4971,7 +4970,7 @@ runElementR <- function(){ # nocov start
 					
 					## explanation for standards
 					
-					x <- paste0(lapply(1:length(projChar$temp[[5]]), function(i){paste0(projChar$temp[[5]][i], "(",currentProject()$standardRank[i], ")", collapse = " ")}))
+					x <- paste0(lapply(seq(from = 1, to = length(projChar$temp[[5]]), by = 1), function(i){paste0(projChar$temp[[5]][i], "(",currentProject()$standardRank[i], ")", collapse = " ")}))
 					
 					temp <- paste(x, collapse = " ", sep = " ")
 					
@@ -4979,9 +4978,9 @@ runElementR <- function(){ # nocov start
 					
 					x2 <- currentProject()$samplesFiles
 					
-					temp2 <- lapply(1:length(currentProject()$samplesFiles), function(x){
+					temp2 <- lapply(seq(from = 1, to = length(currentProject()$samplesFiles), by = 1), function(x){
 						
-						lapply(1:length(currentProject()$samples[[x]]$rep_Files), function(i){
+						lapply(seq(from = 1, to = length(currentProject()$samples[[x]]$rep_Files), by = 1), function(i){
 							
 							temp5 <- currentProject()$sampleRank[which(names(currentProject()$sampleRank) == currentProject()$samples[[x]]$rep_Files[i])]
 							
@@ -4991,11 +4990,11 @@ runElementR <- function(){ # nocov start
 						
 					})
 					
-					temp3 <- lapply(1:length(currentProject()$samplesFiles), function(x){
+					temp3 <- lapply(seq(from = 1, to = length(currentProject()$samplesFiles), by = 1), function(x){
 						paste(unlist(temp2[[x]]), sep = " ", collapse = " ")
 					})
 					
-					temp4 <- lapply(1:length(currentProject()$samplesFiles), function(x){
+					temp4 <- lapply(seq(from = 1, to = length(currentProject()$samplesFiles), by = 1), function(x){
 						paste0(x2[x], ": ", temp3[[x]])
 					})
 					
@@ -5027,7 +5026,7 @@ runElementR <- function(){ # nocov start
 							   	p(icon("share "), paste0("Path of the session to be filtered: ", projChar$temp[[4]])),
 							   	p(icon("share "), paste0("Standard files (and their rank) within the project: ", temp)),
 							   	p(icon("share"), "Sample files (and their rank) within the project: "),
-							   	lapply(1:length(x2), function(i){
+							   	lapply(seq(from = 1, to = length(x2), by = 1), function(i){
 							   		column(12, offset = 1, p(temp4[[i]]))
 							   	}),
 							   	p(icon("share"), paste0("Calibration file: ", calibFile$temp, collapse = " ")),
@@ -5131,7 +5130,7 @@ runElementR <- function(){ # nocov start
 					
 					## explanation for standards
 					
-					x <- paste0(lapply(1:length(currentProject()$standardsFiles), function(i){paste0(currentProject()$standardsFiles[i], "(",currentProject()$standardRank[i], ")", collapse = " ")}))
+					x <- paste0(lapply(seq(from = 1, to = length(currentProject()$standardsFiles), by = 1), function(i){paste0(currentProject()$standardsFiles[i], "(",currentProject()$standardRank[i], ")", collapse = " ")}))
 					
 					temp <- paste(x, collapse = " ", sep = " ")
 					
@@ -5139,9 +5138,9 @@ runElementR <- function(){ # nocov start
 					
 					x2 <- currentProject()$samplesFiles
 					
-					temp2 <- lapply(1:length(currentProject()$samplesFiles), function(x){
+					temp2 <- lapply(seq(from = 1, to = length(currentProject()$samplesFiles), by = 1), function(x){
 						
-						lapply(1:length(currentProject()$samples[[x]]$rep_Files), function(i){
+						lapply(seq(from = 1, to = length(currentProject()$samples[[x]]$rep_Files), by = 1), function(i){
 							
 							temp5 <- currentProject()$sampleRank[which(names(currentProject()$sampleRank) == currentProject()$samples[[x]]$rep_Files[i])]
 							
@@ -5151,11 +5150,11 @@ runElementR <- function(){ # nocov start
 						
 					})
 					
-					temp3 <- lapply(1:length(currentProject()$samplesFiles), function(x){
+					temp3 <- lapply(seq(from = 1, to = length(currentProject()$samplesFiles), by = 1), function(x){
 						paste(unlist(temp2[[x]]), sep = " ", collapse = " ")
 					})
 					
-					temp4 <- lapply(1:length(currentProject()$samplesFiles), function(x){
+					temp4 <- lapply(seq(from = 1, to = length(currentProject()$samplesFiles), by = 1), function(x){
 						paste0(x2[x], ": ", temp3[[x]])
 					})
 					
@@ -5172,7 +5171,7 @@ runElementR <- function(){ # nocov start
 							   	p(icon("share"), paste0("Path of the project: ", projChar$temp[[3]])),
 							   	p(icon("share"), paste0("Standard files (and their rank) within the project: ", temp)),
 							   	p(icon("share"), "Sample files (and their rank) within the project: "),
-							   	lapply(1:length(x2), function(i){
+							   	lapply(seq(from = 1, to = length(x2), by = 1), function(i){
 							   		column(12, offset = 1, p(temp4[[i]]))
 							   	}),
 							   	p(icon("share"), paste0("Calibration file: ", calibFile$temp, collapse = " ")),
@@ -5518,7 +5517,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -5599,7 +5598,7 @@ runElementR <- function(){ # nocov start
 														mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
 														
 														if(length(input$checkGroup) > 1){
-															lapply(2:length(input$checkGroup), function(x){
+															lapply(seq(from = 2, to = length(input$checkGroup), by = 1), function(x){
 																par(new = TRUE)
 																plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 															})
@@ -5749,7 +5748,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -5830,7 +5829,7 @@ runElementR <- function(){ # nocov start
 															mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
 															
 															if(length(input$checkGroup) > 1){
-																lapply(2:length(input$checkGroup), function(x){
+																lapply(seq(from = 2, to = length(input$checkGroup), by = 1), function(x){
 																	par(new = TRUE)
 																	plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 																})
@@ -5978,7 +5977,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -6059,7 +6058,7 @@ runElementR <- function(){ # nocov start
 														mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
 														
 														if(length(input$checkGroup) > 1){
-															lapply(2:length(input$checkGroup), function(x){
+															lapply(seq(from = 2, to = length(input$checkGroup), by = 1), function(x){
 																par(new = TRUE)
 																plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 																
@@ -6237,10 +6236,10 @@ runElementR <- function(){ # nocov start
 									isolate({
 										currentProject()$setflagMachineCorrection(x = 0)
 										currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 0)
-										lapply(1:length(currentProject()$flag_Sample), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
-										lapply(1:length(currentProject()$flag_Sample), function(x){currentProject()$set_flagRealign(replicate = x, type = "raster", value = 0)})
-										lapply(1:length(currentProject()$flag_Sample), function(x){
-											lapply(1:length(currentProject()$flag_Sample[[x]]), function(i){
+										lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
+										lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "raster", value = 0)})
+										lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){
+											lapply(seq(from = 1, to = length(currentProject()$flag_Sample[[x]]), by = 1), function(i){
 												currentProject()$setflagSample(sample = x, replicate = i, value = 0)
 											})
 										})
@@ -6288,10 +6287,10 @@ runElementR <- function(){ # nocov start
 									isolate({
 										currentProject()$setflagMachineCorrection(x = 0)
 										currentProject()$setflagStand (place = which(as.matrix(currentProject()$standardsFiles) == input$standardIn),value = 0)
-										lapply(1:length(currentProject()$flag_Sample), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
-										lapply(1:length(currentProject()$flag_Sample), function(x){currentProject()$set_flagRealign(replicate = x, type = "raster", value = 0)})
-										lapply(1:length(currentProject()$flag_Sample), function(x){
-											lapply(1:length(currentProject()$flag_Sample[[x]]), function(i){
+										lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
+										lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "raster", value = 0)})
+										lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){
+											lapply(seq(from = 1, to = length(currentProject()$flag_Sample[[x]]), by = 1), function(i){
 												currentProject()$setflagSample(sample = x, replicate = i, value = 0)
 											})
 										})
@@ -6382,13 +6381,13 @@ runElementR <- function(){ # nocov start
 							
 							# if deviated elements < 0
 							if(length(temp) !=0 & length(temp) < 6){
-								temp <- c(temp, sample((1:length(currentProject()$listeElem))[-temp],6-tempOR,replace = FALSE))
+								temp <- c(temp, sample(seq(from = 1, to = length(currentProject()$listeElem), by = 1)[-temp],6-tempOR,replace = FALSE))
 								names(temp) <- currentProject()$listeElem[temp]
 							} else {}
 							
 							# if deviated elements == 0
 							if(length(temp) == 0){
-								temp <- sample((1:length(currentProject()$listeElem)),6,replace = FALSE)
+								temp <- sample(seq(from = 1, to = length(currentProject()$listeElem), by = 1),6,replace = FALSE)
 								names(temp) <- currentProject()$listeElem[temp]
 							} else {}
 							
@@ -6464,7 +6463,7 @@ runElementR <- function(){ # nocov start
 									
 									X <- vector()
 									
-									for (i in 1:length(currentProject()$standardsFiles)){
+									for (i in seq(from = 1, to = length(currentProject()$standardsFiles), by = 1)){
 										X[i] <- currentProject()$standardRank[which(names(currentProject()$standardRank) == temp[i])]
 										
 									}
@@ -6609,11 +6608,11 @@ runElementR <- function(){ # nocov start
 													
 													par(mar = c(4.1,4.1,0,2.1), bg = NA)
 													
-													min <- min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) - min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) *20/100
+													min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) - min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) *20/100
 													
-													max <- min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) + min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) *20/100
+													max <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) + min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) *20/100
 													
-													currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x], coord = coord$temp, lengthSeg = 0.1, xlim =c(min(coord$temp),max(coord$temp)), ylim=c(min, max),ylab = paste0("Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand),xlab = "")
+													currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x], coord = coord$temp, lengthSeg = 0.1, xlim =c(min(coord$temp),max(coord$temp)), ylim=c(min, max),ylab = paste0("Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand),xlab = "")
 													
 												})
 												
@@ -6739,11 +6738,11 @@ runElementR <- function(){ # nocov start
 													
 													par(mar = c(4.1,4.1,0,2.1), bg = NA)
 													
-													min <- min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) - (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],na.rm = TRUE))*3
+													min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) - (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],na.rm = TRUE))*3
 													
-													max <- max(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x],na.rm = TRUE) + (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],na.rm = TRUE))*3
+													max <- max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x],na.rm = TRUE) + (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],na.rm = TRUE))*3
 													
-													currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],coord = coord$temp, lengthSeg = 0.1, xlim =c(min(coord$temp),max(coord$temp)),ylim=c(min, max), ylab = paste0("Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand), xlab = "")
+													currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],coord = coord$temp, lengthSeg = 0.1, xlim =c(min(coord$temp),max(coord$temp)),ylim=c(min, max), ylab = paste0("Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand), xlab = "")
 													
 													abline(a = currentProject()$regressionModel[x,5], b= currentProject()$regressionModel[x,6], col ="red", lty = 2)
 												})
@@ -6807,11 +6806,11 @@ runElementR <- function(){ # nocov start
 													
 													par(mar = c(4.1,4.1,0,2.1), bg = NA)
 													
-													min <- min(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) - (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x], na.rm = TRUE))*3
+													min <- min(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) - (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x], na.rm = TRUE))*3
 													
-													max <- max(currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], na.rm = TRUE) + (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x], na.rm = TRUE))*3
+													max <- max(currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], na.rm = TRUE) + (max(currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x], na.rm = TRUE))*3
 													
-													currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[1:length(currentProject()$flag_stand),x], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],coord =  coord$temp, lengthSeg = 0.1, xlim =c(min(coord$temp),max(coord$temp)),ylim=c(min, max), ylab = paste0("Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand), xlab = "")
+													currentProject()$PlotIC(name = currentProject()$standardsFiles, Mean = currentProject()$standards[[1]]$rep_dataFinale[seq(from = 1, to = length(currentProject()$flag_stand), by = 1),x], SD = currentProject()$standards[[1]]$rep_dataFinale[(length(currentProject()$flag_stand)+1):(2*length(currentProject()$flag_stand)),x],coord =  coord$temp, lengthSeg = 0.1, xlim =c(min(coord$temp),max(coord$temp)),ylim=c(min, max), ylab = paste0("Cps_",currentProject()$listeElem[x],"/Cps_", currentProject()$elemStand), xlab = "")
 													
 													if(is.na(tableauStat$temp[x,7])){
 														abline(a = currentProject()$regressionModel[x,5], b= currentProject()$regressionModel[x,6], col ="red", lty = 2)
@@ -7245,7 +7244,7 @@ runElementR <- function(){ # nocov start
 					isolate({
 						
 						if(input$CorrectAll == TRUE & (validCorrection$temp%%2) == 0){
-							for(i in 1:length(currentProject()$listeElem)){
+							for(i in seq(from = 1, to = length(currentProject()$listeElem), by = 1)){
 								
 								if(!is.null(eval(parse(text = paste0("input$",geneRMachineCorr$temp[i]))))){
 									machineCorrection$temp[i] <- TRUE
@@ -7255,7 +7254,7 @@ runElementR <- function(){ # nocov start
 						} else {}
 						
 						if(input$CorrectAll == FALSE & (validCorrection$temp%%2) == 0){
-							for(i in 1:length(currentProject()$listeElem)){
+							for(i in seq(from = 1, to = length(currentProject()$listeElem), by = 1)){
 								
 								if(is.null(eval(parse(text = paste0("input$",geneRMachineCorr$temp[i]))))){
 									machineCorrection$temp[i] <- FALSE
@@ -7299,7 +7298,7 @@ runElementR <- function(){ # nocov start
 								
 								currentProject()$setflagMachineCorrection(x = 1)
 								
-								machineCorrection$temp <- sapply(1:length(currentProject()$listeElem), function(x){
+								machineCorrection$temp <- sapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 									
 									if(is.null(eval(parse(text = paste0("input$",geneRMachineCorr$temp[x]))))){
 										FALSE
@@ -7315,10 +7314,10 @@ runElementR <- function(){ # nocov start
 						if((validCorrection$temp%%2) == 0 & input$validDrift > 0){
 								
 								currentProject()$setflagMachineCorrection(x = 0)
-								lapply(1:length(currentProject()$flag_Sample), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
-								lapply(1:length(currentProject()$flag_Sample), function(x){currentProject()$set_flagRealign(replicate = x, type = "raster",value = 0)})
-								lapply(1:length(currentProject()$flag_Sample), function(x){
-									lapply(1:length(currentProject()$flag_Sample[[x]]), function(i){
+								lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
+								lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "raster",value = 0)})
+								lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){
+									lapply(seq(from = 1, to = length(currentProject()$flag_Sample[[x]]), by = 1), function(i){
 										currentProject()$setflagSample(sample = x, replicate = i, value = 0)
 									})
 								})
@@ -7608,7 +7607,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -7709,7 +7708,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -7783,7 +7782,7 @@ runElementR <- function(){ # nocov start
 												mtext("Raw data",side=3,line=0.75, cex=1.2, font = 2)
 												
 												if(length(input$checkGroupS) > 1){
-													lapply(2:length(input$checkGroupS), function(x){
+													lapply(seq(from = 2, to = length(input$checkGroupS), by = 1), function(x){
 														par(new = TRUE)
 														plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 													})
@@ -7916,7 +7915,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -8019,7 +8018,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -8094,7 +8093,7 @@ runElementR <- function(){ # nocov start
 												
 												if(length(input$checkGroupS) > 1){
 													
-													lapply(2:length(input$checkGroupS), function(x){
+													lapply(seq(from = 2, to = length(input$checkGroupS), by = 1), function(x){
 														par(new = TRUE)
 														plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 													})
@@ -8215,7 +8214,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -8303,7 +8302,7 @@ runElementR <- function(){ # nocov start
 															 			     div(style ="",
 															 			         div(style = "height:100px; width: 22px; text-align: center;display: inline-block; vertical-align: top;",
 															 			             div(style = "height:6px; width: 20px;"),
-															 			             lapply(1:length(currentProject()$listeElem), function(x){
+															 			             lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 															 			             	eval(parse(text = paste0("div(align='center', style = 'width:25px; height:25px',div(style = 'height:10px;'),div(style = 'background-color:", color$temp[x], ";width:10px; height:10px; border-radius: 50%;'))")))
 															 			             	
 															 			             })
@@ -8376,7 +8375,7 @@ runElementR <- function(){ # nocov start
 												
 												if(length(input$checkGroupS) > 1){
 													
-													lapply(2:length(input$checkGroupS), function(x){
+													lapply(seq(from = 2, to = length(input$checkGroupS), by = 1), function(x){
 														par(new = TRUE)
 														plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 													})
@@ -8850,7 +8849,6 @@ runElementR <- function(){ # nocov start
 			# set output$plotRealign, i.e. the plot if type = raster
 			###############################################################
 			output$plotRealign <- renderPlot({
-				
 				if(!is.null(input$selectRealign) & !is.null(tabProvSample$temp)){
 					if(length(grep(input$selectRealign,currentProject()$samplesFiles)) != 0 & length(tabProvSample$temp) != 0){
 						
@@ -8861,19 +8859,19 @@ runElementR <- function(){ # nocov start
 							par(mar = c(5.1,4.1,1.5,1.5))
 							
 							if(!is.null(input$ReplicateSample) & is.list(tabProvSample$temp) & length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
-								if(length(which(!is.na(unlist(lapply(1:length(tabProvSample$temp), function(x){tabProvSample$temp[[x]][,input$elemRaster]}))))) == 0){
+								if(length(which(!is.na(unlist(lapply(seq(from = 1, to = length(tabProvSample$temp), by = 1), function(x){tabProvSample$temp[[x]][,input$elemRaster]}))))) == 0){
 									plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 									text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 								} else {
 									if(length(grep(input$selectRealign,currentProject()$samplesFiles)) != 0){
 										
-										ylim <- c(min(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,input$elemRaster]})), na.rm = TRUE))
+										ylim <- c(min(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,input$elemRaster]})), na.rm = TRUE))
 										
-										xlim <- c(min(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,1]}))),max(unlist(lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,1]}))))
+										xlim <- c(min(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,1]}))))
 										
-										temp <- lapply(1:length(input$ReplicateSample), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,1]})
+										temp <- lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,1]})
 										
-										lapply(1:length(input$ReplicateSample), function(x){
+										lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(x){
 											
 											if(length(which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])) == 0){
 												
@@ -8885,15 +8883,19 @@ runElementR <- function(){ # nocov start
 											
 										})
 										
-										legend("topright", legend = input$ReplicateSample, col = sapply(1:length(input$ReplicateSample), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])]}), pch = 1, lwd=1, lty=1)
+										legend("topright", legend = input$ReplicateSample, col = sapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])]}), pch = 1, lwd=1, lty=1)
 										
 										if(!is.null(outlierChosen$temp)){
 											
-											lapply(1:length(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]), function(x){
-												
-												points(names(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]])[x], outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]][x], cex = 3, col ="deeppink")
-												
-											})
+											if(length(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]) != 0){
+												lapply(seq(from = 1, to = length(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]), by = 1), function(x){
+													
+													points(names(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]])[x], outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]][x], cex = 3, col ="deeppink")
+													
+												})
+											}
+											
+						
 											
 										} else{}
 									}
@@ -8907,16 +8909,16 @@ runElementR <- function(){ # nocov start
 							par(mar = c(5.1,4.1,1.5,1.5))
 							
 							if(!currentProject()$is.integer0(grep(input$selectRealign,currentProject()$samplesFiles)) & is.list(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster) & !is.null(input$elemRaster)){
-								if(length(which(!is.na(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster]}))))) == 0){
+								if(length(which(!is.na(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster]}))))) == 0){
 									plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 									text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 								}else{
 									
-									ylim <- c(min(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE))
+									ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE))
 									
-									xlim <- c(min(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
+									xlim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
 									
-									lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){
+									lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){
 										
 										plot(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,1],currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster] , xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", col =colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])] )
 										
@@ -8946,7 +8948,7 @@ runElementR <- function(){ # nocov start
 										k <- k+1
 									}
 									
-									legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)), NA), lwd = c(rep(1, length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)), 2))
+									legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)), NA), lwd = c(rep(1, length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)), 2))
 								}
 							} else {}
 							
@@ -8958,16 +8960,16 @@ runElementR <- function(){ # nocov start
 							
 							if(!currentProject()$is.integer0(grep(input$selectRealign,currentProject()$samplesFiles)) & is.list(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)){
 								if(!is.null(input$elemRaster)){
-									if(length(which(!is.na(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster]}))))) == 0){
+									if(length(which(!is.na(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster]}))))) == 0){
 										plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 										text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 									}else{
 										
-										ylim <- c(min(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE))
+										ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE))
 										
-										xlim <- c(min(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
+										xlim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
 										
-										lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){
+										lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){
 											
 											plot(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,1],currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster] , xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", col =colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])] )
 											
@@ -8979,7 +8981,7 @@ runElementR <- function(){ # nocov start
 										
 										points(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRasterNonCorr[,1],currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRasterNonCorr[,input$elemRaster], pch = 21, col = "red", cex = 1.5, bg = "red")
 										
-										legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), NA), lwd = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), 2))
+										legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), NA), lwd = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), 2))
 										
 										
 									}
@@ -8995,16 +8997,16 @@ runElementR <- function(){ # nocov start
 							if(!currentProject()$is.integer0(grep(input$selectRealign,currentProject()$samplesFiles))){
 								if(is.list(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)){
 									if(!is.null(input$elemRaster)){
-										if(length(which(!is.na(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster]}))))) == 0){
+										if(length(which(!is.na(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster]}))))) == 0){
 											plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 											text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 										}else{
 											
-											ylim <- c(min(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE))
+											ylim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,input$elemRaster]})), na.rm = TRUE))
 											
-											xlim <- c(min(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
+											xlim <- c(min(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]}))),max(unlist(lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(i){currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[i]][,1]})), na.rm = TRUE))
 											
-											lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){
+											lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){
 												
 												plot(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,1],currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster[[x]][,input$elemRaster] , xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", col =colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])] )
 												
@@ -9016,7 +9018,7 @@ runElementR <- function(){ # nocov start
 											
 											points(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRasterNonCorr[,1],currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRasterNonCorr[,input$elemRaster], pch = 21, col = "red", cex = 1.5, bg = "red")
 											
-											legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), NA), lwd = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), 2))
+											legend("topright", legend = c(names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), "Averaging"), col = c(sapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster), by = 1), function(x){colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == names(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)[x])]}), "black"), lty = 1, pch = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), NA), lwd = c(rep(1, length(colorReplicate$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])), 2))
 											
 											
 										}
@@ -9475,12 +9477,13 @@ runElementR <- function(){ # nocov start
 				input$nbOutliers
 				outlierValues$temp
 				deplace$val
+				outlierValues$temp
 				if(!is.null(input$selectRealign)){
 					if(!is.null(grep(input$selectRealign,currentProject()$samplesFiles))){
 						if(length(grep(input$selectRealign,currentProject()$samplesFiles)) != 0){
 							if(!is.null(eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)],sep=""))))){
 								
-								lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), function(x){
+								lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), by = 1), function(x){
 									eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][x],sep="")))
 								})
 								
@@ -9488,21 +9491,23 @@ runElementR <- function(){ # nocov start
 									OutputToPrint <- NULL
 									
 									if(!is.null(outlierValues$temp)){
-										
-										for(i in 2:length(outlierValues$temp)){
-											for(j in 1:length(outlierValues$temp[[i]])){
-												
-												if(length(outlierValues$temp[[i]][j]) != 0){
+										for(i in seq(from = 2, to = length(outlierValues$temp), by = 1)){
+											if(length(outlierValues$temp[[i]]) > 0){
+												for(j in seq(from = 1, to = length(outlierValues$temp[[i]]), by = 1)){
 													
-													if(is.numeric(outlierValues$temp[[i]][j]) & !is.na(outlierValues$temp[[i]][j])){
+													if(length(outlierValues$temp[[i]][j]) != 0){
 														
-														temp <- paste0(names(outlierValues$temp)[i], ": ", outlierValues$temp[[i]][j])
+														if(is.numeric(outlierValues$temp[[i]][j]) & !is.na(outlierValues$temp[[i]][j])){
+															
+															temp <- paste0(names(outlierValues$temp)[i], ": ", outlierValues$temp[[i]][j])
+															
+															OutputToPrint <- c(OutputToPrint, temp)
+														}
 														
-														OutputToPrint <- c(OutputToPrint, temp)
 													}
-													
 												}
 											}
+											
 										}
 										outlierSuggested$temp <- OutputToPrint
 										
@@ -9537,7 +9542,7 @@ runElementR <- function(){ # nocov start
 						if(length(grep(input$selectRealign,currentProject()$samplesFiles)) != 0){
 							if(!is.null(eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)],sep=""))))){
 								
-								lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), function(x){
+								lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), by = 1), function(x){
 									eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][x],sep="")))
 								})
 								
@@ -9555,7 +9560,7 @@ runElementR <- function(){ # nocov start
 										
 										Outliers <- currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_data[[1]]$detectOutlierMatrix(dat, method = method, nbOutliers = input$nbOutliers)
 										
-										OutlierValues <- lapply(1:length(Outliers), function(x){
+										OutlierValues <- lapply(seq(from = 1, to = length(Outliers), by = 1), function(x){
 											
 											temp <- dat[Outliers[[x]], x]
 											
@@ -9636,7 +9641,7 @@ runElementR <- function(){ # nocov start
 
 						if(length(which(is.element(input$ReplicateSample, names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]])) == FALSE)) == 0){
 							
-							plot_output_list <- lapply(1:length(input$ReplicateSample), function(i) {
+							plot_output_list <- lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i) {
 								plotname <- paste("plot", i, sep="")
 								numericInput(inputId = generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[i])],
 										 label = currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files[which(names(generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[i])],
@@ -9661,13 +9666,13 @@ runElementR <- function(){ # nocov start
 
 							if(!is.null(eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)],sep=""))))){
 
-								lapply(1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), function(x){
+								lapply(seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), by = 1), function(x){
 									eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][x],sep="")))
 								})
 
 								isolate({
 									temp <- NULL
-									for (i in 1:length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)){
+									for (i in seq(from = 1, to = length(currentProject()$samples[[grep(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), by = 1)){
 										temp[i] <- eval(parse(text = paste("input$",generRRealign$temp[[grep(input$selectRealign,currentProject()$samplesFiles)]][i],sep="")))
 
 									}
@@ -9732,9 +9737,9 @@ runElementR <- function(){ # nocov start
 											tabSD <- tempMatrix[2,]
 										}else{
 
-											tabMean <- apply(tempMatrix[(1:length(input$ReplicateSpot)),], 2, mean, na.rm = TRUE)
+											tabMean <- apply(tempMatrix[seq(from = 1, to = length(input$ReplicateSpot), by = 1),], 2, mean, na.rm = TRUE)
 
-											tabSD <- apply(tempMatrix[(1:length(input$ReplicateSpot)),], 2, sd, na.rm = TRUE)
+											tabSD <- apply(tempMatrix[(seq(from = 1, to = length(input$ReplicateSpot), by = 1)),], 2, sd, na.rm = TRUE)
 
 										}
 
@@ -9766,7 +9771,7 @@ runElementR <- function(){ # nocov start
 
 					OutliersToKeep <- list()
 
-					for(i in 1:length(input$ChosenOUtlier)){
+					for(i in seq(from = 1, to = length(input$ChosenOUtlier), by = 1)){
 
 						if (i == 1){
 
@@ -9793,7 +9798,7 @@ runElementR <- function(){ # nocov start
 						}
 					}
 
-					tempToExport <- lapply(1:length(outlierValues$temp), function(x){
+					tempToExport <- lapply(seq(from = 1, to = length(outlierValues$temp), by = 1), function(x){
 
 						if(length(grep(names(outlierValues$temp)[[x]], names(OutliersToKeep))) != 0){
 
@@ -9807,7 +9812,7 @@ runElementR <- function(){ # nocov start
 
 							if(length(OutliersToKeep[[elem]]) <= input$nbOutliers){
 
-								positionMatch <- sapply(1:length(OutliersToKeep[[elem]]), function(i){
+								positionMatch <- sapply(seq(from = 1, to = length(OutliersToKeep[[elem]]), by = 1), function(i){
 
 									which(round(OutliersToKeep[[elem]][i], digits = 16) == round(tempoR, digits = 16))
 
@@ -9839,7 +9844,7 @@ runElementR <- function(){ # nocov start
 			###############################################################
 			observe({
 				if(!is.null(currentProject()) & !is.null(deplace$val) & !is.null(flagRealign$temp) & !is.null(input$selectRealign) & !is.null(input$ReplicateSample)){
-					
+
 					deplace$val
 					input$ChosenOUtlier
 
@@ -9849,29 +9854,34 @@ runElementR <- function(){ # nocov start
 
 								if(!is.null(outlierValues$temp)){
 
-									OutliertoDelete <- lapply(1:length(outlierValues$temp), function(x){
+									OutliertoDelete <- lapply(seq(from = 1, to = length(outlierValues$temp), by = 1), function(x){
 
-										toReturn <- sapply(1:length(outlierValues$temp[[x]]), function(i){
+										if(length(outlierValues$temp[[x]]) != 0){
 
-											if(length(outlierValues$temp[[x]][i]) != 0){
-												if(!is.na(outlierValues$temp[[x]][i])){
-													if(is.null(outlierChosen$temp[[x]])){
-														outlierValues$temp[[x]][i]
-													} else {
-
-														if(length(which(round(outlierValues$temp[[x]][i], 16) == round(outlierChosen$temp[[x]], 16))) == 0){
-															outlierValues$temp[[x]][i]
-														} else {NA}
-													}
+											toReturn <- sapply(seq(from = 1, to = length(outlierValues$temp[[x]]), by = 1), function(i){
+												
+												if(!is.null(outlierValues$temp[[x]][i])){
+													if(length(outlierValues$temp[[x]][i]) != 0 & !is.na(outlierValues$temp[[x]][i])){
+															if(is.null(outlierChosen$temp[[x]])){
+																outlierValues$temp[[x]][i]
+															} else {
+																
+																if(length(which(round(outlierValues$temp[[x]][i], 16) == round(outlierChosen$temp[[x]], 16))) == 0){
+																	outlierValues$temp[[x]][i]
+																} else {NA}
+															}
+													} else {NA}
 												} else {NA}
-											} else {NA}
+											})
 
-
-										})
+										}
 									})
-
-									OutliertoDelete <- lapply(OutliertoDelete, function(x) x[!is.na(x)])
-
+									
+									OutliertoDelete <- lapply(OutliertoDelete, function(x){
+										if(!is.null(x)){
+											x[!is.na(x)]
+										} else {}
+									})
 
 								} else {OutliertoDelete <- NULL}
 
@@ -9885,7 +9895,7 @@ runElementR <- function(){ # nocov start
 					}  else {}
 				}  else {}
 
-				
+
 			}) # observe
 
 			################################################################
@@ -10154,7 +10164,7 @@ runElementR <- function(){ # nocov start
 									title = "Color of chemical element in plots",
 									p("Pick the color by clicking on the colored rectangle"),
 									div(style = "margin-left: 20px",
-									    lapply(1:length(currentProject()$listeElem), function(x){
+									    lapply(seq(from = 1, to = length(currentProject()$listeElem), by = 1), function(x){
 									    	div(style = "display: inline-block; width: 50px",
 									    	    div(p(currentProject()$listeElem[x])),
 									    	    div(colourInput(valeurColor$temp[x], NULL, isolate(color$temp)[x],showColour = "background"), style = "width: 20px")
