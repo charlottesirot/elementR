@@ -669,7 +669,15 @@ elementR_sample <- R6Class("elementR_sample",
                                		   				
                                		   				Standard1 <- which(abs(rankStandard - rankSample) == min(abs(rankStandard - rankSample)))[1]
                                		   				
-                               		   				if(rankSample < rankStandard[Standard1]){
+                               		   				if(rankSample > max(rankStandard)){
+                               		   					
+                               		   					Standard2 <- max(rankStandard)
+                               		   					
+                               		   				} else if(rankSample < min(rankStandard)){
+                               		   					
+                               		   					Standard2 <- min(rankStandard)
+                               		   					
+                               		   				} else if(rankSample < rankStandard[Standard1]){
                                		   					
                                		   					Standard2 <- rankStandard[Standard1-1]
                                		   					
@@ -840,35 +848,39 @@ elementR_project <- R6Class("elementR_project",
                               
                               detectPlateau = function(dat, col){
                               	
-                              	naLines <- which(is.na(dat[,col]))
+                              	if(!is.null(dat)){
+                              		naLines <- which(is.na(dat[,col]))
+                              		
+                              		kmean <- kmeans(na.omit(dat[,col]),2, algorithm = "Hartigan-Wong")
+                              		
+                              		if(!self$is.integer0(naLines)){
+                              			temp <- self$insert.at(kmean$cluster, naLines, rep(NA, length(naLines)))
+                              		} else {
+                              			temp <- kmean$cluster
+                              		}
+                              		
+                              		dat1 <- cbind(dat, temp)
+                              		
+                              		datList <- list(dat1[which(dat1[,ncol(dat1)] == 1),], dat1[which(dat1[,ncol(dat1)] == 2),])
+                              		
+                              		meanStand <- vapply(seq(from = 1, to = length(datList), by = 1),
+                              					  
+                              					  function(x){
+                              					  	
+                              					  	mean(datList[[x]][,col])
+                              					  	
+                              					  },
+                              					  FUN.VALUE = numeric(1)
+                              		)
+                              		
+                              		plateau <- which(meanStand == max(meanStand))
+                              		
+                              		limitPlateau <- c(dat1[which(kmean$cluster == plateau)[1],1], dat1[which(kmean$cluster == plateau)[length(which(kmean$cluster == plateau))],1])
+                              		
+                              		return(limitPlateau)
+                              	} else {return(c(NA, NA))}
                               	
-                              	kmean <- kmeans(na.omit(dat[,col]),2, algorithm = "Hartigan-Wong")
-                              	
-                              	if(!self$is.integer0(naLines)){
-                              		temp <- self$insert.at(kmean$cluster, naLines, rep(NA, length(naLines)))
-                              	} else {
-                              		temp <- kmean$cluster
-                              	}
-                              	
-                              	dat1 <- cbind(dat, temp)
-                              	
-                              	datList <- list(dat1[which(dat1[,ncol(dat1)] == 1),], dat1[which(dat1[,ncol(dat1)] == 2),])
-                              	
-                              	meanStand <- vapply(seq(from = 1, to = length(datList), by = 1),
-                              				  
-                              				  function(x){
-                              				  	
-                              				  	mean(datList[[x]][,col])
-                              				  	
-                              				  	},
-                              				  FUN.VALUE = numeric(1)
-                              				  )
-                              	
-                              	plateau <- which(meanStand == max(meanStand))
-                              	
-                              	limitPlateau <- c(dat1[which(kmean$cluster == plateau)[1],1], dat1[which(kmean$cluster == plateau)[length(which(kmean$cluster == plateau))],1])
-                              	
-                              	return(limitPlateau)
+
                               	
                               },
                               
@@ -880,23 +892,30 @@ elementR_project <- R6Class("elementR_project",
                               
                               detectBlank = function(dat, col){
                               	
-                              	rolMedian <- rollmedian(dat[,col], 3)
+                              	if(!is.null(dat)){
+                              		
+                              		rolMedian <- rollmedian(dat[,col], 3)
+                              		
+                              		deriv1 <- vapply(seq(from = 1, to = length(rolMedian), by = 1), 
+                              				     
+                              				     function(x){
+                              				     	
+                              				     	(rolMedian[x+1] - rolMedian[x])/(dat[x+1,1] - dat[x,1])
+                              				     	
+                              				     },
+                              				     FUN.VALUE = numeric(1)
+                              		)
+                              		
+                              		maxDeriv1 <- max(deriv1, na.rm = TRUE)
+                              		
+                              		endBlank <- which(deriv1 == maxDeriv1)[1] - 1
+                              		
+                              		return(c(1,dat[endBlank,1]))	
+                              	} else {
+                              		return(c(NA,NA))
+                              	}
                               	
-                              	deriv1 <- vapply(seq(from = 1, to = length(rolMedian), by = 1), 
-                              			     
-                              			     function(x){
-                              			     	
-                              			     	(rolMedian[x+1] - rolMedian[x])/(dat[x+1,1] - dat[x,1])
-                              			     	
-                              			     	},
-                              			     FUN.VALUE = numeric(1)
-                              			     )
-                              	
-                              	maxDeriv1 <- max(deriv1, na.rm = TRUE)
-                              	
-                              	endBlank <- which(deriv1 == maxDeriv1)[1] - 1
-                              	
-                              	return(c(1,dat[endBlank,1]))
+
                               	
                               },
                               
@@ -920,7 +939,7 @@ elementR_project <- R6Class("elementR_project",
                               
                               set_summarySettings = function(name, rank, bins1, bins2, plat1, plat2, average, LOD){
 
-                                self$summarySettings[which(rownames(self$summarySettings) == name),] <- c(name, rank, bins1, bins2, plat1,plat2, average, LOD)
+                                self$summarySettings[which(rownames(self$summarySettings) == name),] <- c(name, rank, bins1, bins2, plat1, plat2, average, LOD)
                      
                               },
                               
