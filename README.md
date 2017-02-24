@@ -51,6 +51,14 @@ library(elementR)
 
 > For Mac users: during installation elementR will ask to install "XCode/otool". Accept this installation.
 
+> For Linux users: you could need to install additional libraries: 
+```
+sudo apt-get update
+sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libssl-dev
+sudo apt-get install libxml2-dev
+sudo apt-get install libssh2-1-dev
+```
 
 > If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
 
