@@ -1,6 +1,6 @@
 ##############################################################
 #
-# elementR 1.3 - 16/02/2017
+# elementR 1.3.0
 # 
 # charlott.sirot@gmail.com
 # francois.guilhaumon@ird.fr
