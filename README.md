@@ -51,6 +51,8 @@ library(elementR)
 
 > For Mac users: during installation elementR will ask to install "XCode/otool". Accept this installation.
 
+> If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
+
 > For Linux users: you could need to install additional libraries: 
 ```
 sudo apt-get update
@@ -60,15 +62,12 @@ sudo apt-get install libxml2-dev
 sudo apt-get install libssh2-1-dev
 ```
 
-> If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
-
-
-> elementR runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR under [Firefox](https://www.mozilla.org/en-US/firefox/new/).
+> the elementR GUI runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR under [Firefox](https://www.mozilla.org/en-US/firefox/new/).
 
 
 ## Usage
 
-For launching elementR, just run the following command in your R console:
+To launch elementR, run the following command in your R console:
 
 ```
 runElementR()
