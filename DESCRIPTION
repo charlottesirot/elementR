@@ -1,6 +1,6 @@
 Package: elementR
 Type: Package
-Title: A Shiny Application for Reducing Elemental LA-ICPMS Data from Solid Structures
+Title: A Set of R6 Classes & a Shiny Application for Reducing Elemental LA-ICPMS Data from Solid Structures
 Version: 1.3.0
 Date: 2016-02-16
 Author: Charlotte Sirot, Francois Guilhaumon

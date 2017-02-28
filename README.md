@@ -2,8 +2,8 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 [![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR?color=brightgreen)](http://cran.rstudio.com/web/packages/elementR/index.html)
-[![Build Status](https://api.travis-ci.org/fguilhaumon/elementR.svg?branch=master)](https://travis-ci.org/fguilhaumon/elementR)
-[![codecov.io](https://codecov.io/github/fguilhaumon/elementR/coverage.svg?branch=master)](https://codecov.io/github/fguilhaumon/elementR?branch=master)
+[![Build Status](https://api.travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
+[![codecov.io](https://codecov.io/github/charlottesirot/elementR?branch=master)](https://codecov.io/github/charlottesirot/elementR?branch=master)
 ## Overview
 
 **elementR** is an R package facilitating the handling and reduction of elemental microchemistry data obtained from solid-phase [LA-ICPMS](https://en.wikipedia.org/wiki/Inductively_coupled_plasma_mass_spectrometry) analysis (laser ablation inductive coupled plasma mass spectrometry). The **elementR** R-package provides:
@@ -51,6 +51,8 @@ library(elementR)
 
 > For Mac users: during installation elementR will ask to install "XCode/otool". Accept this installation.
 
+> If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
+
 > For Linux users: you could need to install additional libraries: 
 ```
 sudo apt-get update
@@ -60,15 +62,12 @@ sudo apt-get install libxml2-dev
 sudo apt-get install libssh2-1-dev
 ```
 
-> If the installation is stuck at the installation of the tcltk package, this probably means that XQuartz does not run properly. Check its validity.
-
-
-> elementR runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR under [Firefox](https://www.mozilla.org/en-US/firefox/new/).
+> the elementR GUI runs on any web browser. However, as the graphic of the user interface has been developed based on Firefox, authors highly recommend to run elementR under [Firefox](https://www.mozilla.org/en-US/firefox/new/).
 
 
 ## Usage
 
-For launching elementR, just run the following command in your R console:
+To launch elementR, run the following command in your R console:
 
 ```
 runElementR()
