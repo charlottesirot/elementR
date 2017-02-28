@@ -10,6 +10,6 @@ Repository: CRAN
 Depends: R (>= 3.2.3)
 Imports: gdata, shiny,devtools, shinyjs, gnumeric, R6, shinydashboard, abind, stringr, lmtest, tcltk,tcltk2, reader, readODS, readxl, EnvStats, climtrends, outliers, zoo, colourpicker, stats, graphics, utils
 License: GPL (>=2)
-Suggests: testthat, RSelenium
+Suggests: testthat
 URL: https://github.com/charlottesirot/elementR
 BugReports: https://github.com/charlottesirot/elementR/issues
