@@ -2,7 +2,7 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 [![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR?color=brightgreen)](http://cran.rstudio.com/web/packages/elementR/index.html)
-[![Build Status](https://api.travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
+[![Build Status](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
 [![codecov.io](https://codecov.io/github/charlottesirot/elementR?branch=master)](https://codecov.io/github/charlottesirot/elementR?branch=master)
 ## Overview
 
