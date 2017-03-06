@@ -641,14 +641,14 @@ elementR_sample <- R6Class("elementR_sample",
                              ##################################################################################################
 
                              setDataConcCorr = function(bins, plat, name, calibFile, meanStand, rankSample, rankStandard, model, correction, rempl,threshold){
-                             	
+
                              	if(is.null(threshold)){
                              		threshold <- 0.75
                              	} else {}
                                
                                self$setDataConc(bins = bins, plat = plat, calibFile = calibFile, meanStand = meanStand, rempl = rempl)
                                
-                               rankSample <- rankSample[which(names(rankSample) == name)]
+                               rankSampleConsidered <- rankSample[which(names(rankSample) == name)]
                                
                                temp <- vapply(seq(from = 2, to = ncol(self$dataNorm), by = 1),
                                		   
@@ -656,7 +656,7 @@ elementR_sample <- R6Class("elementR_sample",
                                		   	
                                		   	if(correction[x-1] == FALSE){ # No correction
                                		   		
-                               		   		return(self$dataNorm[,x] * calibFile[1,x]/ meanStand[x-1])
+                               		   		return(self$dataNorm[,x] * calibFile[1,x]/ meanStand[nrow(meanStand)-1, x-1])
                                		   		
                                		   	}
                                		   	
@@ -667,39 +667,57 @@ elementR_sample <- R6Class("elementR_sample",
                                		   			
                                		   			if(model[x-1,7] < threshold){ # the model is not a linear regression
                                		   				
-                               		   				Standard1 <- which(abs(rankStandard - rankSample) == min(abs(rankStandard - rankSample)))[1]
+                               		   				Standard1 <- which(abs(rankStandard - rankSampleConsidered) == min(abs(rankStandard - rankSampleConsidered)))[1]
                                		   				
-                               		   				if(rankSample > max(rankStandard)){
+                               		   				if(rankSampleConsidered > max(rankStandard)){
                                		   					
                                		   					Standard2 <- max(rankStandard)
+                               		   					names(Standard2) <- names(rankStandard)[which(rankStandard == max(rankStandard))]
                                		   					
-                               		   				} else if(rankSample < min(rankStandard)){
+                               		   				} else if(rankSampleConsidered < min(rankStandard)){
                                		   					
                                		   					Standard2 <- min(rankStandard)
+                               		   					names(Standard2) <- names(rankStandard)[which(rankStandard == min(rankStandard))]
                                		   					
-                               		   				} else if(rankSample < rankStandard[Standard1]){
+                               		   				} else if(rankSampleConsidered < rankStandard[Standard1]){
                                		   					
                                		   					Standard2 <- rankStandard[Standard1-1]
+                               		   					names(Standard2) <- names(rankStandard)[which(rankStandard == rankStandard[Standard1-1])]
                                		   					
                                		   				} else {
                                		   					Standard2 <- rankStandard[Standard1+1]
+                               		   					names(Standard2) <- names(rankStandard)[which(rankStandard == rankStandard[Standard1+1])]
                                		   				}
                                		   				
-                               		   				modelneighbor <- lm(c(meanStand[Standard1], meanStand[Standard2]) ~ c(Standard1, Standard2))
+                               		   				stand1Value <- meanStand[which(rownames(meanStand) == paste0(names(Standard1), " Mean")), x-1]
+                               		   				stand2Value <- meanStand[which(rownames(meanStand) == paste0(names(Standard2), " Mean")), x-1]
                                		   				
-                               		   				StandTheoric <- modelneighbor$coefficients[1] + rankSample * modelneighbor$coefficients[2]
+                               		   				if(Standard1 == Standard2){
+                               		   					
+                               		   					StandTheoric <- meanStand[which(rownames(meanStand) == paste0(names(Standard2), " Mean")), x-1]
+                               		   					
+                               		   				} else if(stand1Value == stand2Value){
+                               		   					
+                               		   					StandTheoric <- 1
+                               		   					
+                               		   				} else {
+                               		   					
+                               		   					modelneighbor <- lm(c(stand1Value, stand2Value) ~ c(Standard1, Standard2))
+                               		   					
+                               		   					StandTheoric <- modelneighbor$coefficients[1] + rankSampleConsidered * modelneighbor$coefficients[2]
+                               		   				}
                                		   				
                                		   				return(self$dataNorm[,x] * calibFile[1,x] / StandTheoric)
                                		   				
                                		   			} else { # the model seems to be a linear regression
                                		   				
-                               		   				StandTheoric <- model[x-1,5] + rankSample * model[x-1, 6]
+                               		   				StandTheoric <- model[x-1,5] + rankSampleConsidered * model[x-1, 6]
                                		   				
                                		   				return(self$dataNorm[,x] * calibFile[1,x] / StandTheoric)	
                                		   				
                                		   			}
                                		   			
-                               		   		} else {}
+                               		   		} else {return(rep(NA, nrow(dat)))}
                                		   		
                                		   	}
                                		   	

@@ -2,7 +2,7 @@ Package: elementR
 Type: Package
 Title: A Set of R6 Classes & a Shiny Application for Reducing Elemental LA-ICPMS Data from Solid Structures
 Version: 1.3.0
-Date: 2016-02-16
+Date: 2017-02-16
 Author: Charlotte Sirot, Francois Guilhaumon
 Maintainer: Charlotte Sirot <charlott.sirot@gmail.com>
 Description: Aims to facilitate the reduction of elemental microchemistry data from solid-phase LA-ICPMS analysis (laser ablation inductive coupled plasma mass spectrometry). The elementR package provides a reactive and user friendly interface for conducting all steps needed for an optimal data reduction while leaving maximum control for user.

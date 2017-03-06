@@ -8760,7 +8760,7 @@ runElementR <- function(){ # nocov start
 										currentSampleRep$temp$setPlat(plat = c(currentSampleData$temp[Temp1S$t,1],currentSampleData$temp[Temp2S$t,1]))
 										currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), 
 																  name = input$SampleIn2,
-																  meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																  meanStand = currentProject()$standards[[1]]$rep_dataFinale,
 																  rankSample = currentProject()$sampleRank, 
 																  rankStandard = currentProject()$standardRank,
 																  model = currentProject()$regressionModel, 
@@ -8796,7 +8796,7 @@ runElementR <- function(){ # nocov start
 										currentSampleRep$temp$setPlat(plat = c(currentSampleData$temp[Temp1S$t,1],currentSampleData$temp[Temp2S$t,1]))
 										currentSampleRep$temp$setDataConcCorr(bins = c(TempS$t, Temp0S$t), plat = c(Temp1S$t,Temp2S$t), 
 																  name = input$SampleIn2,
-																  meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																  meanStand = currentProject()$standards[[1]]$rep_dataFinale,
 																  rankSample = currentProject()$sampleRank, 
 																  rankStandard = currentProject()$standardRank,
 																  model = currentProject()$regressionModel, 
