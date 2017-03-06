@@ -9023,7 +9023,7 @@ runElementR <- function(){ # nocov start
 
 							par(mar = c(5.1,4.1,1.5,1.5))
 
-							if(!is.null(input$ReplicateSample) & is.list(tabProvSample$temp) & length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
+							if(!is.null(input$ReplicateSample) & is.list(tabProvSample$temp) & length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0 & !is.null(unlist(lapply(seq(from = 1, to = length(tabProvSample$temp), by = 1), function(x){tabProvSample$temp[[x]][,input$elemRaster]})))){
 								if(length(which(!is.na(unlist(lapply(seq(from = 1, to = length(tabProvSample$temp), by = 1), function(x){tabProvSample$temp[[x]][,input$elemRaster]}))))) == 0){
 									plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 									text(1,0.5, labels = "No data different from NA for this element", cex = 2)
@@ -9657,7 +9657,6 @@ runElementR <- function(){ # nocov start
 				input$nbOutliers
 				outlierValues$temp
 				deplace$val
-				outlierValues$temp
 				if(!is.null(input$selectRealign)){
 					if(!is.null(match(input$selectRealign,currentProject()$samplesFiles))){
 						if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0  & !is.null(generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]])){
@@ -9690,7 +9689,6 @@ runElementR <- function(){ # nocov start
 
 										}
 										outlierSuggested$temp <- OutputToPrint
-
 									} else {}
 								})
 							}
@@ -9717,6 +9715,7 @@ runElementR <- function(){ # nocov start
 			observe({
 				input$nbOutliers
 				deplace$val
+				input$ReplicateSample
 				if(!is.null(input$selectRealign)){
 					if(!is.null(match(input$selectRealign,currentProject()$samplesFiles))){
 						if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0  & !is.null(generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]])){
@@ -9981,35 +9980,38 @@ runElementR <- function(){ # nocov start
 
 					tempToExport <- lapply(seq(from = 1, to = length(outlierValues$temp), by = 1), function(x){
 
-						if(length(grep(names(outlierValues$temp)[[x]], names(OutliersToKeep))) != 0){
-
-							elem <- which(names(OutliersToKeep) == names(outlierValues$temp)[[x]])
-
-							toReturn <- OutliersToKeep[[elem]]
-
-							tempoR <- outlierValues$temp[[x]]
-
-							names(tempoR) <- NULL
-
-							if(length(OutliersToKeep[[elem]]) <= input$nbOutliers){
-
-								positionMatch <- sapply(seq(from = 1, to = length(OutliersToKeep[[elem]]), by = 1), function(i){
-
-									which(round(OutliersToKeep[[elem]][i], digits = 16) == round(tempoR, digits = 16))
-
-								})
-
-								if(length(outlierValues$temp[[x]]) != 0 &  !is.list(positionMatch)){
-
-									names(toReturn) <- names(outlierValues$temp[[x]][positionMatch])
-
+						if(!is.null(names(outlierValues$temp))){
+							if(length(grep(names(outlierValues$temp)[[x]], names(OutliersToKeep))) != 0){
+								
+								elem <- which(names(OutliersToKeep) == names(outlierValues$temp)[[x]])
+								
+								toReturn <- OutliersToKeep[[elem]]
+								
+								tempoR <- outlierValues$temp[[x]]
+								
+								names(tempoR) <- NULL
+								
+								if(length(OutliersToKeep[[elem]]) <= input$nbOutliers){
+									
+									positionMatch <- sapply(seq(from = 1, to = length(OutliersToKeep[[elem]]), by = 1), function(i){
+										
+										which(round(OutliersToKeep[[elem]][i], digits = 16) == round(tempoR, digits = 16))
+										
+									})
+									
+									if(length(outlierValues$temp[[x]]) != 0 &  !is.list(positionMatch)){
+										
+										names(toReturn) <- names(outlierValues$temp[[x]][positionMatch])
+										
+									} else {}
+									
 								} else {}
-
-							} else {}
-
-							return(toReturn)
-
-						} else {NULL}
+								
+								return(toReturn)
+								
+							} else {NULL}	
+						}
+						
 
 
 					})

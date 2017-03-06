@@ -363,19 +363,20 @@ elementR_data <- R6Class("elementR_data",
                            #################################################################################################
                            
                            detectOutlierMatrix = function(dat, method, nbOutliers){
-                           	
+                           
                            	if(method == "Tietjen.Moore Test"){
                            		pb <- tkProgressBar("Outlier detection", "Detection in %",
                            					  0, 100, 0)
                            	} else {}
-                           	
+                           
+                           	if(!is.null(ncol(dat))){
                            	res <- lapply(seq(from = 1, to = ncol(dat), by = 1), function(x){
                            		
                            		if(method == "Tietjen.Moore Test"){
                            			info <- sprintf("%d%% done", round(x/ncol(dat)) * 100)
                            			setTkProgressBar(pb, round(x/ncol(dat)) * 100, sprintf("OUtlier detection (%s)", info), info)
                            		} else {}
-
+                           		
                            		
                            		if(x == 1){
                            			
@@ -394,6 +395,7 @@ elementR_data <- R6Class("elementR_data",
                            		
                            		
                            	})
+                           }
                            	
                            	if(method == "Tietjen.Moore Test"){
                            		close(pb)
@@ -1867,18 +1869,24 @@ elementR_repSample <- R6Class("elementR_repSample",
                                    
                                  })
                                  
-                                 names(tabTemp) <- names(self$rep_dataFiltre)
-                                                                                                   
+                                 names(tabTemp) <- names(self$rep_dataFiltre)    
+                                                          
                                  outputList <- lapply(seq(from = 1, to = length(input), by = 1), function(x){
-                                   tabTemp[[which(names(tabTemp) == input[x])]]
+                                 	
+                                 	if(length(which(names(tabTemp) == input[x])) != 0){
+                                 		tabTemp[[which(names(tabTemp) == input[x])]]
+                                 	} else {}
+                                 	
                                  })
                                  
-                                 names(outputList) <- vapply(seq(from = 1, to = length(input), by = 1), 
-                                 				    function(x){
-                                 				    	names(tabTemp)[which(names(tabTemp) == input[x])]
-                                 				    	}, 
-                                 				    FUN.VALUE = character(1)
-                                 				    )
+                                 if(!is.null(tabTemp[[1]])){
+                                 	names(outputList) <- vapply(seq(from = 1, to = length(input), by = 1), 
+                                 					    function(x){
+                                 					    	names(tabTemp)[which(names(tabTemp) == input[x])]
+                                 					    }, 
+                                 					    FUN.VALUE = character(1)
+                                 	)
+                                 }
                                  
                                  if(!is.null(outliers)){
                                  
