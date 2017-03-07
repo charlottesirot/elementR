@@ -382,7 +382,7 @@ elementR_data <- R6Class("elementR_data",
                            			
                            			NULL
                            			
-                           		} else if(!is.integer0(which(!is.na(dat[,x]) == TRUE))){
+                           		} else if(!self$is.integer0(which(!is.na(dat[,x]) == TRUE))){
                            			
                            			if(self$is.possibleOutlier(dat = dat[,x])){
                            				
