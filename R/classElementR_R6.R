@@ -730,7 +730,7 @@ elementR_sample <- R6Class("elementR_sample",
                                		   				
                                		   			}
                                		   			
-                               		   		} else {return(rep(NA, nrow(dat)))}
+                               		   		} else {return(rep(NA, nrow(self$dataNorm)))}
                                		   		
                                		   	}
                                		   	
