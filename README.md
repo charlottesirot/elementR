@@ -39,7 +39,7 @@ pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashbo
 
 invisible(lapply(pkgs, function(pkg){
 	if(!require(pkg)){
-		install.packages(pkg, dependencies=TRUE)
+		install.packages(pkgs, dependencies=TRUE)
 	}
 }))
 
