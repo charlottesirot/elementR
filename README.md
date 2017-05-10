@@ -37,8 +37,8 @@ pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashbo
 	"abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl", "outliers", "climtrends",
 	"EnvStats", "colourpicker", "zoo")
 
-invisible(lapply(pkgs, function(pkg){
-	if(!require(pkg)){
+invisible(lapply(pkgs, function(pkgs){
+	if(!require(pkgs)){
 		install.packages(pkgs, dependencies=TRUE)
 	}
 }))
