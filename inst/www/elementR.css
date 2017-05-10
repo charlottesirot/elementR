@@ -263,6 +263,15 @@ background-color: #444444;
 
 .bar{background-color: #666666;height: 30px;}
 .barActive{background-color: #444444;height: 30px;}
-                              
 
+#Precision1{
+  margin-left: 15px
+}
 
+#Precision4{
+  margin-left: 15px
+}
+
+#referenceConcentration{
+  margin-left: 15px
+}

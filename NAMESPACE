@@ -8,17 +8,19 @@ importFrom(zoo, rollmedian)
 importFrom(colourpicker, colourInput)
 importFrom(shinyjs, delay)
 importFrom(shinyjs, useShinyjs)
+importFrom(shinyjs, addClass)
 importFrom(gnumeric, read.gnumeric.sheet)
 importFrom(abind, abind)
 importFrom(tcltk2, tk2text)
 importFrom(gdata, read.xls)
-import(shiny, shinydashboard, stringr, lmtest, reader, devtools, tcltk, readxl)
+import(shiny, shinydashboard, stringr, lmtest, reader, devtools, tcltk, readxl, shinyjs)
 importFrom("readODS", read.ods)
 importFrom("grDevices", "bmp", "colorRampPalette", "dev.off", "jpeg",
              "png", "rainbow", "tiff")
 importFrom("graphics", "abline", "layout", "legend", "mtext", "par",
              "plot", "points", "rect", "text", "title")
 importFrom("stats", "sd")
+importFrom("stats", "kmeans")
 importFrom("utils", "read.table", "write.csv", "write.table")
 
 if(.Platform$OS.type=="windows"){

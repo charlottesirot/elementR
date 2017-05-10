@@ -65,7 +65,7 @@ readData <- function(x, sep = ";", dec = "."){
 ##################################### elementR_data Class
 ############################################################
 ############################################################
-
+{
 elementR_data <- R6Class("elementR_data",
                          public = list(
                            name = NA, # A character string corresponding to the name of the considered replicate
@@ -79,9 +79,20 @@ elementR_data <- R6Class("elementR_data",
                            dataSupLOD = NA, # A matrix of data corresponding to the values of self$dataSuppBlank up to the limit of detection (here self$LOD)
                            dataNorm = NA, # A matrix of data corresponding to the values of self$dataSupLOD normalized by the chemical element chosen as internal standard    (here, self$elemstand)
                            elemstand = NA, # A character string corresponding to the name of the chemical element chosen as internal standard                     
+                           CustomLOD = 3, # the number of sd of the blank to calculate the LOD
                            LOD = NA, # A vector of numerical values corresponding to the limit of detection for each chemical element of the considered replicate
                            BlankAverarge = NA, # A vector of numerical values corresponding to the averaged blank values for each chemical element of the considered replicate
                            remplaceValue = NA, # A character string corresponding to the value replacing the self$dataSuppBlank below the limit of detection
+                           
+                           ##################################################################################################
+                           # Name: setCustomLOD
+                           # Function: set self$CustomLOD
+                           # Input: x = a integer corresponding to the number n: LOD = n*sd(blank)
+                           ##################################################################################################
+                           
+                           setCustomLOD = function(x){
+                             self$CustomLOD <- x
+                           },
                            
                            ##################################################################################################
                            # Name: setElemStand
@@ -142,7 +153,7 @@ elementR_data <- R6Class("elementR_data",
                              
                              self$dataBlank <- subDat
                              
-                             self$LOD <- 3*apply(self$dataBlank[,-1], 2, sd, na.rm =TRUE)
+                             self$LOD <- self$CustomLOD*apply(self$dataBlank[,-1], 2, sd, na.rm =TRUE)
                              
                              self$LOD[is.na(self$LOD)] <- 0
                              
@@ -208,9 +219,9 @@ elementR_data <- R6Class("elementR_data",
                              
                              if(is.null(rempl)){
                                self$remplaceValue <- rep(NA, nrow(self$dataSuppBlank))
-                             } else if(rempl == "NA"){
+                             } else if(is.na(rempl)){
                                  self$remplaceValue <- rep(NA, nrow(self$dataSuppBlank))
-                               } else if(rempl == "0"){
+                               } else if(rempl == 0){
                                  self$remplaceValue <- rep(0, nrow(self$dataSuppBlank))
                                } else {
                                  self$remplaceValue <- self$BlankAverarge
@@ -477,13 +488,13 @@ elementR_data <- R6Class("elementR_data",
                          )
 
 )#elementR_data
-
+}
 ############################################################
 ############################################################
 ################################# elementR_standard Class
 ############################################################
 ############################################################
-
+{
 elementR_standard <- R6Class("elementR_standard",
                                 inherit = elementR_data,
                                 public = list(                                  
@@ -592,14 +603,14 @@ elementR_standard <- R6Class("elementR_standard",
                                   
                                 )
 )#elementR_standard
-
+}
 
 ############################################################
 ############################################################
 ################################# elementR_sample Class
 ############################################################
 ############################################################
-
+{
 elementR_sample <- R6Class("elementR_sample",
                            inherit = elementR_data,
                            public = list(
@@ -774,7 +785,8 @@ elementR_sample <- R6Class("elementR_sample",
                                                              return(self$dataNorm) } 
                                                               
                                if(curve =="Concentration") {self$setDataConc(bins = bins, plat = plat, calibFile = calibFile, meanStand = meanStand, rempl = rempl)
-                                                                 return(self$dataConc) }
+                                                            return(self$dataConc) 
+                               					}
                                
                                if(curve == "Conc. corrected") {self$setDataConcCorr(bins = bins, plat, name, calibFile = calibFile, meanStand = meanStand, rankSample = rankSample, rankStandard = rankStandard, model = model, correction = correction, rempl = rempl, threshold = threshold)
                                                                     return(self$dataConcCorr)}
@@ -810,13 +822,14 @@ elementR_sample <- R6Class("elementR_sample",
 
                            )#public
 )#elementR_Sample
+}
 
 ############################################################
 ############################################################
 ################################# elementR_project Class
 ############################################################
 ############################################################
-
+{
 elementR_project <- R6Class("elementR_project",
                             public = list(
                               name = NA,  # A character string corresponding to the name of the project                        
@@ -832,7 +845,7 @@ elementR_project <- R6Class("elementR_project",
                               listeElem = NA, # A vector containing the names of the chemical elements included in the project
                               flag_stand = NA, # A vector indicating which standards have been filtered
                               flag_Sample = NA,  # A vector indicating which samples have been filtered
-                              flagRealign = list(), # A list vectors indicating which samples have been realigned or averaged (raster and spot mode)
+                              flagRealign = list(), # A list vectors indicating which samples have been realigned or averaged (transect and spot mode)
                               standardRank = NA, # A vector corresponding to the standard rank in ICPMS analysis
                               sampleRank = NA, # A vector corresponding to the sample rank in ICPMS analysis
                               elementChecking = list(), # A list indicating the number and the location of the error(s) of structure within data included in the project
@@ -845,6 +858,55 @@ elementR_project <- R6Class("elementR_project",
                               summarySettings = matrix(), # A matrix summarizing all the parameters set by user for each replicate (sample and standard)
                               ChoiceUserCorr = NA, # a logical value corresponding to the choice of the user to correct or no the session based on the first step of configuration
                               R2Threshold = NA, #the threshold to pass from a machien drift correction from a linear to a neighbor correction
+                              valRemplace = NA, #the value to replace in the case of value < LOD
+                              literatureConcentration = NA, #Concentration of the reference material
+                              precisionTable = NA, #table with %RSD and LOD of the standard material
+                              correctnessTable  = NA, #the value of the reference materials + the mean of those + the literatureConcentration + diffrenec between the observed mean  and the literature
+                              
+                              ##################################################################################################
+                              # Name: setPrecisionTable
+                              # Function: set precisionTable
+                              # inputs: x the table to set
+                              ##################################################################################################
+                              
+                              setPrecisionTable = function(x){
+                              	self$precisionTable <- x
+                              },
+                              
+                              ##################################################################################################
+                              # Name: setCorrectnessTable
+                              # Function: set correctnessTable
+                              # inputs: x the table to set
+                              ##################################################################################################
+                              
+                              setCorrectnessTable = function(x){
+                              	self$correctnessTable <- x
+                              },
+                              
+                              ##################################################################################################
+                              # Name: setLiteratureConcentration
+                              # Function: set literatureConcentration
+                              # inputs: x the path of the file
+                              ##################################################################################################
+
+                              setLiteratureConcentration = function(x, sep, dec){
+                              	self$literatureConcentration <- readData(x, sep = sep, dec = dec)
+                              },
+                              
+                              ##################################################################################################
+                              # Name: setvalRemplace
+                              # Function: set valRemplace
+                              # inputs: x the value to replace of values < LOD
+                              ##################################################################################################
+                              
+                              setvalRemplace = function(x){
+                              	
+                              	if(x == "Averaged value of the blank"){
+                              		self$valRemplace <- x
+                              	} else {
+                              		self$valRemplace <- eval(parse(text = x))
+                              	}
+                              },
                               
                               ##################################################################################################
                               # Name: setR2Threshold
@@ -1037,7 +1099,7 @@ elementR_project <- R6Class("elementR_project",
                               ##################################################################################################
                               # Name: set_flagRealign 
                               # Function: set self$flagRealign
-                              # Input: replicate = a numerical value corresponding to the number of the considered replicate, type = a character string indicating the raster or spot mode, value = the numerical value to set
+                              # Input: replicate = a numerical value corresponding to the number of the considered replicate, type = a character string indicating the transect or spot mode, value = the numerical value to set
                               ##################################################################################################
                               
                               set_flagRealign = function(replicate, type, value){
@@ -1046,7 +1108,7 @@ elementR_project <- R6Class("elementR_project",
                                   
                                   self$flagRealign[[replicate]][1] <- value
                                   
-                                } else if(type == "raster"){ 
+                                } else if(type == "transect"){ 
                                   
                                   self$flagRealign[[replicate]][2] <-  value
                                   
@@ -1488,7 +1550,7 @@ elementR_project <- R6Class("elementR_project",
                                 
                                 self$flagRealign <- lapply(seq(from = 1, to = length(self$samplesFiles), by = 1),function(x){
                                   temp1 <- c(0,0)
-                                  names(temp1) <- c("spot", "raster")
+                                  names(temp1) <- c("spot", "transect")
                                   return(temp1)
                                 }) # lapply
                                 
@@ -1521,12 +1583,13 @@ elementR_project <- R6Class("elementR_project",
                               aMethod = function() self$name
                             )#private
 )#elementR_project
+}
 
-####################################################################
-####################################################################
+################################################################################
+################################################################################
 #################################### ElementR repertoire class ####
-####################################################################
-
+################################################################################
+{
 elementR_rep <- R6Class("elementR_rep",
                         public = list(
                           rep_name = NA, # A character string corresponding to the name of the considered folder
@@ -1578,7 +1641,13 @@ elementR_rep <- R6Class("elementR_rep",
                           
                         )
 )
+}
 
+################################################################################
+################################################################################
+#################################### ElementR rep_Standard class ####
+################################################################################
+{
 elementR_repStandard <- R6Class("elementR_repStandard",
                              inherit = elementR_rep,
                              public = list(                               
@@ -1654,13 +1723,19 @@ elementR_repStandard <- R6Class("elementR_repStandard",
                                }
                              ) # list
 ) # elementR_repstand
+}
 
+################################################################################
+################################################################################
+#################################### ElementR rep_Sample class ####
+################################################################################
+{
 elementR_repSample <- R6Class("elementR_repSample",
                              inherit = elementR_rep,
                              public = list(
                                rep_type = "Sample", # A character string indicating the type of the considered batch (here, "sample")
-                               rep_type2 = NA, # A character string corresponding to the processing mode of averaging ("raster" or "spot")
-                               rep_dataFiltre = NA, # A list containing the data to average for each replicate of the considered sample (self$dataOutlierFree for spot mode and self$dataNorm for raster mode)
+                               rep_type2 = NA, # A character string corresponding to the processing mode of averaging ("transect" or "spot")
+                               rep_dataFiltre = NA, # A list containing the data to average for each replicate of the considered sample (self$dataOutlierFree for spot mode and self$dataNorm for transect mode)
                                rep_dataFinalSpot = NA, # A matrix containing the average and the standard deviation per chemical element of the final replicates (i.e. chosen to be part of the final calculation)
                                rep_dataIntermRaster = NA, # A list containing the realigned self$dataNorm of the final replicates (i.e. chosen to be part of the final calculation)
                                rep_dataFinalRaster = NA, # A matrix corresponding to the averaging of the data contained in self$rep_dataIntermRaster
@@ -1707,7 +1782,7 @@ elementR_repSample <- R6Class("elementR_repSample",
                                ##################################################################################################
                                # Name: setrep_type2
                                # Function: to set the self$rep_type2
-                               # Input: x = a character string indicating spot or raster mode
+                               # Input: x = a character string indicating spot or transect mode
                                ##################################################################################################
                                
                                setrep_type2 = function(x){
@@ -2110,3 +2185,4 @@ elementR_repSample <- R6Class("elementR_repSample",
                                
                              ) # list
 ) # elementR_repstand
+}
