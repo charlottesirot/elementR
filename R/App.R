@@ -4011,7 +4011,7 @@ runElementR <- function(){ # nocov start
 							lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){
 								currentProject()$samples[[x]]$setrep_type2(NA)
 							})
-							startSession$temp <- NULL
+							startSession$temp <- 0
 							flagStandard$temp <- NULL
 							flagSampleDetail$temp <- NULL
 							flagRealign$temp <- NULL
@@ -4022,6 +4022,7 @@ runElementR <- function(){ # nocov start
 							DirToCreate$temp <- 0
 							color$temp <- NULL
 							WhatLoaded$temp <- NA
+							valeurColor$temp <- NULL
 							Temp$t <- NULL
 							Temp0$t <- NULL
 							Temp1$t <- NULL
@@ -4182,11 +4183,11 @@ runElementR <- function(){ # nocov start
 			# choice of user for correcting the machine drift
 			##############################################################
 			observe({
+				input$runExampleNew
 				if(!is.null(input$checkbox)){
 					if(!is.null(input$calibFile)){
 						calibFile$temp
 						isolate({
-							
 							if(flagStart$temp[1] > 0) {
 								if(input$checkbox == TRUE){
 									flagStart$temp[1] <- 1.5
@@ -4237,7 +4238,6 @@ runElementR <- function(){ # nocov start
 			#geneR rankStandard$temp & rankSample$temp
 			##############################################################
 			observe({
-				
 				input$createProjButton
 				input$runExampleNew
 				
@@ -9707,7 +9707,7 @@ runElementR <- function(){ # nocov start
 				input$nbOutliers
 				outlierValues$temp
 				deplace$val
-				if(!is.null(input$selectRealign)){
+				if(!is.null(currentProject()) & !is.null(input$selectRealign)){
 					if(!is.null(match(input$selectRealign,currentProject()$samplesFiles))){
 						if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0  & !is.null(generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]])){
 							if(!is.null(eval(parse(text = paste("input$",generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][length(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)],sep=""))))){
@@ -9766,7 +9766,7 @@ runElementR <- function(){ # nocov start
 				input$nbOutliers
 				deplace$val
 				input$ReplicateSample
-				if(!is.null(input$selectRealign)){
+				if(!is.null(currentProject()) & !is.null(input$selectRealign)){
 					if(!is.null(match(input$selectRealign,currentProject()$samplesFiles))){
 						if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0  & !is.null(generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]])){
 							if(!is.null(eval(parse(text = paste("input$",generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][length(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files)],sep=""))))){
@@ -9779,13 +9779,15 @@ runElementR <- function(){ # nocov start
 									
 									tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$intermStepRaster(decalage = deplace$val, input = input$ReplicateSample, outliers = NULL, replace = NA)
 									
-									if(!is.null(input$nbOutliers) & !is.null(tabProvSample$temp)){
+									if(!is.null(input$nbOutliers) & !is.null(tabProvSample$temp) & !is.null(unlist(tabProvSample$temp))){
 										
 										dat <- do.call(what = rbind, args = tabProvSample$temp)
 										
 										if(is.null(input$outlierDetect)){
 											method <- "Rosner's test"
-										} else {}
+										} else {
+											method <- input$outlierDetect
+										}
 										
 										Outliers <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_data[[1]]$detectOutlierMatrix(dat, method = method, nbOutliers = input$nbOutliers)
 										
@@ -10211,7 +10213,7 @@ runElementR <- function(){ # nocov start
 			# create valeurColor$temp
 			################################################################
 			observe({
-				if(!is.null(currentProject()) & !is.null(color$temp)){
+				if(!is.null(currentProject()) | !is.null(color$temp)){
 					valeurColor$temp <- geneR(letters, 4, length(color$temp), c(waste$temp, geneRMachineCorr$temp, generRRealign$temp, rankStandard$temp, rankSample$temp))
 				} else {}
 			})
@@ -10423,6 +10425,7 @@ runElementR <- function(){ # nocov start
 				if(is.null(currentProject())){
 					output$config3 <- renderUI({NULL}) # eo output$config3
 				}else if(is.null(color$temp)){
+					output$config3 <- renderUI({NULL}) # eo output$config3
 				} else{
 					if(color$temp[1] == 0){
 						output$config3 <- renderUI({NULL}) # eo output$config3
@@ -10457,13 +10460,16 @@ runElementR <- function(){ # nocov start
 			################################################################
 			observe({
 				if(!is.null(valeurColor$temp)){
-					if(!is.null(eval(parse(text = paste0("input$",valeurColor$temp[length(valeurColor$temp)]))))){
-						
-						for (i in seq(from = 1, to = length(valeurColor$temp), by = 1)){
-							color$temp[i] <- eval(parse(text = paste0("input$",valeurColor$temp[i])))
-						}
-						
+					if(length(valeurColor$temp) != 0 & !is.na(valeurColor$temp[1])){
+						if(!is.null(eval(parse(text = paste0("input$",valeurColor$temp[length(valeurColor$temp)]))))){
+							
+							for (i in seq(from = 1, to = length(valeurColor$temp), by = 1)){
+								color$temp[i] <- eval(parse(text = paste0("input$",valeurColor$temp[i])))
+							}
+							
+						} else {}	
 					} else {}
+					
 				} else{}
 				
 			})
