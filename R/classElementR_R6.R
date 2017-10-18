@@ -632,12 +632,12 @@ elementR_sample <- R6Class("elementR_sample",
                              setDataConc = function(bins, plat, calibFile, meanStand, rempl){
                                
                                self$setDataNorm(bins = bins, plat = plat, rempl = rempl)
-                                                           
+                             	
                                temp <- vapply(seq(from = 2, to = ncol(self$dataNorm), by = 1),
                                		   
                                		   function(x){
                                		   	
-                               		   	self$dataNorm[,x] * calibFile[1,x]/ meanStand[x-1]},
+                               		   	self$dataNorm[,x] * calibFile[1,x]/ meanStand[nrow(meanStand)-1, x-1]},
                                		   
                                		   FUN.VALUE = double(nrow(self$dataNorm))
                                		   
@@ -691,14 +691,16 @@ elementR_sample <- R6Class("elementR_sample",
                                		   			
                                		   			if(model[x-1,7] < threshold){ # the model is not a linear regression
                                		   				
+                               		   				# Standard1 is number of the closest standard of the rankSampleConsidered
                                		   				Standard1 <- which(abs(rankStandard - rankSampleConsidered) == min(abs(rankStandard - rankSampleConsidered)))[1]
                                		   				
+                               		   				#if the considered sample is analyzed after the last standard, Standard2 will be the number of the last standard analyzed
                                		   				if(rankSampleConsidered > max(rankStandard)){
                                		   					
                                		   					Standard2 <- max(rankStandard)
                                		   					names(Standard2) <- names(rankStandard)[which(rankStandard == max(rankStandard))]
                                		   					
-                               		   				} else if(rankSampleConsidered < min(rankStandard)){
+                               		   				} else if(rankSampleConsidered < min(rankStandard)){ #if the considered sample is analyzed before the first standard, Standard2 will be the number of the first standard analyzed
                                		   					
                                		   					Standard2 <- min(rankStandard)
                                		   					names(Standard2) <- names(rankStandard)[which(rankStandard == min(rankStandard))]
