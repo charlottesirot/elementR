@@ -1,6 +1,6 @@
 ##############################################################
 #
-# elementR 1.3.0
+# elementR 1.3.3
 #
 # charlott.sirot@gmail.com
 # francois.guilhaumon@ird.fr
@@ -2228,11 +2228,12 @@ runElementR <- function(){ # nocov start
 													if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 0){
 														if(!is.null(input$bins) & !is.null(input$plat) & !is.null(Temp$t) & !is.null(Temp0$t) & !is.null(Temp1$t) & !is.null(Temp2$t)){
 															if(is.finite(TempS$t)){
+																
 																curveS <- currentSampleRep$temp$getData(curve = input$courveToExportS[j], 
 																						    bins = c(TempS$t, Temp0S$t), 
 																						    plat = c(Temp1S$t,Temp2S$t), 
 																						    name = input$SampleIn2, 
-																						    meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																						    meanStand = currentProject()$standards[[1]]$rep_dataFinale, 
 																						    rankSample = currentProject()$sampleRank, 
 																						    rankStandard = currentProject()$standardRank,
 																						    model = currentProject()$regressionModel, 
@@ -2309,7 +2310,7 @@ runElementR <- function(){ # nocov start
 																									   bins = c(TempS$t, Temp0S$t), 
 																									   plat = c(Temp1S$t,Temp2S$t), 
 																									   name = input$SampleIn2, 
-																									   meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																									   meanStand = currentProject()$standards[[1]]$rep_dataFinale, 
 																									   rankSample = currentProject()$sampleRank, 
 																									   rankStandard = currentProject()$standardRank,
 																									   model = currentProject()$regressionModel, 
@@ -2381,7 +2382,7 @@ runElementR <- function(){ # nocov start
 																									   bins = c(TempS$t, Temp0S$t), 
 																									   plat = c(Temp1S$t,Temp2S$t), 
 																									   name = input$SampleIn2,
-																									   meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																									   meanStand = currentProject()$standards[[1]]$rep_dataFinale, 
 																									   rankSample = currentProject()$sampleRank, 
 																									   rankStandard = currentProject()$standardRank,
 																									   model = currentProject()$regressionModel, 
@@ -2450,7 +2451,7 @@ runElementR <- function(){ # nocov start
 																										   bins = c(TempS$t, Temp0S$t), 
 																										   plat = c(Temp1S$t,Temp2S$t), 
 																										   name = input$SampleIn2, 
-																										   meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																										   meanStand = currentProject()$standards[[1]]$rep_dataFinale, 
 																										   rankSample = currentProject()$sampleRank, 
 																										   rankStandard = currentProject()$standardRank,
 																										   model = currentProject()$regressionModel, 
@@ -8686,11 +8687,18 @@ runElementR <- function(){ # nocov start
 								
 								if(!is.null(input$binsSample) & !is.null(input$platSample) & !is.null(TempS$t) & !is.null(Temp0S$t) & !is.null(Temp1S$t) & !is.null(Temp2S$t)){
 									if(is.finite(TempS$t)){
+										
+										meanStandTable <- currentProject()$standards[[1]]$rep_dataFinale
+										
+										LineNumber <- nrow(currentProject()$standards[[1]]$rep_dataFinale)-1
+										
+										meanStand <- meanStandTable[LineNumber, ]
+										
 										dataPlot2Sample$datS <- currentSampleRep$temp$getData(curve = input$CourbeSample, 
 																			bins = c(TempS$t, Temp0S$t), 
 																			plat = c(Temp1S$t,Temp2S$t), 
 																			name = input$SampleIn2, 
-																			meanStand = currentProject()$standards[[1]]$rep_dataFinale[(nrow(currentProject()$standards[[1]]$rep_dataFinale)-1),], 
+																			meanStand = currentProject()$standards[[1]]$rep_dataFinale,
 																			rankSample = currentProject()$sampleRank, 
 																			rankStandard = currentProject()$standardRank,
 																			model = currentProject()$regressionModel, 
@@ -8699,8 +8707,6 @@ runElementR <- function(){ # nocov start
 																			rempl = currentProject()$valRemplace, 
 																			threshold = currentProject()$R2Threshold
 										)
-										
-										
 										BAV_Sample$temp <- currentSampleRep$temp$BlankAverarge
 										LOD_Sample$temp <- currentSampleRep$temp$LOD
 									} else {}

@@ -1,6 +1,6 @@
 ##############################################################
 #
-# elementR 1.3.0
+# elementR 1.3.3
 # 
 # charlott.sirot@gmail.com
 # francois.guilhaumon@ird.fr
@@ -657,7 +657,7 @@ elementR_sample <- R6Class("elementR_sample",
                              #	plat = a vector of two numerical values corresponding respectively to the time at which begin and end the plateau
                              # 	name = a character string corresponding to the name of the sample replicates
                              #	calibFile = a matrix corresponding to the the calibration file
-                             # 	meanStand = a vector containing the averaged signal intensity per chemical element for all standard replicates of the running session
+                             # 	meanStand = a table containing the averaged signal intensity per chemical element for all standard replicates of the running session
                              # 	rankSample = a vector containing the rank of each sample in ICPMS analysis
                              # 	rankStandard = a vector containing the rank of each standard in ICPMS analysis
                              # 	correction = a vector indicating the chemical elements to correct from machine drift
@@ -743,7 +743,12 @@ elementR_sample <- R6Class("elementR_sample",
                                		   				
                                		   			}
                                		   			
-                               		   		} else {return(rep(NA, nrow(self$dataNorm)))}
+                               		   		} else {
+                               		   		  
+                               		   		  StandTheoric <- model[x-1,5] + rankSampleConsidered * model[x-1, 6]
+                               		   		  
+                               		   		  return(self$dataNorm[,x] * calibFile[1,x] / StandTheoric)	
+                               		   		}
                                		   		
                                		   	}
                                		   	
@@ -1804,6 +1809,32 @@ elementR_repSample <- R6Class("elementR_repSample",
                                },
                                
                                ##################################################################################################
+                               # Name: closest
+                               # Function: find the nearest value among a vector of numerical data
+                               # Input: x = a vector of numerical values, y = the investigated value
+                               # Output: val = a list of two values: the nearest value and its place within the vector
+                               ##################################################################################################
+                               
+                               closest = function(x,y){
+                               	val = list()
+                               	if(is.null(y)){}
+                               	else if(is.na(y)){}
+                               	else{
+                               		val[[2]] <- which(abs(x-y) == min(abs(x-y), na.rm = TRUE))
+                               		val[[1]] <- x[val[[2]]]
+                               		
+                               		if (length(val[[1]])!=1){val[[2]] <- min(val[[2]], na.rm = TRUE)
+                               		val[[1]] <- x[val[[2]]]
+                               		} else {}
+                               		
+                               		names(val) <- c("the nearest", "place")
+                               		
+                               		return(val)
+                               	}
+                               	
+                               },
+                               
+                               ##################################################################################################
                                # Name: Realign2
                                # Function: Realign sequences of data
                                # Input: data = a list of matrix corresponding to the data to realign, pas = the step of time between two consecutive analysis within data of the considered sample
@@ -1812,27 +1843,29 @@ elementR_repSample <- R6Class("elementR_repSample",
                            
                                Realign2 = function(data, pas){
                                  
-                                 min = min(do.call(rbind,data)[,1])
+                                 min <- min(do.call(rbind,data)[,1]) # the miniumum time of the replicates 
                                  
-                                 minPlace = which(vapply(seq(from = 1, to = length(data), by = 1), 
+                                 minPlace <- which(vapply(seq(from = 1, to = length(data), by = 1), 
                                  				function(x){
                                  					if(length(which(data[[x]][,1] == min)) == 1) {TRUE} else {FALSE}
                                  					},
                                  				FUN.VALUE = logical(1)
-                                 				) == TRUE)
+                                 				) == TRUE) # is the number of the repliacte that owns the min
                                  
                                  if(length(minPlace) != 1){minPlace = minPlace[1]} else{}
                                  
-                                 max = max(do.call(rbind,data)[,1]) 
+                                 max <- max(do.call(rbind,data)[,1]) # the maximum time of the replicates 
                                  
-                                 maxPlace = which(vapply(seq(from = 1, to = length(data), by = 1), 
+                                 maxPlace <- which(vapply(seq(from = 1, to = length(data), by = 1), 
                                  				function(x){
                                  					if(length(which(data[[x]][,1] == max)) == 1) {TRUE}else {FALSE}
                                  				}, 
                                  				FUN.VALUE = logical(1)
-                                 				) == TRUE)
+                                 				) == TRUE) # is the number of the repliacte that owns the max
                                  
                                  if(length(maxPlace) != 1){maxPlace = maxPlace[length(maxPlace)]} else {}
+                                 
+                                  #dataMin and dataMax the data of the replicates that owns Min and Max
                                  
                                  dataMin <- data[[minPlace]]
                                  
@@ -1844,7 +1877,20 @@ elementR_repSample <- R6Class("elementR_repSample",
                                    
                                    temp <- data[[i]]
                                    
-                                   while(round(dataMin[1,1]) < round(temp[1,1])){temp = rbind(c(temp[1,1]-pas,rep(NA,dim(dataMin)[2]-1)),temp)}
+                                   #replace the missing values by NA
+                                   ## Here Mark suggests to change by the round of the ||A[0] - B[0]|| / 2 assuming that A[0] > B[0]
+                                   
+                                   while(abs(dataMin[1,1] - temp[1,1]) < abs(dataMin[1,1] - temp[2,1])){
+                                     
+                                     temp <- rbind(c(temp[1,1]-pas,rep(NA,dim(dataMin)[2]-1)),temp)
+                                     
+                                   }
+                                   
+                                   if(self$closest(temp[,1], dataMin[1,1])$place != 1){
+                                     
+                                     temp <- temp[-1,]
+                                     
+                                   }
                                    
                                    data[[i]] <- temp
                                    
@@ -1936,12 +1982,19 @@ elementR_repSample <- R6Class("elementR_repSample",
                                ##################################################################################################
                                # Name: intermStepRaster
                                # Function: create and return an intermediate matrix containing realigned data for all sample replicates
+                               # (i.e. realignment done but the matrix has to be put at the same time afterward to average them)
+                               # decalage = vector with the shift 
+                               # Input = the replicates to keep 
+                               # outliers = list of the outliers to replace
+                               # replace =  the value that replace the outliers
                                # Output: outputList = a list of matrix containing realigned data
                                ##################################################################################################
                                
                                intermStepRaster = function(decalage, input, outliers, replace){
                                  
                                  self$setRep_pas()
+                                 
+                                 #  Create the shift
                                  
                                  tabTemp <-lapply(seq(from = 1, to = length(self$rep_dataFiltre), by = 1), function(x){
                                    
@@ -1958,23 +2011,31 @@ elementR_repSample <- R6Class("elementR_repSample",
                                  })
                                  
                                  names(tabTemp) <- names(self$rep_dataFiltre)    
+                                 
+                                 # Only keeps the replicates chosen by the user 
                                                           
                                  outputList <- lapply(seq(from = 1, to = length(input), by = 1), function(x){
                                  	
                                  	if(length(which(names(tabTemp) == input[x])) != 0){
+                                 	  
                                  		tabTemp[[which(names(tabTemp) == input[x])]]
+                                 	  
                                  	} else {}
                                  	
                                  })
                                  
                                  if(!is.null(tabTemp[[1]])){
+                                   
                                  	names(outputList) <- vapply(seq(from = 1, to = length(input), by = 1), 
+                                 	                            
                                  					    function(x){
                                  					    	names(tabTemp)[which(names(tabTemp) == input[x])]
                                  					    }, 
                                  					    FUN.VALUE = character(1)
                                  	)
                                  }
+                                 
+                                 # Remove the outliers 
                                  
                                  if(!is.null(outliers)){
                                  
