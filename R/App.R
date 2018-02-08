@@ -10504,9 +10504,14 @@ runElementR <- function(){ # nocov start
 							status = "primary",
 							title = "Outlier detection",
 							p("Choose the method to detect outliers"),
+							# radioButtons("outlierDetect", label = "",
+							# 		 choices = c("SD criterion", "Tietjen.Moore Test", "Rosner's test"),
+							# 		 selected = "Rosner's test", inline = TRUE)
+							
 							radioButtons("outlierDetect", label = "",
-									 choices = c("SD criterion", "Tietjen.Moore Test", "Rosner's test"),
+									 choices = c("SD criterion", "Rosner's test"),
 									 selected = "Rosner's test", inline = TRUE)
+							
 						)
 					)
 				} else {NULL}

@@ -280,40 +280,42 @@ elementR_data <- R6Class("elementR_data",
                            # 	nbOutliers: number of oulier to detect
                            #################################################################################################
                            
-                           OutlierDetectTietjen = function(x, nbOutliers){
-                           	
-                           	flag <- 0
-                           	
-                           	for(i in nbOutliers:1){
-                           		
-                           		test <- FindOutliersTietjenMooreTest(x, i)
-                           		
-                           		if(test$T < test$Talpha & flag == 0){
-                           			
-                           			datTemp <- x
-                           			
-                           			posOutlier <- NULL
-                           			
-                           			for(j in seq(from = 1, to = i, by = 1)){ 
-                           				
-                           				Outlier <- outlier(datTemp)
-                           				
-                           				positionX <- which(x == Outlier)
-                           				
-                           				positionTemp <- which(datTemp == Outlier)
-                           				
-                           				datTemp <- datTemp[-positionTemp]
-                           				
-                           				posOutlier <- c(posOutlier, positionX)
-                           			}
-                           			
-                           			flag <- 1
-                           			
-                           		} else {posOutlier <- NULL}
-                           	}
-                           	
-                           	return(posOutlier)
-                           },
+                                ### Constrain to remove this function due to the removal of climbtrends (02/2018)
+                           
+                           # OutlierDetectTietjen = function(x, nbOutliers){
+                           # 	
+                           # 	flag <- 0
+                           # 	
+                           # 	for(i in nbOutliers:1){
+                           # 		
+                           # 		test <- FindOutliersTietjenMooreTest(x, i)
+                           # 		
+                           # 		if(test$T < test$Talpha & flag == 0){
+                           # 			
+                           # 			datTemp <- x
+                           # 			
+                           # 			posOutlier <- NULL
+                           # 			
+                           # 			for(j in seq(from = 1, to = i, by = 1)){ 
+                           # 				
+                           # 				Outlier <- outlier(datTemp)
+                           # 				
+                           # 				positionX <- which(x == Outlier)
+                           # 				
+                           # 				positionTemp <- which(datTemp == Outlier)
+                           # 				
+                           # 				datTemp <- datTemp[-positionTemp]
+                           # 				
+                           # 				posOutlier <- c(posOutlier, positionX)
+                           # 			}
+                           # 			
+                           # 			flag <- 1
+                           # 			
+                           # 		} else {posOutlier <- NULL}
+                           # 	}
+                           # 	
+                           # 	return(posOutlier)
+                           # },
                            
                            ##################################################################################################
                            # Name: outlierDetection
@@ -334,9 +336,10 @@ elementR_data <- R6Class("elementR_data",
                            		
                            		position <- which(dat > ValMax | dat < ValMin)[seq(from = 1, to = nbOutliers, by = 1)]
                            		
-                           	} else if(method == "Tietjen.Moore Test"){
+                           	# } else if(method == "Tietjen.Moore Test"){
                            		
-                           		position <- self$OutlierDetectTietjen(x = dat, nbOutliers)
+                           	  ### Constrain to remove this function due to the removal of climbtrends (02/2018)
+                           		# position <- self$OutlierDetectTietjen(x = dat, nbOutliers)
                            		
                            	} else if(method == "Rosner's test"){
                            		
@@ -385,19 +388,19 @@ elementR_data <- R6Class("elementR_data",
                            #################################################################################################
                            
                            detectOutlierMatrix = function(dat, method, nbOutliers){
-                           
-                           	if(method == "Tietjen.Moore Test"){
-                           		pb <- tkProgressBar("Outlier detection", "Detection in %",
-                           					  0, 100, 0)
-                           	} else {}
+                             ### Constrain to remove this function due to the removal of climbtrends (02/2018)
+                           	# if(method == "Tietjen.Moore Test"){
+                           	# 	pb <- tkProgressBar("Outlier detection", "Detection in %",
+                           	# 				  0, 100, 0)
+                           	# } else {}
                            
                            	if(!is.null(ncol(dat))){
                            	res <- lapply(seq(from = 1, to = ncol(dat), by = 1), function(x){
                            		
-                           		if(method == "Tietjen.Moore Test"){
-                           			info <- sprintf("%d%% done", round(x/ncol(dat)) * 100)
-                           			setTkProgressBar(pb, round(x/ncol(dat)) * 100, sprintf("OUtlier detection (%s)", info), info)
-                           		} else {}
+                           		# if(method == "Tietjen.Moore Test"){
+                           		# 	info <- sprintf("%d%% done", round(x/ncol(dat)) * 100)
+                           		# 	setTkProgressBar(pb, round(x/ncol(dat)) * 100, sprintf("OUtlier detection (%s)", info), info)
+                           		# } else {}
                            		
                            		
                            		if(x == 1){
@@ -418,10 +421,10 @@ elementR_data <- R6Class("elementR_data",
                            		
                            	})
                            }
-                           	
-                           	if(method == "Tietjen.Moore Test"){
-                           		close(pb)
-                           	} else {}
+                             ### Constrain to remove this function due to the removal of climbtrends (02/2018)
+                           	# if(method == "Tietjen.Moore Test"){
+                           	# 	close(pb)
+                           	# } else {}
                            	
                            	return(res)
                            	
