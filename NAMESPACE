@@ -11,7 +11,7 @@ importFrom(tcltk2, tk2text)
 importFrom(gdata, read.xls)
 importFrom(lmtest, dwtest, hmctest)
 importFrom(colourpicker, colourInput)
-import(shiny, shinydashboard, stringr, reader, devtools, tcltk, readxl)
+import(shiny, shinydashboard, stringr, reader, devtools, tcltk, readxl, httpuv)
 importFrom("readODS", read.ods)
 importFrom("grDevices", "bmp", "colorRampPalette", "dev.off", "jpeg",
              "png", "rainbow", "tiff")
