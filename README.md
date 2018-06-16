@@ -1,4 +1,7 @@
-###**Breaking news: elementR needs you!!!**### 
+# elementR :star:
+
+
+###Breaking news: elementR needs you!!!### 
 
 Since its release and during IOS2018, elementR, the R package for data reduction of otolith LA-ICPMS data, is receiving more and more requests for including new features.
 
