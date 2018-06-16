@@ -50,7 +50,7 @@ Alternatively, you can install the development version (not yet pushed on cran) 
 #Install elementR's dependencies
 pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard",
 	"abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl", "outliers", "climtrends",
-	"EnvStats", "colourpicker", "zoo")
+	"EnvStats", "colourpicker", "zoo", "httpuv")
 
 invisible(lapply(pkgs, function(pkgs){
 	if(!require(pkgs)){
