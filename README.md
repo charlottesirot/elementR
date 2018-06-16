@@ -1,5 +1,20 @@
 # elementR :star:
 
+###**Breaking news: elementR needs you!!!**### 
+
+Since its release and during IOS2018, elementR, the R package for data reduction of otolith LA-ICPMS data, is receiving more and more requests for including new features.
+
+We therefore decided to develop a successor of elementR in a collaborative manner to satisfy all of your needs. But for this we need you! Tell us which feature you would like to see included in the successor of elementR or just support the project (https://goo.gl/forms/NxLNbKOb2ZZhOJ4r2).
+The more support we get, the easier it will be to find funding for a professional developer, so your participation counts!
+
+We really look forward to hear from you!
+
+For more details on the project or on elementR, see [elementR website](https://charlottesirot.github.io/elementRsite/development.html)
+
+<br/>
+<br/>
+<br/>
+
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 [![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR?color=brightgreen)](https://cran.r-project.org/package=elementR)
 [![Build Status](https://api.travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
@@ -81,4 +96,4 @@ If you are new to elementR you are better off starting with a systematic introdu
 
 ## Troubleshoutting
 
-If, despite the :heart: brought during the programming of this R package and writing of this documentation, you have difficulties to install or run elementR, if you have questions about the procedures or calculations, or if you want to report bugs :beetle:, do not hesitate to consult the official elementR documentation above or on [CRAN](https://CRAN.R-project.org/package=elementR) or connect with us on [GitHub](https://github.com/charlottesirot/elementR).
+If, despite the :heart: brought during the programming of this R package and writing of this documentation, you have difficulties to install or run elementR, if you have questions about the procedures or calculations, or if you want to report bugs :beetle:, do not hesitate to contact our team [elementR.software@gmail.com](mailto:elementR.software@gmail.com), to consult the official elementR documentation above or on [CRAN](https://CRAN.R-project.org/package=elementR) or connect with us on [GitHub](https://github.com/charlottesirot/elementR).
