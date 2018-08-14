@@ -6582,8 +6582,15 @@ runElementR <- function(){ # nocov start
 						
 						# if deviated elements == 0
 						if(length(temp) == 0){
-							temp <- sample(seq(from = 1, to = length(currentProject()$listeElem), by = 1),6,replace = FALSE)
-							names(temp) <- currentProject()$listeElem[temp]
+						  if(length(length(currentProject()$listeElem)) < 6){
+						    temp <- seq(from = 1, to = length(currentProject()$listeElem), by = 1)
+						    names(temp) <- currentProject()$listeElem[temp]
+						  } else {
+						    temp <- sample(seq(from = 1, to = length(currentProject()$listeElem), by = 1),6,replace = FALSE)
+						    names(temp) <- currentProject()$listeElem[temp]
+						  }
+						  
+
 						} else {}
 						
 						elemChosen$temp <- temp
