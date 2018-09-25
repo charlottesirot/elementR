@@ -3497,7 +3497,6 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$createProjButton)){
 					if(input$createProjButton != 0){
 						isolate({
-
 							waste$temp <- unlist(c(waste$temp,
 										     valeurColor$temp,
 										     rankStandard$temp,
@@ -3591,7 +3590,6 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$runExampleNew)){
 					if(input$runExampleNew != 0){
 						isolate({
-
 							waste$temp <- unlist(c(waste$temp,
 										     valeurColor$temp,
 										     rankStandard$temp,
@@ -3680,7 +3678,6 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$loadProjButton)){
 					if(input$loadProjButton !=0){
 						isolate({
-
 							if(Sys.info()[1] == "Windows"){
 
 								tempoR1 <- choose.files(default = getwd())
@@ -3784,7 +3781,6 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$runExampleLoad)){
 					if(input$runExampleLoad != 0){
 						isolate({
-
 							if(Sys.info()[1] == "Windows"){
 
 								tempoR1 <- paste0(system.file("", package="elementR"), "/Results/Example_Session.RData")
@@ -3882,7 +3878,6 @@ runElementR <- function(){ # nocov start
 			observe({
 				if(!is.null(input$validDonne)){
 					isolate({
-
 						if(input$validDonne != 0){
 
 							currentProject()$set_ChoiceUserCorr(input$checkbox)
@@ -3945,7 +3940,6 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$validDonne2)){
 
 					isolate({
-
 						if(input$validDonne2 != 0){
 
 							flagStart$temp[2] <- 3
@@ -4131,7 +4125,6 @@ runElementR <- function(){ # nocov start
 					if(!is.null(rankSample$temp)){
 						if(!is.na(rankStandard$temp[length(standardFile$temp)]) & !is.na(rankSample$temp[length(SampleFile$temp)])){
 							if(!is.null(eval(parse(text = paste0("input$",rankStandard$temp[1]))))){
-
 								tempCalib <- vapply(seq(from = 1, to = length(standardFile$temp), by = 1),
 
 											  function(x){
@@ -4194,7 +4187,6 @@ runElementR <- function(){ # nocov start
 									flagStart$temp[1] <- 1.5
 								} else{
 									if(!is.na(currentProject()$EtalonPath)){
-
 										flagStart$temp[1] <- 2
 									} else {
 										flagStart$temp[1] <- 1
@@ -4213,7 +4205,6 @@ runElementR <- function(){ # nocov start
 			observe({
 				if(!is.null(input$validDonne)){
 					isolate({
-
 						if(input$validDonne != 0){
 
 							if(input$checkbox == FALSE & flagStart$temp[1] > 0 & !is.na(currentProject()$EtalonPath)) {
@@ -4300,7 +4291,6 @@ runElementR <- function(){ # nocov start
 			##############################################################
 			observe({
 				if(flagStart$temp[1] == 0 & flagStart$temp[2] == 0){
-
 					output$start1 <-  renderUI({
 						fluidRow(
 							box(
@@ -5441,7 +5431,6 @@ runElementR <- function(){ # nocov start
 			          if(startSession$temp == 0){output$Standards1 <-  renderUI({NULL})}
 			          if(startSession$temp == 1){
 			              output$Standards1 <- renderUI({
-
 			                fluidRow(
 			                  box(
 			                    width=12,
@@ -5519,7 +5508,6 @@ runElementR <- function(){ # nocov start
 				input$listeElem
 				input$Courbe
 				input$bins
-
 				if(!is.null(input$CourbeNIST)){
 					if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
 						div(
