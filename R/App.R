@@ -401,16 +401,14 @@ runElementR <- function(){ # nocov start
 
 		# How to come back to the current page
 		observe({
-
 			currentPage$temp <- c(input$tab, isolate(currentPage$temp)[1])
 
 		})
 
 		#go to next step
 		observe({
-			if(is.null(input$nextStep)){
-			} else {
-				if(input$nextStep > 0){
+			if(!is.null(input$nextStep)){
+			  if(input$nextStep > 0){
 					isolate({
 						if(input$tab == "start"){
 							updateTabItems(session, "tab", selected = "Standards")
@@ -429,8 +427,7 @@ runElementR <- function(){ # nocov start
 
 		# go to previous step
 		observe({
-			if(is.null(input$prevStep)){
-			} else {
+			if(!is.null(input$prevStep)){
 				if(input$prevStep > 0){
 					isolate({
 						if(input$tab == "realign"){
@@ -450,7 +447,6 @@ runElementR <- function(){ # nocov start
 
 		#define top bar
 		output$TopBar <- renderUI({
-
 			input$saveNists
 			input$SuppDonne
 			input$saveSample
@@ -8965,7 +8961,7 @@ runElementR <- function(){ # nocov start
 							} else if((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1){
 								div(
 									style='overflow-y: hidden',
-									dataTableOutput("realign4")
+									tableOutput("realign4")
 								)
 							} else {}
 
@@ -8976,13 +8972,13 @@ runElementR <- function(){ # nocov start
 
 								div(
 									style='overflow-y: hidden',
-									dataTableOutput("realign4")
+									tableOutput("realign4")
 								)
 							} else if((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
 
 								div(
 									style='overflow-y: hidden',
-									dataTableOutput("realign4")
+									tableOutput("realign4")
 								)
 							} else if(((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 1 | (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 3)){
 
@@ -9209,7 +9205,7 @@ runElementR <- function(){ # nocov start
 			###############################################################
 			# set output$realign4, i.e. the table if type = spot
 			###############################################################
-			output$realign4 <- renderDataTable({
+			output$realign4 <- renderTable({
 
 				input$typeTraitement
 
@@ -9913,6 +9909,8 @@ runElementR <- function(){ # nocov start
 
 												tabSD <- tempMatrix[2,]
 											}else{
+											  
+											  
 
 												tabMean <- apply(tempMatrix[seq(from = 1, to = length(input$ReplicateSpot), by = 1),], 2, mean, na.rm = TRUE)
 
@@ -9927,8 +9925,9 @@ runElementR <- function(){ # nocov start
 											tabSpotSave$temp <- temp
 
 											tabProv <- format(temp,scientific=TRUE, digits = 2)
-
+											
 											tabSpotDisplay$temp <- cbind(rownames(tabProv), tabProv)
+
 										} else {}
 									} else {}
 
@@ -10151,6 +10150,7 @@ runElementR <- function(){ # nocov start
 		##############################################
 		##############################################
 		{
+		  
 			valeurColor <- reactiveValues(temp = NULL) # a vector of character string created by generRansd which correspond to the id of the chosen color for each element
 
 			valDec <- reactiveValues(temp = ".")
@@ -10469,7 +10469,6 @@ runElementR <- function(){ # nocov start
 		############################################################
 		############################################################
 		{
-
 			spotDone <- reactiveValues(temp = 0)
 			spotPlace <- reactiveValues(temp = vector())
 
@@ -10489,15 +10488,15 @@ runElementR <- function(){ # nocov start
 						width = 12,
 						status = "primary",
 						title = "Precision (conducted on the standard samples)",
-						div(style = "overflow: auto;", dataTableOutput("Precision2")),
+						div(style = "overflow: auto;", tableOutput("Precision2")),
 						br(),
 						br(),
-						div(style = "overflow: auto;", dataTableOutput("Precision3"))
+						div(style = "overflow: auto;", tableOutput("Precision3"))
 					)
 				} else {NULL}
 			})
 
-			output$Precision2 <- renderDataTable({
+			output$Precision2 <- renderTable({
 
 				input$saveNists
 				input$validDonne
@@ -10590,7 +10589,7 @@ runElementR <- function(){ # nocov start
 						    checkboxGroupInput("referenceSample", label = "", choices = currentProject()$samplesFiles[spotPlace$temp], selected = currentProject()$samplesFiles[spotPlace$temp[1]], inline = TRUE),
 						    actionButton("referenceConcentration", label = "Literature values")
 						),
-						div(style = "overflow: auto;", dataTableOutput("Precision5"))
+						div(style = "overflow: auto;", tableOutput("Precision5"))
 
 					)
 				} else {NULL}
@@ -10600,7 +10599,7 @@ runElementR <- function(){ # nocov start
 
 			})
 
-			output$Precision5 <- renderDataTable({
+			output$Precision5 <- renderTable({
 				input$saveNists
 				input$validDrift
 				input$SuppDonne
