@@ -10001,7 +10001,7 @@ runElementR <- function(){ # nocov start
 					names(tempToExport) <- names(outlierValues$temp)
 
 					outlierChosen$temp <- tempToExport
-				}
+				} else {outlierChosen$temp <- NULL}
 			})
 
 			################################################################

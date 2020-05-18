@@ -459,8 +459,6 @@ elementR_data <- R6Class("elementR_data",
                                
                                names(listToReturn) <- colnames(listToAnalyse[[1]])
                                
-                               save(listToReturn, file = "listToReturn.RData")
-                               
                                for(i in 1:length(listToAnalyse)){
                                  
                                  if(!is.null(listToAnalyse[[i]])){
@@ -480,7 +478,7 @@ elementR_data <- R6Class("elementR_data",
                                    names(res) <- colnames(listToAnalyse[[i]])
                                  }
                                  
-                                 listToReturn <- MyMergingListOfMatrix(listToReturn, res)
+                                 listToReturn <- self$MyMergingListOfMatrix(listToReturn, res)
                                  
                                }
                                
@@ -1700,7 +1698,7 @@ elementR_project <- R6Class("elementR_project",
                               DifferenceMatrix = function(x, y){
                                 
                                 toReturn <- NULL
-                                
+
                                 for(i in 1:ncol(x)){
                                   
                                   flagi <- vector()
@@ -1753,7 +1751,19 @@ elementR_project <- R6Class("elementR_project",
                                     
                                   } else {
                                     
-                                    diff <- self$DifferenceMatrix(x[[i]],y[[elem]])
+                                    if(!is.matrix(x[[i]])){
+                                      X <- as.matrix(x[[i]], nrow = 4)
+                                    } else { 
+                                      X <- x[[i]]
+                                    }
+                                    
+                                    if(!is.matrix(y[[elem]])){
+                                      Y <- as.matrix(y[[elem]], nrow = 4)
+                                    } else {
+                                      Y <- y[[elem]]
+                                    }
+                                    
+                                    diff <- self$DifferenceMatrix(X,Y)
                                     
                                     if(is.null(diff)){ 
                                       
