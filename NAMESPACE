@@ -24,3 +24,4 @@ importFrom("utils", "read.table", "write.csv", "write.table")
 
 if(.Platform$OS.type=="windows"){
 importFrom("utils", "choose.dir", "choose.files")}
+
