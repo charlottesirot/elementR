@@ -60,6 +60,8 @@ readData <- function(x, sep = ";", dec = "."){
   return(df)
 }
 
+
+
 ############################################################
 ############################################################
 ##################################### elementR_data Class
@@ -322,7 +324,7 @@ elementR_data <- R6Class("elementR_data",
                            # Function: return the place of the outlier 
                            # Input: 
                            # 	dat: a vector of data
-                           # 	method: method of detection of the outlier (sd, Tietjen's test (generalization of the grubb's test) or Rosner test)
+                           # 	method: method of detection of the outlier (sd, Tietjen' s test (generalization of the grubb's test) or Rosner test)
                            # 	nbOutliers: number of oulier to detect
                            #################################################################################################
                            
@@ -334,7 +336,7 @@ elementR_data <- R6Class("elementR_data",
                            		
                            		ValMin <- mean(dat, na.rm = TRUE) - 2*sd(dat,na.rm = TRUE)
                            		
-                           		position <- which(dat > ValMax | dat < ValMin)[seq(from = 1, to = nbOutliers, by = 1)]
+                           		position <- rbind(which(dat > ValMax | dat < ValMin)[seq(from = 1, to = 2, by = 1)], dat[which(dat > ValMax | dat < ValMin)[seq(from = 1, to = nbOutliers, by = 1)]])
                            		
                            	# } else if(method == "Tietjen.Moore Test"){
                            		
@@ -343,26 +345,29 @@ elementR_data <- R6Class("elementR_data",
                            		
                            	} else if(method == "Rosner's test"){
                            		
-                           		test <- suppressWarnings(rosnerTest(dat, k = nbOutliers, alpha = 0.05, warn = TRUE))
+                           		test <- suppressWarnings(rosnerTest(dat, k = nbOutliers, alpha = 0.05, warn = F))
                            		
-                           		Outliers <- test$all.stats[which(test$all.stats[,8] == TRUE), 4]
+                           		Outliers <- test$all.stats[which(test$all.stats[,8] == TRUE), ]
                            		
-                           		if(length(Outliers) != 0){
-                           			position <- vapply(seq(from = 1, to = length(Outliers), by = 1),
+                           		if(nrow(Outliers) != 0){
+                           		  
+                           			position <- sapply(seq(from = 1, to = nrow(Outliers), by = 1),
 
                            						 function(x){
+                           						   
+                           						   toReturn <- rbind(as.numeric(as.character(Outliers$Obs.Num[x])),
+                           						                     as.numeric(as.character(Outliers$Value[x])))
 
-                           						 	which(dat == Outliers[x])
+                           						 	return(toReturn)
 
-                           						 },
-                           						 FUN.VALUE = numeric(1)
+                           						 }
                            			)
                            		} else {
                            			position <- NULL
                            		}
                            		
-                           	} else {}
-                           	
+                           	} 
+                             
                            	return(position)
                            	
                            },
@@ -380,7 +385,7 @@ elementR_data <- R6Class("elementR_data",
                            
                            ##################################################################################################
                            # Name: detectOutlierMatrix
-                           # Function: return the place of the outlier for each column of a matrix
+                           # Function: return a vector with 1/ place of the outlier for each column of a matrix and 2/ its value
                            # Input: 
                            # 		dat: a matrix of data
                            # 		method: method of detection of the outlier (sd, Tietjen's test (generalization of the grubb's test) or Rosner test)
@@ -388,46 +393,127 @@ elementR_data <- R6Class("elementR_data",
                            #################################################################################################
                            
                            detectOutlierMatrix = function(dat, method, nbOutliers){
-                             ### Constrain to remove this function due to the removal of climbtrends (02/2018)
-                           	# if(method == "Tietjen.Moore Test"){
-                           	# 	pb <- tkProgressBar("Outlier detection", "Detection in %",
-                           	# 				  0, 100, 0)
-                           	# } else {}
-                           
+
                            	if(!is.null(ncol(dat))){
-                           	res <- lapply(seq(from = 1, to = ncol(dat), by = 1), function(x){
-                           		
-                           		# if(method == "Tietjen.Moore Test"){
-                           		# 	info <- sprintf("%d%% done", round(x/ncol(dat)) * 100)
-                           		# 	setTkProgressBar(pb, round(x/ncol(dat)) * 100, sprintf("OUtlier detection (%s)", info), info)
-                           		# } else {}
-                           		
+                           	  
+                           	  res <- lapply(seq(from = 1, to = ncol(dat), by = 1), function(x){
                            		
                            		if(x == 1){
                            			
-                           			NULL
+                           		  toReturn <- NULL
                            			
                            		} else if(!self$is.integer0(which(!is.na(dat[,x]) == TRUE))){
                            			
                            			if(self$is.possibleOutlier(dat = dat[,x])){
                            				
-                           				self$outlierDetection(dat = dat[,x], method = method, nbOutliers)
+                           				temp  <- self$outlierDetection(dat = dat[,x], method = method, nbOutliers)
                            				
-                           			}else {NULL}
+                           				if(!is.null(temp)){
+                           				  
+                           				  # toReturn matrix with first line the time where is the outlier, 
+                           				  # the second line = the value of the outlier
+                           				  # third line the number of the value in the column of the time
+                           				  toReturn <- matrix(c(dat[temp[1,], 1], temp[2,], temp[1,]), 
+                           				                     nrow = 3, 
+                           				                     byrow = T)
+                           				  
+                           				} else {
+                           				  
+                           				  toReturn <- NULL
+                           				  
+                           				}
+                           				
+                           			} else {toReturn <- NULL}
                            			
-                           		} else {NULL}
+                           		} else {
+                           		  toReturn <- NULL
+                           		}
                            		
-                           		
+                           		return(toReturn)
                            		
                            	})
                            }
-                             ### Constrain to remove this function due to the removal of climbtrends (02/2018)
-                           	# if(method == "Tietjen.Moore Test"){
-                           	# 	close(pb)
-                           	# } else {}
-                           	
+                             
+                             names(res) <- colnames(dat)
+                             
                            	return(res)
                            	
+                           },
+                           
+                           ##################################################################################################
+                           # Name: detectOutlierList
+                           # Function: return a list of matrix with 1/ the time where it appears and 2/ its value and 3/ its xvalue
+                           # Input: 
+                           # 		listToAnalyse: a list of matrix
+                           # 		method: method of detection of the outlier (sd, Tietjen's test (generalization of the grubb's test) or Rosner test)
+                           # 		nbOutliers: number of oulier to detect
+                           #################################################################################################
+                           
+                           detectOutlierList = function(listToAnalyse, method, nbOutliers){
+                             
+                             if(!is.null(listToAnalyse)){
+                               
+                               lengthListToReturn <- ncol(listToAnalyse[[1]])
+                               
+                               listToReturn <- vector("list", lengthListToReturn)
+                               
+                               names(listToReturn) <- colnames(listToAnalyse[[1]])
+                               
+                               save(listToReturn, file = "listToReturn.RData")
+                               
+                               for(i in 1:length(listToAnalyse)){
+                                 
+                                 if(!is.null(listToAnalyse[[i]])){
+                                   
+                                   ToReturn_detectOutlierMatrix <- self$detectOutlierMatrix(listToAnalyse[[i]], method, nbOutliers)
+                                   
+                                   res <- lapply(1:length(ToReturn_detectOutlierMatrix), function(x){
+                                     
+                                     if(!is.null(ToReturn_detectOutlierMatrix[[x]])){
+                                       toReturn <- rbind(ToReturn_detectOutlierMatrix[[x]], rep(i,ncol(ToReturn_detectOutlierMatrix[[x]])))
+                                     } else {
+                                       toReturn <- NULL
+                                     }
+                                     return(toReturn)
+                                   }) # end of lapply
+                                   
+                                   names(res) <- colnames(listToAnalyse[[i]])
+                                 }
+                                 
+                                 listToReturn <- MyMergingListOfMatrix(listToReturn, res)
+                                 
+                               }
+                               
+                               return(listToReturn)
+                               
+                             } else {
+                               return(NULL)
+                             }
+                             
+                           },
+                           ##################################################################################################
+                           # To Do
+                           
+                           MyMergingListOfMatrix = function(listToReturn, res){
+                             
+                             nameListToReturn <- names(listToReturn)
+                             
+                             for(i in 1:length(res)){
+                               
+                               nameRes <-  names(listToReturn)[i]
+                               
+                               number <- which(nameListToReturn == nameRes)
+                               
+                               if(!is.null(listToReturn[[number]]) | !is.null(res[[number]])){
+                                 
+                                 listToReturn[[number]] <- cbind(listToReturn[[number]], res[[number]])
+                                 
+                               }
+                               
+                             }
+                             
+                             return(listToReturn)
+                             
                            },
                            
                            ##################################################################################################
@@ -447,7 +533,7 @@ elementR_data <- R6Class("elementR_data",
                            			     	
                            			     	if(!is.null(outlierList[[x]])){
                            			     		
-                           			     		dat[outlierList[[x]],x] <- rempl
+                           			     		dat[outlierList[[x]][3,],x] <- rempl
                            			     		
                            			     		return(dat[,x])
                            			     		
@@ -1586,6 +1672,100 @@ elementR_project <- R6Class("elementR_project",
                                 
                                 
 
+                              },
+                              
+                              ##################################################################################################
+                              # Name: appendToList
+                              # Function: add value to a list 
+                              # Input: 
+                              # 	li = list to append
+                              # val = val to add
+                              # nameVal = name of the new value of the list 
+                              ##################################################################################################
+                              
+                              appendToList = function(li, val, nameVal) {
+                                lenLi <- length(li)
+                                li[[lenLi + 1]] <- val
+                                names(li)[lenLi + 1] <- nameVal
+                                return(li)
+                              },
+                              
+                              ##################################################################################################
+                              # Name: DifferenceMatrix
+                              # Function: find the difference between the two matrix (which column are missing or different)
+                              # Input: 
+                              # 	x and y two matrices
+                              ##################################################################################################
+                              
+                              DifferenceMatrix = function(x, y){
+                                
+                                toReturn <- NULL
+                                
+                                for(i in 1:ncol(x)){
+                                  
+                                  flagi <- vector()
+                                  flag <- NULL
+                                  
+                                  for(j in 1:ncol(y)){
+                                    
+                                    if(length(setdiff(x[,i],y[,j]))){
+                                      flagi <- c(flagi, 0)
+                                    } else {
+                                      flagi <- c(flagi, 1)
+                                    }
+                                  }
+                                  
+                                  flag <- max(flagi)
+                                  
+                                  if(flag == 0) {
+                                    toReturn <- cbind(toReturn, x[,i])
+                                  }
+                                  
+                                }
+                                return(toReturn)
+                                
+                              },
+                              
+                              ##################################################################################################
+                              # Name: FindOutlierToDelete
+                              # Function: find the difference between two lists
+                              # Input: 
+                              # 	x and y two list
+                              ##################################################################################################
+                              
+                              FindOutlierToDelete = function(x, y){
+                                
+                                listDifference <- list()
+                                
+                                for(i in 1:length(x)){
+                                  
+                                  NameX <- names(x)[i]
+                                  
+                                  elem <- which(names(y) == NameX)
+                                  
+                                  if(is.null(x[[i]])){
+                                    
+                                    listDifference <- self$appendToList(listDifference, NA, NameX) # NA instead of NULL otherwise impossible to append
+                                    
+                                  } else if(is.null(y[[elem]])){
+                                    
+                                    listDifference <- self$appendToList(listDifference, x[[i]], NameX)
+                                    
+                                  } else {
+                                    
+                                    diff <- self$DifferenceMatrix(x[[i]],y[[elem]])
+                                    
+                                    if(is.null(diff)){ 
+                                      
+                                      listDifference <- self$appendToList(listDifference, NA, NameX) # NA instead of NULL otherwise impossible to append
+                                    } else{
+                                      
+                                      listDifference <- self$appendToList(listDifference, diff, NameX)
+                                    }
+                                  }
+                                }
+                                
+                                return(listDifference)
                               }
                               
                             ),#public
@@ -2042,34 +2222,22 @@ elementR_repSample <- R6Class("elementR_repSample",
                                  
                                  if(!is.null(outliers)){
                                  
-                                 	for(x in seq(from = 1, to = length(outputList), by = 1)){
-                                 		
-                                 		for(i in seq(from = 2, to  = length(outliers), by = 1)){
-                                 			if(length(outliers[[i]]) != 0){
-                                 				for(j in seq(from = 1, to = length(outliers[[i]]), by = 1)){
-                                 					
-                                 					if(length(outliers[[i]][j]) != 0){
-                                 						
-                                 						if(is.numeric(outliers[[i]][j]) & !is.na(outliers[[i]][j])){
-                                 							
-                                 							toDelete <- which(round(outputList[[x]][,i],16) == round(outliers[[i]][j], 16))
-                                 							
-                                 							outputList[[x]][toDelete,i] <- replace
-                                 							
-                                 						}
-                                 						
-                                 					}
-                                 				}
-                                 			}
-                                 			
-                                 		
-                                 			
-                                 		}
+                                 	for(x in seq(from = 1, to = length(outliers), by = 1)){
+                                 	  
+                                 	  if(!is.null(outliers[[x]]) & is.matrix(outliers[[x]])){
+                                 	    
+                                 	    for(i in 1:ncol(outliers[[x]])){
+                                 	      tableConcerned <- outliers[[x]][4, i]
+                                 	      lineConcerned <- outliers[[x]][3, i]
+                                 	      elemConcerned <- which(colnames(outputList[[tableConcerned]]) == names(outliers)[x])
+                                 	      
+                                 	      outputList[[tableConcerned]][lineConcerned, elemConcerned] <- replace
+                                 	      
+                                 	    }
+                                 	    
+                                 	  }
                                  	}
-
-                                 	
-                                 } else {}
-                                 
+                                 } 
                                  return(outputList)
                                },
                                
@@ -2189,33 +2357,34 @@ elementR_repSample <- R6Class("elementR_repSample",
                                ##################################################################################################
                                
                                RealignAll = function(dat1, dat2, step){
-                               	
-                               	listConv <- vapply(seq(from = 2, to = ncol(dat1), by = 1),
-                               				 function(x){                               		
-                               				 	dat1[is.na(dat1[,x]),x] <- 0
-                               				 	dat2[is.na(dat2[,x]),x] <- 0
-                               				 	
-                               				 	convolve(dat2[,x], dat1[,x], type = "open")
-                               				 	},
-                               				 FUN.VALUE = numeric(1)
-                               				 )
-                               	
-                               	convResult <- apply(listConv, 1, sum)
-                               	
-                               	N <- which(convResult == max(convResult))[1] -1
-                               	
-                               	essN <- dat2[,1] + (length(min(dat2[,1]) : max(dat1[,1])) - 1) - N*step
-                               	
-                               	dat2[,1] <- essN
-                               	
-                               	data <- list(dat1, dat2)
-                               	
-                               	return(data)
+                                 
+                                 listConv <- sapply(seq(from = 2, to = ncol(dat1), by = 1),
+                                                    
+                                                    function(x){
+                                                      
+                                                      dat1[is.na(dat1[,x]),x] <- 0
+                                                      dat2[is.na(dat2[,x]),x] <- 0
+                                                      
+                                                      convolve(dat2[,x], dat1[,x], type = "open")
+                                                    }
+                                 )
+                                 
+                                 convResult <- apply(listConv, 1, sum)
+                                 
+                                 N <- which(convResult == max(convResult)) - 2
+                                 
+                                 essN <- dat2[,1] + (length(min(dat2[,1]) : max(dat1[,1]))) - N*step
+                                 
+                                 dat2[,1] <- essN
+                                 
+                                 data <- list(dat1, dat2)
+                                 
+                                 return(data)
                                },
                                
                                ##################################################################################################
                                # Name: RealignListAll
-                               # Function: realign many tables according to all columns
+                               # Function: realign tables according to all columns
                                # Input: 
                                # 	listRealig a list of matrix to realign
                                # 	step: the step between two consecutive analysis
@@ -2223,22 +2392,23 @@ elementR_repSample <- R6Class("elementR_repSample",
                                
                                RealignListAll = function(listRealig, step){
                                	
-                               	realignList <- lapply(seq(from = 1, to = length(listRealig), by = 1), function(x){
-                               		
-                               		if(x == 1){
-                               			
-                               			dat1 <- listRealig[[1]]
-                               			dat2 <- listRealig[[1]]
-                               			
-                               			self$RealignAll(dat1, dat2, step)[[2]]
-                               			
-                               		}else {
-                               			
-                               			dat1 <- listRealig[[1]]
-                               			dat2 <- listRealig[[x]]
-                               			
-                               			self$RealignAll(dat1, dat2, step)[[2]]
-                               		}
+                               	realignList <- lapply(seq(from = , to = length(listRealig), by = 1), function(x){
+                               	  
+                               	  if(x == 1){
+                               	    
+                               	    dat1 <- listRealig[[1]]
+                               	    dat2 <- listRealig[[1]]
+                               	    
+                               	    self$RealignAll(dat1, dat2, step)[[2]]
+                               	    
+                               	  }else {
+                               	    
+                               	    dat1 <- listRealig[[1]]
+                               	    dat2 <- listRealig[[x]]
+                               	    
+                               	    self$RealignAll(dat1, dat2, step)[[2]]
+                               	  }
+                               	  
                                	})
                                	
                                	names(realignList) <- self$rep_Files
@@ -2246,9 +2416,6 @@ elementR_repSample <- R6Class("elementR_repSample",
                                	return(realignList)
                                	
                                }
-                               
-                               
-                               
                              ) # list
 ) # elementR_repstand
 }

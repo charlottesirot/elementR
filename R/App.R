@@ -73,10 +73,10 @@ runElementR <- function(){ # nocov start
 
 		if(str_detect(x, ".xls")){
 			df <- as.data.frame(read_excel(x, sheet = 1, col_names = TRUE))
-		} else {}
+		} 
 		if(str_detect(x, ".csv")){
 			df <- read.table(x, header = TRUE, sep = sep, dec = dec)
-		} else {}
+		} 
 		if(str_detect(x, ".ods")){
 
 			df <- read.ods(x)[[1]]
@@ -116,7 +116,7 @@ runElementR <- function(){ # nocov start
 
 			}
 
-		} else {}
+		} 
 		return(df)
 	}
 
@@ -130,7 +130,7 @@ runElementR <- function(){ # nocov start
 
 		if(is.null(toAvoid)){
 			toAvoid = NA
-		} else {}
+		} 
 
 		temp <- vector()
 
@@ -357,7 +357,7 @@ runElementR <- function(){ # nocov start
 
 					tkmessageBox(message = Message, icon = "error", type = "ok")
 
-				} else {}
+				} 
 
 			} else if(length(which(currentProject()$flag_stand != 1)) != 0){
 
@@ -369,7 +369,7 @@ runElementR <- function(){ # nocov start
 
 					tkmessageBox(message = Message, icon = "error", type = "ok")
 
-				} else {}
+				} 
 
 			} else if(currentProject()$flagMachineCorrection != 1){
 
@@ -381,7 +381,7 @@ runElementR <- function(){ # nocov start
 
 					tkmessageBox(message = Message, icon = "error", type = "ok")
 
-				} else {}
+				} 
 
 			} else if(length(which(flagSample$temp == TRUE)) == 0){
 
@@ -393,9 +393,9 @@ runElementR <- function(){ # nocov start
 
 					tkmessageBox(message = Message, icon = "error", type = "ok")
 
-				} else {}
+				} 
 
-			} else {}
+			} 
 
 		})
 
@@ -418,10 +418,10 @@ runElementR <- function(){ # nocov start
 							updateTabItems(session, "tab", selected = "Samples")
 						} else if(input$tab == "Samples"){
 							updateTabItems(session, "tab", selected = "realign")
-						} else {}
+						} 
 					})
 
-				} else {}
+				} 
 			}
 		})
 
@@ -438,10 +438,10 @@ runElementR <- function(){ # nocov start
 							updateTabItems(session, "tab", selected = "Standards")
 						} else if(input$tab == "Samples"){
 							updateTabItems(session, "tab", selected = "MachDrift")
-						} else {}
+						} 
 					})
 
-				} else {}
+				} 
 			}
 		})
 
@@ -1340,7 +1340,7 @@ runElementR <- function(){ # nocov start
 														file = paste0("finalCorr_",currentProject()$samplesFiles[x],input$exportFormatData), sep = sep)
 
 											}
-										} else {}
+										} 
 									}
 								} else {
 
@@ -1362,7 +1362,7 @@ runElementR <- function(){ # nocov start
 										invisible(file.remove(ToRemove))
 										ToRemove <- list.files(, pattern = ".tiff")
 										invisible(file.remove(ToRemove))
-									} else {}
+									} 
 
 								}
 
@@ -1379,7 +1379,7 @@ runElementR <- function(){ # nocov start
 
 						})
 
-					} else {}
+					} 
 
 				}
 			}) #observe
@@ -1421,28 +1421,28 @@ runElementR <- function(){ # nocov start
 											jpeg(filename = paste0("RawData_",temporaire ,".jpg"),
 											     width = input$exportwidth, height = input$exportheight)
 
-										} else {}
+										} 
 
 										if(input$exportFormat == ".bpm"){
 
 											bmp(filename = paste0("RawData_",temporaire ,".bmp"),
 											    width = input$exportwidth, height = input$exportheight)
 
-										} else {}
+										} 
 
 										if(input$exportFormat == ".png"){
 
 											png(filename = paste0("RawData_",temporaire ,".png"),
 											    width = input$exportwidth, height = input$exportheight)
 
-										} else {}
+										} 
 
 										if(input$exportFormat == ".tiff"){
 
 											tiff(filename = paste0("RawData_",temporaire ,".tiff"),
 											     width = input$exportwidth, height = input$exportheight)
 
-										} else {}
+										} 
 									}
 
 									mat<- matrix(c(1,1,1,1,1,1,1,1,1,2),1)
@@ -1491,7 +1491,7 @@ runElementR <- function(){ # nocov start
 											Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[1])[[2]]
 											Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[2])[[2]]
 
-										} else {}
+										} 
 
 										rect(currentNISTData$temp[Temp$t,1],-maxY,currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
 										rect(currentNISTData$temp[Temp1$t,1],-maxY,currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
@@ -1507,7 +1507,7 @@ runElementR <- function(){ # nocov start
 										lapply(input$ElementToExport, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
 										# }
 
-									} else {}
+									} 
 
 									par(mar = c(0,0,2,1))
 									plot(0,0, axes = FALSE, type = "n")
@@ -1538,19 +1538,19 @@ runElementR <- function(){ # nocov start
 
 												if(input$exportFormat == ".jpeg"){
 													jpeg(filename = paste0("RawData_All_graph",i,".jpg"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".bmp"){
 													bmp(filename = paste0("RawData_All_graph",i,".bmp"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".png"){
 													png(filename = paste0("RawData_All_graph",i,".png"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".tiff"){
 													tiff(filename = paste0("RawData_All_graph",i,".tiff"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 											}
 
 											par(mfrow = c(2,3), mar = c(3,4.1,2,2),  oma=c(0,0,1,0))
@@ -1581,7 +1581,7 @@ runElementR <- function(){ # nocov start
 													Temp0$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$bins[2])[[2]]
 													Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[1])[[2]]
 													Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[2])[[2]]
-												} else {}
+												} 
 
 												rect(currentNISTData$temp[Temp$t,1],-maxY,
 												     currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
@@ -1605,7 +1605,7 @@ runElementR <- function(){ # nocov start
 
 											dev.off()
 										}
-									} else {}
+									} 
 
 									if(nRest != 0){
 
@@ -1614,19 +1614,19 @@ runElementR <- function(){ # nocov start
 										} else {
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("RawData_All_graph",nbGraph+1,".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bmp"){
 												bmp(filename = paste0("RawData_All_graph",nbGraph+1,".bmp"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("RawData_All_graph",nbGraph+1,".png"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("RawData_All_graph",nbGraph+1,".tiff"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 										}
 
 										par(mfrow = c(2,3), mar = c(3,4.1,2,2),  oma=c(0,0,1,0))
@@ -1658,7 +1658,7 @@ runElementR <- function(){ # nocov start
 												Temp1$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[1])[[2]]
 												Temp2$t <- currentProject()$closest(x = currentNISTData$temp[,1], y = currentNISTRep$temp$plat[2])[[2]]
 
-											} else {}
+											} 
 
 											rect(currentNISTData$temp[Temp$t,1], -maxY,currentNISTData$temp[Temp0$t,1],(1+10/100)*maxY, col = "#8B735564", border = NA)
 											rect(currentNISTData$temp[Temp1$t,1],-maxY,currentNISTData$temp[Temp2$t,1],(1+10/100)*maxY, col ="#4F3CBC30", border = NA)
@@ -1704,19 +1704,19 @@ runElementR <- function(){ # nocov start
 
 												if(input$exportFormat == ".jpeg"){
 													jpeg(filename = paste0("ReducedData",tempName,".jpg"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".bmp"){
 													bmp(filename = paste0("ReducedData",tempName,".bmp"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".png"){
 													png(filename = paste0("ReducedData",tempName,".png"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".tiff"){
 													tiff(filename = paste0("ReducedData",tempName,".tiff"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 											}
 
 											if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0){
@@ -1726,11 +1726,11 @@ runElementR <- function(){ # nocov start
 														curve <- currentNISTRep$temp$getData(curve = input$courveToExport[j], bins = c(Temp$t, Temp0$t),
 																				 plat = c(Temp1$t,Temp2$t), rempl = currentProject()$valRemplace, method = input$outlierDetect, nbOutliers = 3)
 
-													} else {}
-												} else {}
+													} 
+												} 
 											} else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
 												curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[j])
-											} else {}
+											} 
 
 											if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
 												plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
@@ -1789,7 +1789,7 @@ runElementR <- function(){ # nocov start
 													}
 												} else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
 													curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[j])
-												} else {}
+												} 
 
 												if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
 													plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
@@ -1838,7 +1838,7 @@ runElementR <- function(){ # nocov start
 													}
 												} else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
 													curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[j])
-												} else {}
+												} 
 
 												if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
 													plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
@@ -1858,19 +1858,19 @@ runElementR <- function(){ # nocov start
 											} else{
 												if(input$exportFormat == ".jpeg"){
 													jpeg(filename = "ReducedData_All2.jpg", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".bmp"){
 													bmp(filename = "ReducedData_All2.bmp", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".png"){
 													png(filename = "ReducedData_All2.png", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".tiff"){
 													tiff(filename = "ReducedData_All2.tiff", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 											}
 											par(mfrow = c(2,3))
 											if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0){
@@ -1878,11 +1878,11 @@ runElementR <- function(){ # nocov start
 													if(is.finite(Temp$t)){
 														curve <- currentNISTRep$temp$getData(curve = input$courveToExport[length(input$courveToExport)],
 																				 bins = c(Temp$t, Temp0$t), plat = c(Temp1$t,Temp2$t), rempl = currentProject()$valRemplace, method = input$outlierDetect, nbOutliers = 3)
-													} else {}
+													} 
 												}
 											} else if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
 												curve <- currentNISTRep$temp$renderData(curve = input$courveToExport[length(input$courveToExport)])
-											} else {}
+											} 
 											if(length(which(!is.na(curve[,grep(input$ElementToExport[i], colnames(curve))]))) == 0){
 												plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 												text(1,0.5, labels = "No data different from NA", cex = 2)
@@ -1917,7 +1917,7 @@ runElementR <- function(){ # nocov start
 						})
 					}
 
-				} else {}
+				} 
 			})
 
 			observe({
@@ -1947,19 +1947,19 @@ runElementR <- function(){ # nocov start
 									} else{
 										if(input$exportFormat == ".jpeg"){
 											jpeg(filename = paste0("RawData_",temporaire ,".jpg"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".bpm"){
 											bmp(filename = paste0("RawData_",temporaire ,".bmp"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".png"){
 											png(filename = paste0("RawData_",temporaire ,".png"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".tiff"){
 											tiff(filename = paste0("RawData_",temporaire ,".tiff"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 									}
 
@@ -2020,7 +2020,7 @@ runElementR <- function(){ # nocov start
 										lapply(seq(from = 1, to = length(input$ElementToExportS), by = 1), function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
 										lapply(seq(from = 1, to = length(input$ElementToExportS), by = 1), function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
 
-									} else {}
+									} 
 
 									par(mar = c(0,0,2,1))
 									plot(0,0, axes = FALSE, type = "n")
@@ -2049,19 +2049,19 @@ runElementR <- function(){ # nocov start
 
 												if(input$exportFormat == ".jpeg"){
 													jpeg(filename = paste0("RawData_All_graph",i,".jpg"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".bmp"){
 													bmp(filename = paste0("RawData_All_graph",i,".bmp"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".png"){
 													png(filename = paste0("RawData_All_graph",i,".png"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".tiff"){
 													tiff(filename = paste0("RawData_All_graph",i,".tiff"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 											}
 
 											par(mfrow = c(2,3), mar = c(3,4.1,2,2),  oma=c(0,0,1,0))
@@ -2108,7 +2108,7 @@ runElementR <- function(){ # nocov start
 
 											dev.off()
 										}
-									} else {}
+									} 
 
 									if(nRest != 0){
 
@@ -2117,19 +2117,19 @@ runElementR <- function(){ # nocov start
 										}else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("RawData_All_graph",nbGraph+1,".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bmp"){
 												bmp(filename = paste0("RawData_All_graph",nbGraph+1,".bmp"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("RawData_All_graph",nbGraph+1,".png"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("RawData_All_graph",nbGraph+1,".tiff"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 										}
 
 										par(mfrow = c(2,3), mar = c(3,4.1,2,2),  oma=c(0,0,1,0))
@@ -2201,19 +2201,19 @@ runElementR <- function(){ # nocov start
 											} else{
 												if(input$exportFormat == ".jpeg"){
 													jpeg(filename = paste0("ReducedData",tempNameS,".jpg"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".bmp"){
 													bmp(filename = paste0("ReducedData",tempNameS,".bmp"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".png"){
 													png(filename = paste0("ReducedData",tempNameS,".png"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".tiff"){
 													tiff(filename = paste0("ReducedData",tempNameS,".tiff"), width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 											}
 
 											if(length(currentSampleRep$temp) != 0){
@@ -2237,17 +2237,17 @@ runElementR <- function(){ # nocov start
 																						    correction = currentProject()$machineCorrection,
 																						    rempl = currentProject()$valRemplace,threshold = currentProject()$R2Threshold)
 
-															} else {}
+															} 
 														}
 													} else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
 														if(is.finite(TempS$t)){
 															curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
-														} else {}
+														} 
 
-													} else {}
+													} 
 												}
 
-											} else {}
+											} 
 
 											if(!is.null(curveS)){
 												if(length(which(!is.na(curveS[,grep(input$ElementToExportS[i], colnames(curveS))]))) == 0){
@@ -2314,17 +2314,17 @@ runElementR <- function(){ # nocov start
 																									   correction = currentProject()$machineCorrection,
 																									   rempl = currentProject()$valRemplace,
 																									   threshold = currentProject()$R2Threshold)
-															} else {}
+															} 
 														}
 													} else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
 
 														if(is.finite(TempS$t)){
 															curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
-														} else {}
+														} 
 
-													} else {}
+													} 
 
-												} else {}
+												} 
 
 												if(!is.null(curveS)){
 													if(length(which(!is.na(curveS[,grep(input$ElementToExportS[i], colnames(curveS))]))) == 0){
@@ -2385,17 +2385,17 @@ runElementR <- function(){ # nocov start
 																									   calibFile = currentProject()$EtalonData, correction = currentProject()$machineCorrection,
 																									   rempl = currentProject()$valRemplace,
 																									   threshold = currentProject()$R2Threshold)
-															} else {}
+															} 
 														}
 													} else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
 
 														if(is.finite(TempS$t)){
 															curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
-														} else {}
+														} 
 
-													} else {}
+													} 
 
-												} else {}
+												} 
 
 												if(!is.null(curveS)){
 													if(length(which(!is.na(curveS[,grep(input$ElementToExportS[i], colnames(curveS))]))) == 0){
@@ -2421,19 +2421,19 @@ runElementR <- function(){ # nocov start
 											}  else{
 												if(input$exportFormat == ".jpeg"){
 													jpeg(filename = "ReducedData_All2.jpg", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".bmp"){
 													bmp(filename = "ReducedData_All2.bmp", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".png"){
 													png(filename = "ReducedData_All2.png", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 
 												if(input$exportFormat == ".tiff"){
 													tiff(filename = "ReducedData_All2.tiff", width = input$exportwidth, height = input$exportheight)
-												} else {}
+												} 
 											}
 											par(mfrow = c(2,3))
 											for(j in (length(input$courveToExportS)-2): (length(input$courveToExportS))){
@@ -2455,16 +2455,16 @@ runElementR <- function(){ # nocov start
 																										   correction = currentProject()$machineCorrection,
 																										   rempl = currentProject()$valRemplace,
 																										   threshold = currentProject()$R2Threshold)
-																} else {}
+																} 
 															}
 
 														} else if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][grep(input$SampleIn2,currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files)]%%2) == 1){
 															if(is.finite(TempS$t)){curveS <- currentSampleRep$temp$renderData(curve = input$courveToExportS[j])
 															}
 
-														} else {}
+														} 
 													}
-												} else {}
+												} 
 
 												if(!is.null(curveS)){
 													if(length(which(!is.na(curveS[,grep(input$ElementToExportS[i], colnames(curveS))]))) == 0){
@@ -2503,9 +2503,9 @@ runElementR <- function(){ # nocov start
 								} else {tkmessageBox(message = "You need to select at least one element to export!", icon = "error", type = "ok")}
 							} else {tkmessageBox(message = "You need to select at least one curve to export!", icon = "error", type = "ok")}
 						})
-					} else {}
+					} 
 
-				} else {}
+				} 
 
 			})
 
@@ -2554,19 +2554,19 @@ runElementR <- function(){ # nocov start
 										} else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("Machine_Drift_3_&_Sup",i,".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bmp"){
 												bmp(filename = paste0("Machine_Drift_3_&_Sup",i,".bmp"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("Machine_Drift_3_&_Sup",i,".png"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("Machine_Drift_3_&_Sup",i,".tiff"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 										}
 
 										par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2593,7 +2593,7 @@ runElementR <- function(){ # nocov start
 
 										dev.off()
 									}
-								} else {}
+								} 
 
 								if(nRest != 0){
 
@@ -2602,19 +2602,19 @@ runElementR <- function(){ # nocov start
 									} else {
 										if(input$exportFormat == ".jpeg"){
 											jpeg(filename = paste0("Machine_Drift_3_&_Sup",nbGraph + 1,".jpg"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".bmp"){
 											bmp(filename = paste0("Machine_Drift_3_&_Sup",nbGraph + 1,".bmp"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".png"){
 											png(filename = paste0("Machine_Drift_3_&_Sup",nbGraph + 1,".png"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".tiff"){
 											tiff(filename = paste0("Machine_Drift_3_&_Sup",nbGraph + 1,".tiff"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 									}
 
 									par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2642,7 +2642,7 @@ runElementR <- function(){ # nocov start
 
 									dev.off()
 
-								} else {}
+								} 
 
 								info <- sprintf("%d%% done", round(50))
 								setTkProgressBar(pb, 50, sprintf("Export (%s)", info), info)
@@ -2670,19 +2670,19 @@ runElementR <- function(){ # nocov start
 										} else {
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("Machine_Drift_2",i,".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bmp"){
 												bmp(filename = paste0("Machine_Drift_2",i,".bmp"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("Machine_Drift_2",i,".png"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("Machine_Drift_2",i,".tiff"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 										}
 
 										par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2709,7 +2709,7 @@ runElementR <- function(){ # nocov start
 
 										dev.off()
 									}
-								} else {}
+								} 
 
 								if(nRest != 0){
 
@@ -2718,19 +2718,19 @@ runElementR <- function(){ # nocov start
 									} else{
 										if(input$exportFormat == ".jpeg"){
 											jpeg(filename = paste0("Machine_Drift_2",nbGraph + 1,".jpg"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".bmp"){
 											bmp(filename = paste0("Machine_Drift_2",nbGraph + 1,".bmp"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".png"){
 											png(filename = paste0("Machine_Drift_2",nbGraph + 1,".png"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".tiff"){
 											tiff(filename = paste0("Machine_Drift_2",nbGraph + 1,".tiff"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 									}
 
 									par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2757,7 +2757,7 @@ runElementR <- function(){ # nocov start
 
 									dev.off()
 
-								} else {}
+								} 
 
 								info <- sprintf("%d%% done", round(70))
 								setTkProgressBar(pb, 70, sprintf("Export (%s)", info), info)
@@ -2784,19 +2784,19 @@ runElementR <- function(){ # nocov start
 										} else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("Machine_Drift_1",i,".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bmp"){
 												bmp(filename = paste0("Machine_Drift_1",i,".bmp"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("Machine_Drift_1",i,".png"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("Machine_Drift_1",i,".tiff"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 										}
 
 										par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2820,7 +2820,7 @@ runElementR <- function(){ # nocov start
 
 										dev.off()
 									}
-								} else {}
+								} 
 
 								if(nRest != 0){
 									if(is.null(input$exportFormat)){
@@ -2828,19 +2828,19 @@ runElementR <- function(){ # nocov start
 									} else{
 										if(input$exportFormat == ".jpeg"){
 											jpeg(filename = paste0("Machine_Drift_1",nbGraph + 1,".jpg"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".bmp"){
 											bmp(filename = paste0("Machine_Drift_1",nbGraph + 1,".bmp"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".png"){
 											png(filename = paste0("Machine_Drift_1",nbGraph + 1,".png"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".tiff"){
 											tiff(filename = paste0("Machine_Drift_1",nbGraph + 1,".tiff"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 									}
 
 									par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2864,7 +2864,7 @@ runElementR <- function(){ # nocov start
 
 									dev.off()
 
-								} else {}
+								} 
 
 								info <- sprintf("%d%% done", round(80))
 								setTkProgressBar(pb, 80, sprintf("Export (%s)", info), info)
@@ -2891,19 +2891,19 @@ runElementR <- function(){ # nocov start
 										} else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("Machine_Drift_0",i,".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bmp"){
 												bmp(filename = paste0("Machine_Drift_0",i,".bmp"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("Machine_Drift_0",i,".png"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("Machine_Drift_0",i,".tiff"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 										}
 
 										par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2923,7 +2923,7 @@ runElementR <- function(){ # nocov start
 
 										dev.off()
 									}
-								} else {}
+								} 
 
 								if(nRest != 0){
 
@@ -2932,19 +2932,19 @@ runElementR <- function(){ # nocov start
 									} else{
 										if(input$exportFormat == ".jpeg"){
 											jpeg(filename = paste0("Machine_Drift_0",nbGraph + 1,".jpg"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".bmp"){
 											bmp(filename = paste0("Machine_Drift_0",nbGraph + 1,".bmp"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".png"){
 											png(filename = paste0("Machine_Drift_0",nbGraph + 1,".png"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 
 										if(input$exportFormat == ".tiff"){
 											tiff(filename = paste0("Machine_Drift_0",nbGraph + 1,".tiff"), width = input$exportwidth, height = input$exportheight)
-										} else {}
+										} 
 									}
 
 									par(mfrow = c(2,3), mar = c(3,3.8,2,2),  oma=c(0,0,1,0))
@@ -2966,7 +2966,7 @@ runElementR <- function(){ # nocov start
 
 									dev.off()
 
-								} else {}
+								} 
 
 								info <- sprintf("%d%% done", round(100))
 								setTkProgressBar(pb, 100, sprintf("Export (%s)", info), info)
@@ -2979,7 +2979,7 @@ runElementR <- function(){ # nocov start
 							}
 						})
 
-					} else {}
+					} 
 				}
 				else{}
 			})
@@ -3015,19 +3015,19 @@ runElementR <- function(){ # nocov start
 										} else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[i],".jpg"), width = input$exportwidth, height = input$exportheight)
-											} else {}
+											} 
 
 											if(input$exportFormat == ".bpm"){
 												bmp(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[i] ,".bmp"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[i] ,".png"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[i] ,".tiff"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 										}
 
@@ -3068,19 +3068,19 @@ runElementR <- function(){ # nocov start
 										} else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[y],".jpg"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".bpm"){
 												bmp(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[y] ,".bmp"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[y] ,".png"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("RealignData_",input$selectRealign,"_", input$RealignElementToExport[y] ,".tiff"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 										}
 
@@ -3134,19 +3134,19 @@ runElementR <- function(){ # nocov start
 										}else{
 											if(input$exportFormat == ".jpeg"){
 												jpeg(filename = paste0("RealignData_",i ,".jpg"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".bpm"){
 												bmp(filename = paste0("RealignData_",i  ,".bmp"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".png"){
 												png(filename = paste0("RealignData_",i  ,".png"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 											if(input$exportFormat == ".tiff"){
 												tiff(filename = paste0("RealignData_",i  ,".tiff"), width = input$exportwidth, height = input$exportheight)
-											}  else {}
+											}  
 
 										}
 
@@ -3283,19 +3283,19 @@ runElementR <- function(){ # nocov start
 									} else{
 										if(input$exportFormat == ".jpeg"){
 											jpeg(filename = paste0("RealignData_",nbGraph+1,".jpg"), width = input$exportwidth, height = input$exportheight)
-										}  else {}
+										}  
 
 										if(input$exportFormat == ".bmp"){
 											bmp(filename = paste0("RealignData_",nbGraph+1,".bmp"), width = input$exportwidth, height = input$exportheight)
-										}  else {}
+										}  
 
 										if(input$exportFormat == ".png"){
 											png(filename = paste0("RealignData_",nbGraph+1,".png"), width = input$exportwidth, height = input$exportheight)
-										}  else {}
+										}  
 
 										if(input$exportFormat == ".tiff"){
 											tiff(filename = paste0("RealignData_",nbGraph+1,".tiff"), width = input$exportwidth, height = input$exportheight)
-										}  else {}
+										}  
 									}
 
 									par(mfrow = c(2,3))
@@ -3575,8 +3575,8 @@ runElementR <- function(){ # nocov start
 								currentProject()$setRank(type = "standard", value = NA)
 							}
 						})
-					} else {}
-				} else {}
+					} 
+				} 
 			}) #observe
 
 			##############################################################
@@ -3662,8 +3662,8 @@ runElementR <- function(){ # nocov start
 								}
 							}
 						})
-					} else {}
-				} else {}
+					} 
+				} 
 			}) #observe
 
 			##############################################################
@@ -3766,8 +3766,8 @@ runElementR <- function(){ # nocov start
 
 							WhatLoaded$temp <- "notExample"
 						})
-					} else {}
-				}else {}
+					} 
+				}
 			}) #observe
 
 			##############################################################
@@ -3863,8 +3863,8 @@ runElementR <- function(){ # nocov start
 
 							WhatLoaded$temp <- "Example"
 						})
-					} else {}
-				} else {}
+					} 
+				} 
 			}) #observe
 
 			##############################################################
@@ -3923,10 +3923,10 @@ runElementR <- function(){ # nocov start
 							currentProject()$setElemStand(elem = input$internStand)
 
 
-						} else {}
+						} 
 
 					})
-				} else {}
+				} 
 			}) #observe
 
 			##############################################################
@@ -3962,12 +3962,12 @@ runElementR <- function(){ # nocov start
 
 							if(DirToCreate$temp == 1){
 
-							} else {}
+							} 
 
-						} else {}
+						} 
 
 					})
-				} else {}
+				} 
 			}) #observe
 
 			##############################################################
@@ -4032,8 +4032,8 @@ runElementR <- function(){ # nocov start
 							updateCheckboxGroupInput(session,"checkbox", selected = FALSE)
 						})
 
-					} else {}
-				} else {}
+					} 
+				} 
 			}) #observe
 
 			##############################################################
@@ -4089,8 +4089,8 @@ runElementR <- function(){ # nocov start
 
 
 
-					} else {}
-				} else {}
+					} 
+				} 
 			}) #observe
 
 			##############################################################
@@ -4163,10 +4163,10 @@ runElementR <- function(){ # nocov start
 									}
 
 								})
-							} else {}
-						} else {}
-					} else {}
-				} else {}
+							} 
+						} 
+					} 
+				} 
 			}) #observe
 
 			##############################################################
@@ -4188,11 +4188,11 @@ runElementR <- function(){ # nocov start
 										flagStart$temp[1] <- 1
 									}
 								}
-							} else {}
+							} 
 
 						})
-					} else {}
-				} else {}
+					} 
+				} 
 			})
 
 			##############################################################
@@ -4219,7 +4219,7 @@ runElementR <- function(){ # nocov start
 							}
 						}
 					})
-				} else {}
+				} 
 			})
 
 			##############################################################
@@ -4250,7 +4250,7 @@ runElementR <- function(){ # nocov start
 
 					})
 
-				} else {}
+				} 
 			}) #observe
 
 			##############################################################
@@ -4275,8 +4275,8 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$SetParam)){
 					if(input$SetParam > 0){
 						updateTabItems(session, "tab", selected = "Config")
-					} else {}
-				} else {}
+					} 
+				} 
 			})
 
 			##############################################################
@@ -4328,7 +4328,7 @@ runElementR <- function(){ # nocov start
 
 
 					})
-				} else {}
+				} 
 
 				if(flagStart$temp[1] == 1){
 
@@ -4351,8 +4351,8 @@ runElementR <- function(){ # nocov start
 
 							if(is.na(currentProject()$standardRank[1])){
 								elem <- colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/"), sep = valSep$temp, dec = valDec$temp))[-1]
-								if(length(which(str_detect(elem, "Ca") == TRUE)) != 0){ElemStand$temp <- elem[(which(str_detect(elem, "Ca") == TRUE))[1]]} else {}
-								if(length(which(str_detect(elem, "Ca") == TRUE)) == 0){ElemStand$temp <- elem[1]}else {}
+								if(length(which(str_detect(elem, "Ca") == TRUE)) != 0){ElemStand$temp <- elem[(which(str_detect(elem, "Ca") == TRUE))[1]]} 
+								if(length(which(str_detect(elem, "Ca") == TRUE)) == 0){ElemStand$temp <- elem[1]}
 
 								output$start2 <- renderUI({
 									div(
@@ -4485,7 +4485,7 @@ runElementR <- function(){ # nocov start
 
 						}
 
-					} else {}
+					} 
 					if(currentProject()$elementChecking[[1]] != 0 & is.null(currentProject()$errorSession)){
 
 						output$start2 <- renderUI({
@@ -4515,7 +4515,7 @@ runElementR <- function(){ # nocov start
 							)
 						})
 
-					} else {}
+					} 
 					if(currentProject()$elementChecking[[1]] != 0 & !is.null(currentProject()$errorSession)){
 
 						output$start2 <- renderUI({
@@ -4549,7 +4549,7 @@ runElementR <- function(){ # nocov start
 							)
 						})
 
-					} else {}
+					} 
 					if(currentProject()$elementChecking[[1]] == 0 & !is.null(currentProject()$errorSession)){
 
 						output$start2 <- renderUI({
@@ -4580,10 +4580,10 @@ runElementR <- function(){ # nocov start
 
 						})
 
-					}  else {}
+					}  
 
 
-				} else {}
+				} 
 
 				if(flagStart$temp[1] == 1.5){
 
@@ -4615,8 +4615,8 @@ runElementR <- function(){ # nocov start
 							if(is.na(currentProject()$standardRank[1])){
 
 								elem <- colnames(readData(paste(projPath$temp, "/standards",dir(paste0(projPath$temp, "/standards"))[1],sep="/"), sep = valSep$temp, dec = valDec$temp))[-1]
-								if(length(which(str_detect(elem, "Ca") == TRUE)) != 0){ElemStand$temp <- elem[(which(str_detect(elem, "Ca") == TRUE))[1]]} else {}
-								if(length(which(str_detect(elem, "Ca") == TRUE)) == 0){ElemStand$temp <- elem[1]}else {}
+								if(length(which(str_detect(elem, "Ca") == TRUE)) != 0){ElemStand$temp <- elem[(which(str_detect(elem, "Ca") == TRUE))[1]]} 
+								if(length(which(str_detect(elem, "Ca") == TRUE)) == 0){ElemStand$temp <- elem[1]}
 
 								output$start2 <- renderUI({
 									div(
@@ -4816,7 +4816,7 @@ runElementR <- function(){ # nocov start
 
 						}
 
-					} else {}
+					} 
 					if(currentProject()$elementChecking[[1]] != 0 & is.null(currentProject()$errorSession)){
 
 						output$start2 <- renderUI({
@@ -4846,7 +4846,7 @@ runElementR <- function(){ # nocov start
 							)
 						})
 
-					} else {}
+					} 
 					if(currentProject()$elementChecking[[1]] != 0 & !is.null(currentProject()$errorSession)){
 
 						output$start2 <- renderUI({
@@ -4880,7 +4880,7 @@ runElementR <- function(){ # nocov start
 							)
 						})
 
-					} else {}
+					} 
 					if(currentProject()$elementChecking[[1]] == 0 & !is.null(currentProject()$errorSession)){
 
 						output$start2 <- renderUI({
@@ -4911,10 +4911,10 @@ runElementR <- function(){ # nocov start
 
 						})
 
-					}  else {}
+					}  
 
 
-				} else {}
+				} 
 
 				if(flagStart$temp[1] == 2.5){
 
@@ -5000,7 +5000,7 @@ runElementR <- function(){ # nocov start
 					})
 
 
-				} else {}
+				} 
 
 				if(flagStart$temp[1] == 2){
 
@@ -5066,7 +5066,7 @@ runElementR <- function(){ # nocov start
 					})
 
 
-				} else {}
+				} 
 
 				if(flagStart$temp[1] == 3){
 
@@ -5152,7 +5152,7 @@ runElementR <- function(){ # nocov start
 
 					})
 
-				} else {}
+				} 
 
 				if(flagStart$temp[2] == 1){
 
@@ -5162,7 +5162,7 @@ runElementR <- function(){ # nocov start
 						} else {
 							replace <- "Example_Session"
 						}
-					} else {}
+					} 
 
 					output$start1 <- renderUI({
 						fluidRow(
@@ -5209,7 +5209,7 @@ runElementR <- function(){ # nocov start
 
 
 					})
-				} else {}
+				} 
 
 				if(flagStart$temp[2] == 3){
 
@@ -5295,7 +5295,7 @@ runElementR <- function(){ # nocov start
 
 					})
 
-				} else {}
+				} 
 
 			}) #observe
 
@@ -5309,8 +5309,8 @@ runElementR <- function(){ # nocov start
 						input$load
 						tempProj$temp
 
-					} else {}
-				} else {}
+					} 
+				} 
 			})
 
 			##############################################################
@@ -5324,8 +5324,8 @@ runElementR <- function(){ # nocov start
 						} else {
 							currentProject()$setR2Threshold(0.75)
 						}
-					} else {}
-				} else {}
+					} 
+				} 
 			})
 		}
 
@@ -5375,10 +5375,10 @@ runElementR <- function(){ # nocov start
 							  isolate({
 							    currentNISTData$temp <-  currentProject()$standards[[1]]$rep_data[[match(input$standardIn, currentProject()$standardsFiles)]]$data
 							  })
-							  } else {}
-						} else {}
-					} else {}
-				} else {}
+							  } 
+						} 
+					} 
+				} 
 			})
 
 			######################################################################################
@@ -5392,10 +5392,10 @@ runElementR <- function(){ # nocov start
 							  isolate({
 							    currentNISTRep$temp <-  currentProject()$standards[[1]]$rep_data[[match(input$standardIn, currentProject()$standardsFiles)]]
 							  })
-							} else {}
-						} else {}
-					} else {}
-				} else {}
+							} 
+						} 
+					} 
+				} 
 
 			})
 
@@ -5413,9 +5413,9 @@ runElementR <- function(){ # nocov start
 								updateSliderInput(session, "bins", value = input$bins)
 								updateSliderInput(session, "plat", value = input$plat)
 							})
-						} else {}
+						} 
 					}
-				}else {}
+				}
 			}) #observe
 
 			########################################################################################
@@ -5470,7 +5470,7 @@ runElementR <- function(){ # nocov start
 
 			        })
 
-			      } else {}
+			      } 
 			      if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0 & flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] != 0){
 
 			        output$saveButtonStep1 <- renderUI({
@@ -5479,7 +5479,7 @@ runElementR <- function(){ # nocov start
 
 			        })
 
-			      } else {}
+			      } 
 			      if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
 
 			        output$saveButtonStep1 <- renderUI({
@@ -5488,7 +5488,7 @@ runElementR <- function(){ # nocov start
 
 			        })
 
-			      } else {}
+			      } 
 
 			    }
 			  }
@@ -5544,7 +5544,7 @@ runElementR <- function(){ # nocov start
 							p("* Blank averaged value ** Limit of detection", style = "margin-left:20px")
 						)
 					}
-				} else {}
+				} 
 			})
 
 			################################################################
@@ -5562,7 +5562,7 @@ runElementR <- function(){ # nocov start
 					      if(length(which(as.matrix(currentProject()$standardsFiles) == input$standardIn)) != 0 & length(currentNumber$temp) != 0){
 					        if(startSession$temp == 0){
 					          output$Standards2 <-  renderUI({NULL})
-					        } else {}
+					        } 
 					        if(startSession$temp == 1){
 
 					          if(flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] == 0){
@@ -5751,7 +5751,7 @@ runElementR <- function(){ # nocov start
 
 
 
-					              } else {}
+					              } 
 					            })
 
 					            output$distPlot <- renderPlot({
@@ -5805,7 +5805,7 @@ runElementR <- function(){ # nocov start
 					                    lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
 					                    lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
 
-					                  } else {}
+					                  } 
 					                }
 
 					              }
@@ -5837,8 +5837,8 @@ runElementR <- function(){ # nocov start
 					                        } else if(input$CourbeNIST == "Blank removed"){
 					                          abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 					                          rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
-					                        } else {}
-					                      } else {}
+					                        } 
+					                      } 
 					                    } else {
 					                      if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
 					                        abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
@@ -5846,15 +5846,15 @@ runElementR <- function(){ # nocov start
 					                      } else if(input$CourbeNIST == "Blank removed"){
 					                        abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 					                        rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
-					                      } else {}
+					                      } 
 					                    }
-					                  } else {}
+					                  } 
 					                }
 
 					              }
 					            })
 
-					          } else {}
+					          } 
 					          if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 0 & flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] != 0){
 
 					            output$Standards2 <- renderUI({
@@ -5957,7 +5957,7 @@ runElementR <- function(){ # nocov start
 					                  )
 
 					                )
-					              } else {}
+					              } 
 					            })
 
 					            output$distPlot <- renderPlot({
@@ -5983,7 +5983,7 @@ runElementR <- function(){ # nocov start
 					                      par(new = TRUE)
 					                      plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 					                    })
-					                  } else {}
+					                  } 
 
 					                  if(is.null(input$bins) | is.null(input$plat)){
 
@@ -6011,11 +6011,11 @@ runElementR <- function(){ # nocov start
 					                    lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp0$t,1], currentNISTData$temp[Temp0$t,x], cex = 3, col ="grey")})
 					                    lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp1$t,1], currentNISTData$temp[Temp1$t,x], cex = 3, col ="#4F3CBC50")})
 					                    lapply(input$checkGroup, function(x){points(currentNISTData$temp[Temp2$t,1], currentNISTData$temp[Temp2$t,x], cex = 3, col ="#4F3CBC50")})
-					                  }   else {}
+					                  }   
 					                }
 
 
-					              } else {}
+					              } 
 
 					            }, height = 400)
 
@@ -6044,8 +6044,8 @@ runElementR <- function(){ # nocov start
 					                        } else if(input$CourbeNIST == "Blank removed"){
 					                          abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 					                          rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
-					                        } else {}
-					                      } else {}
+					                        } 
+					                      } 
 					                    } else {
 					                      if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
 					                        abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
@@ -6053,15 +6053,15 @@ runElementR <- function(){ # nocov start
 					                      } else if(input$CourbeNIST == "Blank removed"){
 					                        abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 					                        rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
-					                      } else {}
+					                      } 
 					                    }
-					                  } else {}
+					                  } 
 
 					                }
 					              }
 					            })
 
-					          } else {}
+					          } 
 					          if((flagStandard$temp[which(as.matrix(currentProject()$standardsFiles) == input$standardIn)] %%2) == 1){
 
 					            output$Standards2 <- renderUI({
@@ -6187,7 +6187,7 @@ runElementR <- function(){ # nocov start
 					                      plot(currentNISTData$temp[,1], currentNISTData$temp[,input$checkGroup[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroup[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 
 					                    })
-					                  }  else {}
+					                  }  
 
 					                  if(is.null(input$bins) | is.null(input$plat)){
 
@@ -6245,8 +6245,8 @@ runElementR <- function(){ # nocov start
 					                        } else if(input$CourbeNIST == "Blank removed"){
 					                          abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 					                          rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
-					                        } else {}
-					                      } else {}
+					                        } 
+					                      } 
 					                    } else {
 					                      if(input$CourbeNIST == "Raw" | input$CourbeNIST == "Plateau"){
 					                        abline(a = currentNISTRep$temp$BlankAverarge[grep(input$listeElem, names(currentNISTRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
@@ -6254,22 +6254,22 @@ runElementR <- function(){ # nocov start
 					                      } else if(input$CourbeNIST == "Blank removed"){
 					                        abline(a = currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 					                        rect(-10, -10^6, (1+10/100)*max(dataPlot2$dat[,1]),currentNISTRep$temp$LOD[grep(input$listeElem, names(currentNISTRep$temp$LOD))], col = "#FF000064", border = NA)
-					                      } else {}
+					                      } 
 					                    }
-					                  } else {}
+					                  } 
 
 					                }
 					              }
 					            })
 
-					          } else {}
+					          } 
 
-					        } else {}
-					      } else {}
-					    } else {}
+					        } 
+					      } 
+					    } 
 					  })
-					} else {}
-				}else {}
+					} 
+				}
 			}) #observe
 
 			################################################################
@@ -6309,7 +6309,7 @@ runElementR <- function(){ # nocov start
 					}  else {
 						updateCheckboxGroupInput(session,"checkGroup","",choices=currentProject()$listeElem,selected = currentProject()$listeElem)
 					}
-				} else {}
+				} 
 			}) #observe
 
 			################################################################
@@ -6325,8 +6325,8 @@ runElementR <- function(){ # nocov start
 								load$temp <- load$temp +1
 								updateSelectInput(session, "standardIn", selected = input$standardIn)
 							})
-						} else {}
-					} else {}
+						} 
+					} 
 
 			}) #observe
 
@@ -6340,7 +6340,7 @@ runElementR <- function(){ # nocov start
 							load$temp <- load$temp +1
 						}
 					})
-				} else {}
+				} 
 			}) #observe
 
 			################################################################
@@ -6441,7 +6441,7 @@ runElementR <- function(){ # nocov start
 							}
 						}
 
-					} else {}
+					} 
 				   }
 			}
 
@@ -6458,12 +6458,12 @@ runElementR <- function(){ # nocov start
 								passage <- currentProject()$standardsFiles[flagStandard$temp%%2 == 0][1]
 								if(!is.na(passage)){
 									delay(2000,updateSelectInput(session, "standardIn", selected = passage))
-								} else {}
+								} 
 							})
-						}  else {}
+						}  
 
-					} else {}
-				} else {}
+					} 
+				} 
 			}) #observe
 
 		}
@@ -6508,7 +6508,7 @@ runElementR <- function(){ # nocov start
 						if(length(temp) !=0 & length(temp) < 6){
 							temp <- c(temp, sample(seq(from = 1, to = length(currentProject()$listeElem), by = 1)[-temp],6-tempOR,replace = FALSE))
 							names(temp) <- currentProject()$listeElem[temp]
-						} else {}
+						} 
 
 						# if deviated elements == 0
 						if(length(temp) == 0){
@@ -6521,13 +6521,13 @@ runElementR <- function(){ # nocov start
 						  }
 
 
-						} else {}
+						} 
 
 						elemChosen$temp <- temp
 
-					} else {}
+					} 
 
-				} else {}
+				} 
 
 			}) #observe
 
@@ -6557,7 +6557,7 @@ runElementR <- function(){ # nocov start
 
 								tableauStat$temp <- currentProject()$regressionModel
 
-							} else {}
+							} 
 
 							if(projChar$temp[[1]] == 2){
 
@@ -6569,8 +6569,8 @@ runElementR <- function(){ # nocov start
 
 								tableauStat$temp <- currentProject()$regressionModel
 
-							} else {}
-						} else {}
+							} 
+						} 
 					}
 				}
 
@@ -6602,11 +6602,11 @@ runElementR <- function(){ # nocov start
 
 							coord$temp <- X
 
-						} else {}
+						} 
 
 
-					} else {}
-				} else {}
+					} 
+				} 
 			})
 
 			###############################################################################
@@ -6635,7 +6635,7 @@ runElementR <- function(){ # nocov start
 					}
 
 
-				} else {}
+				} 
 			})
 
 			###################################################################################################
@@ -6694,19 +6694,19 @@ runElementR <- function(){ # nocov start
 
 												if(x != zero$temp[length(zero$temp)] | x != zero$temp[length(zero$temp)-1]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))
-												} else {}
+												} 
 
 												if(x == zero$temp[length(zero$temp)] | x == zero$temp[length(zero$temp)-1]){
-													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))} else {}
+													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))} 
 
-											} else {}
+											} 
 											if((sum(length(two$temp), length(three$temp), length(one$temp), length(zero$temp))%%2) == 1){
 
 												if(x == zero$temp[length(zero$temp)]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))
 												} else{
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))}
-											} else {}
+											} 
 
 										}
 
@@ -6776,19 +6776,19 @@ runElementR <- function(){ # nocov start
 
 												if(x != one$temp[length(one$temp)] | x != one$temp[length(one$temp)-1]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))
-												} else {}
+												} 
 
 												if(x == one$temp[length(one$temp)] | x == one$temp[length(one$temp)-1]){
-													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))} else {}
+													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))} 
 
-											} else {}
+											} 
 											if((sum(length(two$temp), length(three$temp), length(one$temp))%%2) == 1){
 												if(x == one$temp[length(one$temp)]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))
 
 												}else{
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))}
-											} else {}
+											} 
 
 										}
 
@@ -6893,16 +6893,16 @@ runElementR <- function(){ # nocov start
 											if((sum(length(two$temp), length(three$temp))%%2) == 0){
 												if(x != two$temp[length(two$temp)] | x != two$temp[length(two$temp)-1]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))
-												}else {}
+												}
 												if(x == two$temp[length(two$temp)] | x == two$temp[length(two$temp)-1]){
-													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))}else {}
-											} else {}
+													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))}
+											} 
 											if((sum(length(two$temp), length(three$temp))%%2) == 1){
 												if(x == two$temp[length(two$temp)]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))
 												}else{
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))}
-											} else {}
+											} 
 
 										}
 									} else{
@@ -7154,7 +7154,7 @@ runElementR <- function(){ # nocov start
 														)
 													)
 												}
-											} else {}
+											} 
 
 										} else{
 											p("You chose not to check for machine drift", style = "font-size:medium;font-weight: bold; text-align: center;text-align: center;")
@@ -7171,16 +7171,16 @@ runElementR <- function(){ # nocov start
 											if((length(three$temp)%%2) == 0){
 												if(x != three$temp[length(three$temp)] | x != three$temp[length(three$temp)-1]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))
-												} else {}
+												} 
 												if(x == three$temp[length(three$temp)] | x == three$temp[length(three$temp)-1]){
-													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))} else {}
-											} else {}
+													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))} 
+											} 
 											if((length(three$temp)%%2) == 1){
 												if(x == three$temp[length(three$temp)]){
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: white; width: 70%; border: none;')" ))
 												} else{
 													barre <- eval(parse(text = "hr(style='height: 1px; background-color: #9B6CA8; width: 70%; border: none;')" ))}
-											} else {}
+											} 
 
 										}
 									}else{
@@ -7222,9 +7222,9 @@ runElementR <- function(){ # nocov start
 							output$MachDrift3_2 <- renderUI({NULL}) # output$MachDrift3_2
 
 						}
-					} else {}
+					} 
 
-				} else {}
+				} 
 
 			})
 
@@ -7308,15 +7308,15 @@ runElementR <- function(){ # nocov start
 								)
 							}) #output$MachDrift2
 
-						} else {}
+						} 
 						if((validCorrection$temp%%2) == 1){
 							if(!is.null(zero$temp)){
 								if(length(zero$temp) != 0){
 									if(zero$temp[1] != 0){
 										tkmessageBox(message = "WARNING: NO STANDARD VALUE FOR AT LEAST ONE CHEMICAL ELEMENT", icon = "error", type = "ok")
-									} else {}
+									} 
 								} else{}
-							} else {}
+							} 
 
 
 							output$MachDrift1 <- renderUI({
@@ -7362,8 +7362,8 @@ runElementR <- function(){ # nocov start
 									)
 								)
 							}) #output$MachDrift2
-						} else {}
-					} else {}
+						} 
+					} 
 
 
 				}else{
@@ -7385,23 +7385,23 @@ runElementR <- function(){ # nocov start
 
 								if(!is.null(eval(parse(text = paste0("input$",geneRMachineCorr$temp[i]))))){
 									machineCorrection$temp[i] <- TRUE
-								} else {}
+								} 
 
 							} #eo for loop
-						} else {}
+						} 
 
 						if(input$CorrectAll == FALSE & (validCorrection$temp%%2) == 0){
 							for(i in seq(from = 1, to = length(currentProject()$listeElem), by = 1)){
 
 								if(is.null(eval(parse(text = paste0("input$",geneRMachineCorr$temp[i]))))){
 									machineCorrection$temp[i] <- FALSE
-								} else {}
+								} 
 
 							} #eo for loop
-						} else {}
+						} 
 
 					}) # eo isolate
-				} else {}
+				} 
 			}) #observe
 
 			##########################################################
@@ -7418,10 +7418,10 @@ runElementR <- function(){ # nocov start
 							validCorrection$temp <- validCorrection$temp + 1
 							updateSelectInput(session, 'ElementChosen', selected = input$ElementChosen)
 
-						} else {}
+						} 
 
 					}) # eo isolate
-				} else {}
+				} 
 			}) #observe
 
 			##############################################################################################
@@ -7447,7 +7447,7 @@ runElementR <- function(){ # nocov start
 
 							currentProject()$setCorrection(x = machineCorrection$temp)
 
-						}  else {}
+						}  
 						if((validCorrection$temp%%2) == 0 & input$validDrift > 0){
 							currentProject()$setflagMachineCorrection(x = 0)
 							lapply(seq(from = 1, to = length(currentProject()$flag_Sample), by = 1), function(x){currentProject()$set_flagRealign(replicate = x, type = "spot", value = 0)})
@@ -7463,9 +7463,9 @@ runElementR <- function(){ # nocov start
 							flagSampleDetail$temp <- currentProject()$flag_Sample
 							flagRealign$temp <- currentProject()$flagRealign
 
-						}  else {}
-					} else {}
-				} else {}
+						}  
+					} 
+				} 
 			}) #observe
 
 		}
@@ -7510,9 +7510,9 @@ runElementR <- function(){ # nocov start
 					if(!is.null(match(input$SampleIn,currentProject()$samplesFiles))){
 						if(length(match(input$SampleIn,currentProject()$samplesFiles)) != 0){
 							currentSampleNumberSam$temp <-  match(input$SampleIn2,currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)
-						} else {}
-					} else {}
-				} else {}
+						} 
+					} 
+				} 
 			})
 
 			######################################################################################
@@ -7524,10 +7524,10 @@ runElementR <- function(){ # nocov start
 						if(length(match(input$SampleIn,currentProject()$samplesFiles)) != 0){
 							if(!currentProject()$is.integer0(match(input$SampleIn2,currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files))){
 								currentSampleRep$temp <-  currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[match(input$SampleIn2,currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]
-							} else {}
-						} else {}
-					} else {}
-				} else {}
+							} 
+						} 
+					} 
+				} 
 			})
 
 			######################################################################################
@@ -7539,10 +7539,10 @@ runElementR <- function(){ # nocov start
 						if(length(match(input$SampleIn,currentProject()$samplesFiles)) != 0){
 							if(!currentProject()$is.integer0(match(input$SampleIn2,currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files))){
 								currentSampleData$temp <-  currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_data[[match(input$SampleIn2,currentProject()$samples[[match(input$SampleIn,currentProject()$samplesFiles)]]$rep_Files)]]$data
-							} else {}
-						} else {}
-					} else {}
-				} else {}
+							} 
+						} 
+					} 
+				} 
 			})
 
 			################################################################
@@ -7607,9 +7607,9 @@ runElementR <- function(){ # nocov start
 								elemUsed$temp <- input$checkGroupS
 
 							})
-						} else {}
+						} 
 					}
-				} else {}
+				} 
 			}) #observe
 
 			################################################################
@@ -7647,9 +7647,9 @@ runElementR <- function(){ # nocov start
 											    div( selectInput("SampleIn2", "", as.matrix(currentProject()$samples[[currentSampleNumberRep$temp]]$rep_Files), multiple = FALSE, width = '100%' ), style = "margin-top: -20px")
 
 											)
-										} else {}
-									} else {}
-								} else {}
+										} 
+									} 
+								} 
 
 							})  # eo output$sample3
 
@@ -7663,9 +7663,9 @@ runElementR <- function(){ # nocov start
 
 						}
 
-					} else {}
+					} 
 
-				} else {}
+				} 
 			}) # observe
 
 			################################################################
@@ -7799,7 +7799,7 @@ runElementR <- function(){ # nocov start
 														)
 
 													)
-												} else {}
+												} 
 
 											}) # eo input$Sample5
 
@@ -7926,7 +7926,7 @@ runElementR <- function(){ # nocov start
 														par(new = TRUE)
 														plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 													})
-												}  else {}
+												}  
 
 												if(!is.null(input$binsSample) & !is.null(input$platSample)){
 													if(is.na(input$binsSample[1]) | is.na(input$binsSample[2])| is.na(input$platSample[1]) | is.na(input$platSample[2])){}
@@ -7951,7 +7951,7 @@ runElementR <- function(){ # nocov start
 													lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
 													lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
 													lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
-												} else {}
+												} 
 
 											}
 
@@ -7985,8 +7985,8 @@ runElementR <- function(){ # nocov start
 																	} else if(input$CourbeSample == "Blank removed"){
 																		abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 																		rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
-																	} else {}
-																} else {}
+																	} 
+																} 
 															} else {
 																if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
 																	abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
@@ -7994,16 +7994,16 @@ runElementR <- function(){ # nocov start
 																} else if(input$CourbeSample == "Blank removed"){
 																	abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 																	rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
-																} else {}
+																} 
 															}
-														} else {}
-													} else {}
+														} 
+													} 
 
 												}
 											}
 										})# eo input$distPlot2Sample
 
-									} else {}
+									} 
 									if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 0 & flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp] != 0){
 
 										output$sample4 <- renderUI({
@@ -8238,7 +8238,7 @@ runElementR <- function(){ # nocov start
 														plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 													})
 
-												} else {}
+												} 
 
 												if(is.null(input$binsSample)){
 												}else{
@@ -8260,7 +8260,7 @@ runElementR <- function(){ # nocov start
 												lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
 												lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
 												lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
-											} else {}
+											} 
 
 										}, height = 400) # eo input$distPlotSample
 
@@ -8290,8 +8290,8 @@ runElementR <- function(){ # nocov start
 																	} else if(input$CourbeSample == "Blank removed"){
 																		abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 																		rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
-																	} else {}
-																} else {}
+																	} 
+																} 
 															} else {
 																if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
 																	abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
@@ -8299,18 +8299,18 @@ runElementR <- function(){ # nocov start
 																} else if(input$CourbeSample == "Blank removed"){
 																	abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 																	rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
-																} else {}
+																} 
 															}
-														} else {}
-													} else {}
+														} 
+													} 
 
 												}
-											} else {}
+											} 
 
 										})# eo input$distPlot2Sample
 
 
-									}  else {}
+									}  
 									if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1){
 
 										currentProject()$setflagSample(sample = currentSampleNumberRep$temp, replicate = currentSampleNumberSam$temp, value = 1)
@@ -8404,7 +8404,7 @@ runElementR <- function(){ # nocov start
 
 													)
 
-												} else {}
+												} 
 
 											}) # eo input$Sample5
 
@@ -8492,7 +8492,7 @@ runElementR <- function(){ # nocov start
 
 													)
 
-												} else {}
+												} 
 
 											}) # eo input$Sample5
 										}
@@ -8519,7 +8519,7 @@ runElementR <- function(){ # nocov start
 														par(new = TRUE)
 														plot(currentSampleData$temp[,1], currentSampleData$temp[,input$checkGroupS[x]],type ="b", ylab = "", xlab = "", main = "", col = color$temp[which(input$checkGroupS[x] == names(color$temp))], xlim = c(minX, maxX), ylim =c(0,maxY), axes = FALSE)
 													})
-												} else {}
+												} 
 
 												TempS$t  <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[1])[[2]]
 												Temp0S$t <- currentProject()$closest(x = currentSampleData$temp[,1],y = currentSampleRep$temp$bins[2])[[2]]
@@ -8538,7 +8538,7 @@ runElementR <- function(){ # nocov start
 												lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp0S$t,1], currentSampleData$temp[Temp0S$t,x], cex = 3, col ="grey")})
 												lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp1S$t,1], currentSampleData$temp[Temp1S$t,x], cex = 3, col ="#4F3CBC50")})
 												lapply(input$checkGroupS, function(x){points(currentSampleData$temp[Temp2S$t,1], currentSampleData$temp[Temp2S$t,x], cex = 3, col ="#4F3CBC50")})
-											} else {}
+											} 
 										}) # eo input$distPlotSample
 
 										output$distPlot2Sample <- renderPlot({
@@ -8566,8 +8566,8 @@ runElementR <- function(){ # nocov start
 																	} else if(input$CourbeSample == "Blank removed"){
 																		abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 																		rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
-																	} else {}
-																} else {}
+																	} 
+																} 
 															} else {
 																if(input$CourbeSample == "Raw" | input$CourbeSample == "Plateau"){
 																	abline(a = currentSampleRep$temp$BlankAverarge[grep(input$listeElem, names(currentSampleRep$temp$BlankAverarge))], b = 0, lty = "dashed", col = "red", lwd = 2)
@@ -8575,20 +8575,20 @@ runElementR <- function(){ # nocov start
 																} else if(input$CourbeSample == "Blank removed"){
 																	abline(a = currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], b = 0, lty = "dashed", col = "red", lwd = 2)
 																	rect(-10, -10^6, (1+10/100)*max(dataPlot2Sample$datS[,1]),currentSampleRep$temp$LOD[grep(input$listeElem, names(currentSampleRep$temp$LOD))], col = "#FF000064", border = NA)
-																} else {}
+																} 
 															}
 
 														}
 
-													} else {}
+													} 
 												}
-											} else {}
+											} 
 										})# eo input$distPlot2Sample
 
-									}  else {}
+									}  
 
 								}
-							} else {}
+							} 
 
 
 						}else{
@@ -8602,8 +8602,8 @@ runElementR <- function(){ # nocov start
 
 							output$distPlot2Sample <- renderPlot({NULL}) # eo input$distPlot2Sample
 						}
-					} else {}
-				} else {}
+					} 
+				} 
 			}) # observe
 
 			################################################################
@@ -8646,23 +8646,23 @@ runElementR <- function(){ # nocov start
 										)
 										BAV_Sample$temp <- currentSampleRep$temp$BlankAverarge
 										LOD_Sample$temp <- currentSampleRep$temp$LOD
-									} else {}
+									} 
 								}
-							} else {}
+							} 
 							if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1){
 								if(!is.null(TempS$t)){
 									if(is.finite(TempS$t)){
 										dataPlot2Sample$datS <- currentSampleRep$temp$renderData(curve = input$CourbeSample)
 										BAV_Sample <- currentSampleRep$temp$BlankAverarge
 										LOD_Sample <- currentSampleRep$temp$LOD
-									} else {}
+									} 
 								}
-							} else {}
+							} 
 
 
-						} else {}
-					}else {}
-				}else {}
+						} 
+					}
+				}
 			}) # observe
 
 			################################################################
@@ -8677,7 +8677,7 @@ runElementR <- function(){ # nocov start
 					}else{
 						updateCheckboxGroupInput(session,"checkGroupS","",choices=currentProject()$listeElem,selected=currentProject()$listeElem)
 					}
-				} else {}
+				} 
 			}) # observe
 
 			################################################################
@@ -8693,9 +8693,9 @@ runElementR <- function(){ # nocov start
 								updateSelectInput(session, "CourbeSample", selected = input$CourbeSample)
 								loadS$temp <- loadS$temp +1
 							}) # eo isolate
-						} else {}
-					} else {}
-				} else {}
+						} 
+					} 
+				} 
 			}) # observe
 
 			################################################################
@@ -8706,9 +8706,9 @@ runElementR <- function(){ # nocov start
 					isolate({
 						if(loadS$temp == 1){
 							loadS$temp <- loadS$temp +1
-						} else {}
+						} 
 					}) # eo isolate
-				} else {}
+				} 
 			}) #observe
 
 			################################################################
@@ -8739,7 +8739,7 @@ runElementR <- function(){ # nocov start
 										flagRealign$temp <- currentProject()$flagRealign
 										currentProject()$set_summarySettings(name = input$SampleIn2, rank = NA, bins1 = NA, bins2 = NA, plat1 = NA, plat2 = NA, average = rep(NA, length(currentProject()$listeElem)), LOD = rep(NA, length(currentProject()$listeElem)))
 									})
-								} else {}
+								} 
 
 								if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1 & is.finite(TempS$t)){
 									isolate({
@@ -8759,10 +8759,10 @@ runElementR <- function(){ # nocov start
 
 										if(currentProject()$ChoiceUserCorr == FALSE) {
 											currentSampleRep$temp$reset()
-										} else {}
+										} 
 										currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentSampleData$temp[TempS$t,1], bins2 = currentSampleData$temp[Temp0S$t,1], plat1 = currentSampleData$temp[Temp1S$t,1], plat2 = currentSampleData$temp[Temp2S$t,1], average = currentSampleRep$temp$BlankAverarge, LOD = currentSampleRep$temp$LOD)
 									})
-								} else {}
+								} 
 
 
 							} else {
@@ -8777,7 +8777,7 @@ runElementR <- function(){ # nocov start
 											currentProject()$samples[[x]]$setrep_type2(NA)
 										})
 									})
-								} else {}
+								} 
 
 								if((flagSampleDetail$temp[[currentSampleNumberRep$temp]][currentSampleNumberSam$temp]%%2) == 1 & is.finite(TempS$t) & input$saveSample > 0){
 									isolate({
@@ -8800,7 +8800,7 @@ runElementR <- function(){ # nocov start
 
 											currentSampleRep$temp$reset()
 
-										} else {}
+										} 
 
 										currentProject()$set_summarySettings(name = input$SampleIn2, rank = currentProject()$sampleRank[which(names(currentProject()$sampleRank) == input$SampleIn2)], bins1 = currentSampleData$temp[TempS$t,1], bins2 = currentSampleData$temp[Temp0S$t,1], plat1 = currentSampleData$temp[Temp1S$t,1], plat2 = currentSampleData$temp[Temp2S$t,1], average = currentSampleRep$temp$BlankAverarge, LOD = currentSampleRep$temp$LOD)
 										passageS <- names(currentProject()$flag_Sample[[currentSampleNumberRep$temp]] == 0)[currentProject()$flag_Sample[[currentSampleNumberRep$temp]] == 0][1]
@@ -8809,18 +8809,18 @@ runElementR <- function(){ # nocov start
 
 											delay(2000,updateSelectInput(session, "SampleIn2", selected = passageS))
 
-										} else {}
+										} 
 
 									})
-								} else {}
+								} 
 
 							}
 
 
-						} else {}
+						} 
 
-					} else {}
-				} else {}
+					} 
+				} 
 			}) # observe
 
 		}
@@ -8858,7 +8858,7 @@ runElementR <- function(){ # nocov start
 									  		return(1)
 									  	}else{return(0)}
 									  }, FUN.VALUE = numeric(1))
-				} else {}
+				} 
 			}) # observe
 
 			########################################################
@@ -8910,7 +8910,7 @@ runElementR <- function(){ # nocov start
 			observe({
 				if(!is.null(input$elemRaster)){
 					ChosenElement$temp <- input$elemRaster
-				} else {}
+				} 
 			}) # observe
 
 			###############################################################
@@ -8963,7 +8963,7 @@ runElementR <- function(){ # nocov start
 									style='overflow-y: hidden',
 									tableOutput("realign4")
 								)
-							} else {}
+							} 
 
 
 						} else if(input$typeTraitement == "spot"){
@@ -8995,9 +8995,9 @@ runElementR <- function(){ # nocov start
 							}
 
 
-						} else {}
+						} 
 					}
-				} else {}
+				} 
 
 			}) # eo output$realign5
 
@@ -9005,7 +9005,7 @@ runElementR <- function(){ # nocov start
 			# set output$plotRealign, i.e. the plot if type = transect
 			###############################################################
 			output$plotRealign <- renderPlot({
-				if(!is.null(input$selectRealign) & !is.null(tabProvSample$temp)){
+				if(!is.null(input$selectRealign) & !is.null(tabProvSample$temp) & !is.null(input$ReplicatAll)){
 					if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0 & length(tabProvSample$temp) != 0 & !is.na(match(input$selectRealign,currentProject()$samplesFiles))){
 
 						if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 0 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
@@ -9019,6 +9019,7 @@ runElementR <- function(){ # nocov start
 									plot(-1,-1, xlim = c(0,2), ylim = c(0,1),xlab = "", ylab = "")
 									text(1,0.5, labels = "No data different from NA for this element", cex = 2)
 								} else {
+								  
 									if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0){
 
 										ylim <- c(min(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,input$elemRaster]})), na.rm = TRUE),max(unlist(lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(i){tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[i])]][,input$elemRaster]})), na.rm = TRUE))
@@ -9029,40 +9030,38 @@ runElementR <- function(){ # nocov start
 
 										lapply(seq(from = 1, to = length(input$ReplicateSample), by = 1), function(x){
 
-											if(length(which(names(generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])) == 0){
-
-											}else{
-												plot(tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,1],tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,input$elemRaster] , xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", main = "", col = colorReplicate$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[match(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])] )
+											if(length(which(names(generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])) != 0){
+											  
+												plot(tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,1],
+												     tabProvSample$temp[[which(names(tabProvSample$temp) == input$ReplicateSample[x])]][,input$elemRaster] , 
+												     xlim = xlim, ylim = ylim, xlab = "Time (s)", ylab = "Concentrations", type = "b", main = "", 
+												     col = colorReplicate$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[match(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])] )
 
 												par(new = TRUE)
-											}
+												
+												}
 
 										})
 
-										legend("topright", legend = input$ReplicateSample, col = vapply(seq(from = 1, to = length(input$ReplicateSample), by = 1),
+										legend("topright", legend = input$ReplicateSample, 
+										       col = vapply(seq(from = 1, to = length(input$ReplicateSample), by = 1),
 																				    function(x){colorReplicate$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][which(names(colorReplicate$temp[[match(input$selectRealign,currentProject()$samplesFiles)]]) == input$ReplicateSample[x])]},
-																				    FUN.VALUE = character(1)
-										), pch = 1, lwd=1, lty=1)
+																				    FUN.VALUE = character(1)),
+										       pch = 1, lwd=1, lty=1)
 
-										if(!is.null(outlierChosen$temp)){
+										if(!is.null(outlierChosen$temp) & length(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]) != 0){
+										  
+										  MatOutlier <- as.matrix(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]], nrow = 2)
 
-											if(length(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]) != 0){
-
-												lapply(seq(from = 1, to = length(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]]), by = 1), function(x){
-
-													points(names(outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]])[x], outlierChosen$temp[[grep(input$elemRaster, colnames(tabProvSample$temp[[1]]))]][x], cex = 3, col ="deeppink")
-
-												})
-											}
-
-
-
-										} else{}
+										  points(MatOutlier[1,], 
+										         MatOutlier[2,], 
+										             cex = 3, col ="deeppink")
+										  
+										}
 									}
 								}
-							} else {}
-
-						} else {}
+							} 
+						} 
 
 						if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 2 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
 
@@ -9100,9 +9099,9 @@ runElementR <- function(){ # nocov start
 
 											if(k %% ceiling(autoCorrel$temp) == 0){
 												points(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRaster[j,1],currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalRaster[j,input$elemRaster], pch = 21, col = "red", cex = 1.5, bg = "red")
-											} else {}
+											} 
 
-										} else {}
+										} 
 
 
 										k <- k+1
@@ -9113,9 +9112,9 @@ runElementR <- function(){ # nocov start
 																																					     FUN.VALUE = character(1)
 									), "black"), lty = 1, pch = c(rep(1, length(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)), NA), lwd = c(rep(1, length(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataIntermRaster)), 2))
 								}
-							} else {}
+							} 
 
-						} else {}
+						} 
 
 						if(input$typeTraitement == "transect" &  ((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 1 | (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 3) & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1){
 
@@ -9151,9 +9150,9 @@ runElementR <- function(){ # nocov start
 
 
 									}
-								} else {}
-							} else {}
-						} else {}
+								} 
+							} 
+						} 
 
 						if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1){NULL}
 
@@ -9191,13 +9190,13 @@ runElementR <- function(){ # nocov start
 
 
 										}
-									} else {}
-								} else {}
-							} else {}
+									} 
+								} 
+							} 
 						}
 
-					} else {}
-				} else {}
+					} 
+				} 
 
 
 			})
@@ -9215,7 +9214,7 @@ runElementR <- function(){ # nocov start
 						if(input$typeTraitement == "spot" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 0 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1){
 							return(tabSpotDisplay$temp)
 
-						} else {}
+						} 
 
 						if(input$typeTraitement == "spot" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
 							if(!currentProject()$is.integer0(match(input$selectRealign,currentProject()$samplesFiles)) & is.matrix(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalSpot)){
@@ -9226,10 +9225,10 @@ runElementR <- function(){ # nocov start
 								temp <- cbind(rownames(temp), temp)
 
 								return(temp)
-							} else {}
-						} else {}
+							} 
+						} 
 
-						if(input$typeTraitement == "spot" & ((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 1 | (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 3)){NULL} else {}
+						if(input$typeTraitement == "spot" & ((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 1 | (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 3)){NULL} 
 
 						if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1){
 							if(!currentProject()$is.integer0(match(input$selectRealign,currentProject()$samplesFiles)) & is.matrix(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFinalSpot)){
@@ -9240,10 +9239,10 @@ runElementR <- function(){ # nocov start
 								temp <- cbind(rownames(temp), temp)
 
 								return(temp)
-							} else {}
+							} 
 						}
-					} else {}
-				} else {}
+					} 
+				} 
 			}
 			, options = list(paging= FALSE, searching = FALSE, rowCallback = I(
 				'function(row, data) {
@@ -9310,7 +9309,7 @@ runElementR <- function(){ # nocov start
 									output$realign2 <- renderUI({NULL}) # eo output$realign2
 
 
-								} else {}
+								} 
 
 								if(input$typeTraitement == "spot" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
 
@@ -9344,7 +9343,7 @@ runElementR <- function(){ # nocov start
 												)
 
 											)
-										} else {}
+										} 
 
 
 									}) # eo output$realign3
@@ -9352,7 +9351,7 @@ runElementR <- function(){ # nocov start
 									output$realign2 <- renderUI({NULL}) # eo output$realign2
 
 
-								} else {}
+								} 
 
 								if(input$typeTraitement == "spot" & ((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 1 | (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 3)){
 
@@ -9389,7 +9388,7 @@ runElementR <- function(){ # nocov start
 									}) # eo output$realign2
 
 
-								} else {}
+								} 
 
 								if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 0 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
 
@@ -9448,7 +9447,7 @@ runElementR <- function(){ # nocov start
 									}) # eo output$realign2
 
 
-								} else {}
+								} 
 
 								if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 2 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 1 & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) != 3){
 
@@ -9492,7 +9491,7 @@ runElementR <- function(){ # nocov start
 										)
 									}) # eo output$realign2
 
-								} else {}
+								} 
 
 								if(input$typeTraitement == "transect" &  ((flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 1 | (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2]%%4) == 3) & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) != 1){
 
@@ -9532,7 +9531,7 @@ runElementR <- function(){ # nocov start
 										)
 									}) # eo output$realign2
 
-								} else {}
+								} 
 
 								if(input$typeTraitement == "transect" & (flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1]%%2) == 1){
 
@@ -9567,19 +9566,19 @@ runElementR <- function(){ # nocov start
 												)#box
 
 											)#fluidRow
-										} else {}
+										} 
 
 									}) # eo output$realign3
 
 									output$realign2 <- renderUI({}) # eo output$realign2
 
-								} else {}
+								} 
 
 							})
-						} else {}
+						} 
 					}
 
-				} else {}
+				} 
 
 			})
 
@@ -9606,9 +9605,9 @@ runElementR <- function(){ # nocov start
 					if(!is.null(input$speed) & !is.null(match(input$selectRealign,currentProject()$samplesFiles))){
 						if(length(match(input$selectRealign,currentProject()$samplesFiles)) != 0){
 							autoCorrel$temp <- input$diameter/	input$speed / currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_pas
-						} else {}
-					}  else {}
-				}  else {}
+						} 
+					}  
+				}  
 			})
 
 			###############################################################
@@ -9658,36 +9657,42 @@ runElementR <- function(){ # nocov start
 								lapply(seq(from = 1, to = length(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_Files), by = 1), function(x){
 									eval(parse(text = paste("input$",generRRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][x],sep="")))
 								})
-
+							  
 								isolate({
 									OutputToPrint <- NULL
 
 									if(!is.null(outlierValues$temp)){
+									  
 										for(i in seq(from = 2, to = length(outlierValues$temp), by = 1)){
-											if(length(outlierValues$temp[[i]]) > 0){
-												for(j in seq(from = 1, to = length(outlierValues$temp[[i]]), by = 1)){
-
-													if(length(outlierValues$temp[[i]][j]) != 0){
-
-														if(is.numeric(outlierValues$temp[[i]][j]) & !is.na(outlierValues$temp[[i]][j])){
-
-															temp <- paste0(names(outlierValues$temp)[i], ": ", outlierValues$temp[[i]][j])
-
-															OutputToPrint <- c(OutputToPrint, temp)
-														}
-
-													}
-												}
+										  
+										  if(!is.null(outlierValues$temp[[i]])){
+										    
+										    if(ncol(outlierValues$temp[[i]]) > 0){
+										      
+										      for(j in seq(from = 1, to = ncol(outlierValues$temp[[i]]), by = 1)){
+										        
+										        if(length(outlierValues$temp[[i]][j]) != 0){
+										          
+										          if(is.numeric(outlierValues$temp[[i]][j]) &
+										             !is.na(outlierValues$temp[[i]][j])){
+										            
+										            temp <- paste0(names(outlierValues$temp)[i], ": ", j)
+										            
+										            OutputToPrint <- c(OutputToPrint,temp)
+										          }
+										        }
+										      }
+										    }
+										  }
+											
 											}
-
+									  outlierSuggested$temp <- OutputToPrint
 										}
-										outlierSuggested$temp <- OutputToPrint
-									} else {}
 								})
 							}
-						} else {}
-					} else {}
-				} else {}
+						} 
+					} 
+				} 
 			})
 
 			###############################################################
@@ -9704,6 +9709,8 @@ runElementR <- function(){ # nocov start
 
 			###############################################################
 			# set the outlierValues$temp by researching the outliers
+			# outlierValues$temp is the value of the outliers while
+			# in contrary outlierChosen$temp is the outlier that user consider as non outlier and keep 
 			###############################################################
 			observe({
 				input$nbOutliers
@@ -9719,40 +9726,27 @@ runElementR <- function(){ # nocov start
 								})
 
 								isolate({
-
+								  
 									tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$intermStepRaster(decalage = deplace$val, input = input$ReplicateSample, outliers = NULL, replace = NA)
 
 									if(!is.null(input$nbOutliers) & !is.null(tabProvSample$temp) & !is.null(unlist(tabProvSample$temp))){
-
-										dat <- do.call(what = rbind, args = tabProvSample$temp)
 
 										if(is.null(input$outlierDetect)){
 											method <- "Rosner's test"
 										} else {
 											method <- input$outlierDetect
 										}
+									  
+										Outliers <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_data[[1]]$detectOutlierList(tabProvSample$temp, method = method, nbOutliers = input$nbOutliers)
 
-										Outliers <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_data[[1]]$detectOutlierMatrix(dat, method = method, nbOutliers = input$nbOutliers)
-
-										OutlierValues <- lapply(seq(from = 1, to = length(Outliers), by = 1), function(x){
-
-											temp <- dat[Outliers[[x]], x]
-
-											names(temp) <- dat[Outliers[[x]], 1]
-
-											return(temp)
-										})
-
-										names(OutlierValues) <- colnames(tabProvSample$temp[[1]])
-
-										outlierValues$temp <- OutlierValues
-									} else {}
+										outlierValues$temp <- Outliers
+									} 
 								})
 							}
 
-						} else {}
-					} else {}
-				} else {}
+						} 
+					} 
+				} 
 			})
 
 			###############################################################
@@ -9764,11 +9758,9 @@ runElementR <- function(){ # nocov start
 
 						isolate({
 							tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$RealignColList(
-								listRealig = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre,
+							  listRealig = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre,
 								col = input$elemRaster,
 								step = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_pas)[[1]]
-
-
 
 							temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$RealignColList(
 								listRealig = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre,
@@ -9779,10 +9771,8 @@ runElementR <- function(){ # nocov start
 
 							deplace$val <- temp
 						})
-
-
-					} else {}
-				} else {}
+					} 
+				} 
 			})
 
 			###############################################################
@@ -9792,14 +9782,17 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$ReplicatAll)){
 					if(input$ReplicatAll > 0){
 						isolate({
+						  
+						  listRealigToSave <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
+						  
 							tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$RealignListAll(
 								listRealig = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre,
 								step = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_pas)
 
 							updateSelectInput(session, "elemRaster", selected = input$elemRaster)
 						})
-					} else {}
-				} else {}
+					} 
+				}
 			})
 
 			###############################################################
@@ -9822,9 +9815,9 @@ runElementR <- function(){ # nocov start
 
 							return(plot_output_list)
 
-						} else {}
-					}else{}
-				} else {}
+						}
+					}
+				}
 
 			})
 
@@ -9853,9 +9846,9 @@ runElementR <- function(){ # nocov start
 								deplace$val <- temp
 							})
 
-						} else {}
-					} else {}
-				} else {}
+						} 
+					}
+				} 
 
 			}) # observe
 
@@ -9870,10 +9863,10 @@ runElementR <- function(){ # nocov start
 							if(input$SauvegarderSpot > 0){
 								currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$setRep_dataFinalSpot(tabSpotSave$temp)
 								flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1] <- flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][1] + 1
-							} else {}
+							} 
 						})
-					} else {}
-				} else {}
+					} 
+				} 
 			}) # observe
 
 			################################################################
@@ -9928,14 +9921,14 @@ runElementR <- function(){ # nocov start
 											
 											tabSpotDisplay$temp <- cbind(rownames(tabProv), tabProv)
 
-										} else {}
-									} else {}
+										} 
+									} 
 
-								} else {}
+								}
 							}
 
-						} else {}
-					} else {}
+						} 
+					}
 				}
 
 			}) # observe
@@ -9944,7 +9937,7 @@ runElementR <- function(){ # nocov start
 			# declare outlierChosen$temp (transect mode), i.e. the list of the
 			# outliers to keep
 			###############################################################
-			observe({
+			observe({ 
 				if(!is.null(input$ChosenOUtlier)){
 
 					OutliersToKeep <- list()
@@ -9959,72 +9952,62 @@ runElementR <- function(){ # nocov start
 
 							k <- 2
 
-						} else {
-
-							if(length(grep(str_split(input$ChosenOUtlier[[i]], ": ")[[1]][1], names(OutliersToKeep))) != 0){
+						} else if(length(grep(str_split(input$ChosenOUtlier[[i]], ": ")[[1]][1], names(OutliersToKeep))) != 0){
 
 								OutliersToKeep[[grep(str_split(input$ChosenOUtlier[[i]], ": ")[[1]][1], names(OutliersToKeep))]] <- c(OutliersToKeep[[grep(str_split(input$ChosenOUtlier[[i]], ": ")[[1]][1], names(OutliersToKeep))]], as.numeric(as.character(str_split(input$ChosenOUtlier[[i]], ": ")[[1]][2])))
 
-							} else {
+						} else {
 								OutliersToKeep[[k]] <- as.numeric(as.character(str_split(input$ChosenOUtlier[[i]], ": ")[[1]][2]))
 
 								names(OutliersToKeep)[[k]] <- str_split(input$ChosenOUtlier[[i]], ": ")[[1]][1]
 
 								k <- k + 1
-							}
-
 						}
+					  
 					}
 
 					tempToExport <- lapply(seq(from = 1, to = length(outlierValues$temp), by = 1), function(x){
 
 						if(!is.null(names(outlierValues$temp))){
+						  
 							if(length(grep(names(outlierValues$temp)[[x]], names(OutliersToKeep))) != 0){
+							  
+							  elem_OutliersToKeep <- which(names(OutliersToKeep) == names(outlierValues$temp)[[x]]) # chemical element  we are working on
 
-								elem <- which(names(OutliersToKeep) == names(outlierValues$temp)[[x]])
+							  if(is.null(OutliersToKeep[elem_OutliersToKeep])){
+							    
+							    outlierValues$temp[[x]] <- NULL
+							    
+							  } else {
+							    
+							    difference <- setdiff(1:ncol(outlierValues$temp[[x]]), unlist(OutliersToKeep[elem_OutliersToKeep]))
 
-								toReturn <- OutliersToKeep[[elem]]
+							    if(length(difference) == 0){
+							      toReturn <- outlierValues$temp[[x]]
+							    } else {
+							      toReturn <- outlierValues$temp[[x]][,-difference]
+							    }
+							    
+							    return(toReturn)
+							  }
 
-								tempoR <- outlierValues$temp[[x]]
 
-								names(tempoR) <- NULL
-
-								if(length(OutliersToKeep[[elem]]) <= input$nbOutliers){
-
-									positionMatch <- sapply(seq(from = 1, to = length(OutliersToKeep[[elem]]), by = 1), function(i){
-
-										which(round(OutliersToKeep[[elem]][i], digits = 16) == round(tempoR, digits = 16))
-
-									})
-
-									if(length(outlierValues$temp[[x]]) != 0 &  !is.list(positionMatch)){
-
-										names(toReturn) <- names(outlierValues$temp[[x]][positionMatch])
-
-									} else {}
-
-								} else {}
-
-								return(toReturn)
 
 							} else {NULL}
 						}
-
-
 
 					})
 
 					names(tempToExport) <- names(outlierValues$temp)
 
 					outlierChosen$temp <- tempToExport
-
 				}
 			})
 
 			################################################################
 			# set tabProvSample$temp (transect mode)
 			###############################################################
-			observe({
+			observe({# ici
 				if(!is.null(currentProject()) & !is.null(deplace$val) & !is.null(flagRealign$temp) & !is.null(input$selectRealign) & !is.null(input$ReplicateSample)){
 
 					deplace$val
@@ -10035,50 +10018,16 @@ runElementR <- function(){ # nocov start
 							if(length(which(is.element(input$ReplicateSample, names(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre)) == FALSE)) == 0){
 
 								if(!is.null(outlierValues$temp)){
+									OutliertoDelete <- currentProject()$FindOutlierToDelete(x = outlierValues$temp, y = outlierChosen$temp)
 
-									OutliertoDelete <- lapply(seq(from = 1, to = length(outlierValues$temp), by = 1), function(x){
-
-										if(length(outlierValues$temp[[x]]) != 0){
-
-											toReturn <- sapply(seq(from = 1, to = length(outlierValues$temp[[x]]), by = 1), function(i){
-
-												if(!is.null(outlierValues$temp[[x]][i])){
-
-													if(length(outlierValues$temp[[x]][i]) != 0 & !is.na(outlierValues$temp[[x]][i])){
-														if(is.null(outlierChosen$temp[[x]])){
-															outlierValues$temp[[x]][i]
-														} else {
-
-															if(length(which(round(outlierValues$temp[[x]][i], 16) == round(outlierChosen$temp[[x]], 16))) == 0){
-																outlierValues$temp[[x]][i]
-															} else {NA}
-														}
-													} else {NA}
-												} else {NA}
-											})
-
-										}
+									isolate({
+									  tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$intermStepRaster(decalage = deplace$val, input = input$ReplicateSample, outliers = OutliertoDelete, replace = NA)
 									})
-
-									OutliertoDelete <- lapply(OutliertoDelete, function(x){
-										if(!is.null(x)){
-											x[!is.na(x)]
-										} else {}
-									})
-
-								} else {OutliertoDelete <- NULL}
-
-								isolate({
-									tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$intermStepRaster(decalage = deplace$val, input = input$ReplicateSample, outliers = OutliertoDelete, replace = NA)
-
-								})
-
-							} else {}
-						} else {}
-					}  else {}
-				}  else {}
-
-
+								}
+							}
+					  }  
+					}
+				}
 			}) # observe
 
 			################################################################
@@ -10091,9 +10040,9 @@ runElementR <- function(){ # nocov start
 						if(all(is.na(unlist(currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre))) == FALSE){
 							tabProvSpot$temp <-  currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$intermStepSpot()
 							tabProvSample$temp <-  currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
-						} else {}
-					} else {}
-				}  else {}
+						} 
+					} 
+				}  
 			}) # observe
 
 			################################################################
@@ -10115,9 +10064,9 @@ runElementR <- function(){ # nocov start
 								}
 
 							})
-						} else {}
-					} else {}
-				} else {}
+						} 
+					} 
+				} 
 			}) # observe
 
 			################################################################
@@ -10136,9 +10085,9 @@ runElementR <- function(){ # nocov start
 								flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2] <- flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2] + 1
 
 							})
-						} else {}
-					} else {}
-				} else {}
+						}
+					} 
+				} 
 			})
 
 
@@ -10162,7 +10111,7 @@ runElementR <- function(){ # nocov start
 			observe({
 				if(!is.null(currentProject()) | !is.null(color$temp)){
 					valeurColor$temp <- geneR(letters, 4, length(color$temp), c(waste$temp, geneRMachineCorr$temp, generRRealign$temp, rankStandard$temp, rankSample$temp))
-				} else {}
+				} 
 			})
 
 			################################################################
@@ -10194,7 +10143,7 @@ runElementR <- function(){ # nocov start
 							updateTabItems(session, "tab", selected = currentPage$temp[2])
 						})
 					}
-				} else {}
+				} 
 			})
 
 			################################################################
@@ -10305,7 +10254,7 @@ runElementR <- function(){ # nocov start
 
 
 					}
-				} else {}
+				} 
 
 			})
 
@@ -10315,7 +10264,7 @@ runElementR <- function(){ # nocov start
 			observe({
 				if(!is.null(input$dec)){
 					valDec$temp <- input$dec
-				} else {}
+				} 
 			})
 
 			################################################################
@@ -10331,7 +10280,7 @@ runElementR <- function(){ # nocov start
 						valSep$temp <- input$sep
 					}
 
-				} else {}
+				} 
 			})
 
 			################################################################
@@ -10414,8 +10363,8 @@ runElementR <- function(){ # nocov start
 								color$temp[i] <- eval(parse(text = paste0("input$",valeurColor$temp[i])))
 							}
 
-						} else {}
-					} else {}
+						} 
+					} 
 
 				} else{}
 
@@ -10555,8 +10504,8 @@ runElementR <- function(){ # nocov start
 									spotDoneSimple <- spotDoneSimple + 1
 									spotPlaceSimple <- c(spotPlaceSimple, i)
 
-								} else {}
-							} else {}
+								} 
+							} 
 						}
 					}
 
@@ -10644,7 +10593,7 @@ runElementR <- function(){ # nocov start
 
 					matrixToDisplayFinal <- cbind(rownames(matrixToDisplayFinal), matrixToDisplayFinal)
 
-				} else {}
+				} 
 			}, options = list(paging = FALSE, searching = FALSE, rowCallback = I(
 				'function(row, data) {
 				if (data[0].includes ("Observed"))
@@ -10674,7 +10623,7 @@ runElementR <- function(){ # nocov start
 
 							if(length(temp) != 0){
 								currentProject()$setLiteratureConcentration(temp, sep = valSep$temp, dec = valDec$temp)
-							} else {}
+							} 
 						})
 					}
 				}
