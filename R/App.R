@@ -9755,7 +9755,6 @@ runElementR <- function(){ # nocov start
 			observe({
 				if(!is.null(input$ReplicatCol)){
 					if(input$ReplicatCol > 0){
-
 						isolate({
 							tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$RealignColList(
 							  listRealig = currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre,
@@ -9782,7 +9781,6 @@ runElementR <- function(){ # nocov start
 				if(!is.null(input$ReplicatAll)){
 					if(input$ReplicatAll > 0){
 						isolate({
-						  
 						  listRealigToSave <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$rep_dataFiltre
 						  
 							tabProvSample$temp <- currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$RealignListAll(
@@ -9903,8 +9901,6 @@ runElementR <- function(){ # nocov start
 												tabSD <- tempMatrix[2,]
 											}else{
 											  
-											  
-
 												tabMean <- apply(tempMatrix[seq(from = 1, to = length(input$ReplicateSpot), by = 1),], 2, mean, na.rm = TRUE)
 
 												tabSD <- apply(tempMatrix[(seq(from = 1, to = length(input$ReplicateSpot), by = 1)),], 2, sd, na.rm = TRUE)
@@ -9978,10 +9974,10 @@ runElementR <- function(){ # nocov start
 							    
 							    outlierValues$temp[[x]] <- NULL
 							    
-							  } else {
-							    
-							    difference <- setdiff(1:ncol(outlierValues$temp[[x]]), unlist(OutliersToKeep[elem_OutliersToKeep]))
-
+							  } else if(!is.null(outlierValues$temp[[x]])) {
+							      
+							      difference <- setdiff(1:ncol(outlierValues$temp[[x]]), unlist(OutliersToKeep[elem_OutliersToKeep]))
+							      
 							    if(length(difference) == 0){
 							      toReturn <- outlierValues$temp[[x]]
 							    } else {
@@ -9989,18 +9985,16 @@ runElementR <- function(){ # nocov start
 							    }
 							    
 							    return(toReturn)
-							  }
-
-
-
+							  } else {NULL}
 							} else {NULL}
-						}
+						} else {NULL}
 
 					})
 
 					names(tempToExport) <- names(outlierValues$temp)
 
 					outlierChosen$temp <- tempToExport
+					
 				} else {outlierChosen$temp <- NULL}
 			})
 
@@ -10079,7 +10073,6 @@ runElementR <- function(){ # nocov start
 					if(length(grep(isolate(input$selectRealign),currentProject()$samplesFiles)) != 0){
 						if(input$SauvegarderReal > 0){
 							isolate({
-
 								currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$set_rep_autoCorrel(c(input$diameter, input$speed, input$sliderAutoCorrel))
 								currentProject()$samples[[match(input$selectRealign,currentProject()$samplesFiles)]]$set_rep_dataFinalRasterNonCorr()
 								flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2] <- flagRealign$temp[[match(input$selectRealign,currentProject()$samplesFiles)]][2] + 1
