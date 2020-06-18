@@ -126,7 +126,7 @@ runElementR <- function(){ # nocov start
 	# input : choice = the constituants of the character string (here letters), lengthComb = length of the character string, NBComb = number of needed combinations, toAvoid = combinaison to avoid
 	##################################################################################################
 
-	geneR = function(choice, lengthComb, NBComb, toAvoid = NA){
+	geneR <- function(choice, lengthComb, NBComb, toAvoid = NA){
 
 		if(is.null(toAvoid)){
 			toAvoid = NA

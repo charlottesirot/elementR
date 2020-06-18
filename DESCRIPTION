@@ -3,7 +3,7 @@ Type: Package
 Title: An Framework for Reducing Elemental LAICPMS Data from Solid
         Structures
 Version: 1.3.7
-Date: 2018-09-25
+Date: 2020-06-15
 Author: Charlotte Sirot, Francois Guilhaumon
 Maintainer: Charlotte Sirot <charlott.sirot@gmail.com>
 Description: Aims to facilitate the reduction of elemental microchemistry data from solid-phase LAICPMS analysis (laser ablation inductive coupled plasma mass spectrometry). The 'elementR' package provides a reactive and user friendly interface (based on a 'shiny' application) and a set of 'R6' classes for conducting all steps needed for an optimal data reduction while leaving maximum control for user.
