@@ -75,11 +75,11 @@ The \code{elementR_project} structure allows to organized data in a session fram
 
 filePath <- system.file("Example_Session", package="elementR")
 
-exampleProject <- elementR_project$new(filePath)
+#exampleProject <- elementR_project$new(filePath)
 
 ## Display the raw data 
 
-exampleProject$samplesFiles
+#exampleProject$samplesFiles
 
 }
 \seealso{

@@ -338,10 +338,12 @@ elementR_data <- R6Class("elementR_data",
                            		
                            	# } else if(method == "Tietjen.Moore Test"){
                            		
-                           	  ### Constrain to remove this function due to the removal of climbtrends (02/2018)
+                           	  ### Function removed due to the removal of climbtrends (02/2018)
                            		# position <- self$OutlierDetectTietjen(x = dat, nbOutliers)
                            		
                            	} else if(method == "Rosner's test"){
+
+                           	  if(var(dat[which(!is.na(dat))]) != 0) {
                            		
                            		test <- suppressWarnings(rosnerTest(dat, k = nbOutliers, alpha = 0.05, warn = F))
                            		
@@ -349,22 +351,29 @@ elementR_data <- R6Class("elementR_data",
                            		
                            		if(nrow(Outliers) != 0){
                            		  
-                           			position <- sapply(seq(from = 1, to = nrow(Outliers), by = 1),
-
-                           						 function(x){
-                           						   
-                           						   toReturn <- rbind(as.numeric(as.character(Outliers$Obs.Num[x])),
-                           						                     as.numeric(as.character(Outliers$Value[x])))
-
-                           						 	return(toReturn)
-
-                           						 }
-                           			)
+                           		  position <- sapply(seq(from = 1, to = nrow(Outliers), by = 1),
+                           		                     
+                           		                     function(x){
+                           		                       
+                           		                       toReturn <- rbind(as.numeric(as.character(Outliers$Obs.Num[x])),
+                           		                                         as.numeric(as.character(Outliers$Value[x])))
+                           		                       
+                           		                       return(toReturn)
+                           		                       
+                           		                     })
                            		} else {
-                           			position <- NULL
+                           		  
+                           		  position <- NULL
+                           		  
                            		}
                            		
-                           	} 
+                           	  } else {
+                           	    
+                           	    position <- NULL
+                           	    
+                           	  }
+                           	  
+                           	} #eo RosnerTest
                              
                            	return(position)
                            	

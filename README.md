@@ -2,7 +2,7 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 [![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR?color=brightgreen)](https://cran.r-project.org/package=elementR)
-[![Build Status](https://api.travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
+  [![Build Status](https://api.travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
 [![codecov](https://codecov.io/gh/charlottesirot/elementR/branch/master/graph/badge.svg)](https://codecov.io/gh/charlottesirot/elementR)
 
 <br/>
