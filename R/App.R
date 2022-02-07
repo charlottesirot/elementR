@@ -215,7 +215,7 @@ runElementR <- function(){ # nocov start
 				menuItem("Average samples", tabName = "realign",
 					   icon = icon("thermometer-4", class=menuIconClass),
 					   badgeLabel="Optional", badgeColor="orange"),
-calibr
+
 				uiOutput("renderProgress5"),
 
 				hr(style ="width: 70%; color: white; align: center"),
