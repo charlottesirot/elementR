@@ -54,7 +54,7 @@ runElementR <- function(){ # nocov start
 			}
 		}
 
-		if(length(which(ref == FALSE)) == !0){calibrat
+		if(length(which(ref == FALSE)) == !0){
 			res <- FALSE
 		} else {
 			res <- TRUE
@@ -75,7 +75,7 @@ runElementR <- function(){ # nocov start
 			df <- as.data.frame(read_excel(x, sheet = 1, col_names = TRUE))
 		} 
 		if(str_detect(x, ".csv")){
-			df <- read.table(x, header = TRUE, sep = sep, dec = dcalibratec)
+			df <- read.table(x, header = TRUE, sep = sep, dec = dec)
 		} 
 		if(str_detect(x, ".ods")){
 
@@ -96,7 +96,7 @@ runElementR <- function(){ # nocov start
 
 					} else {
 
-						if(suppressWarnings(is.na(as.calibratnumeric(as.character(df[j,i]))))) {
+						if(suppressWarnings(is.na(as.numeric(as.character(df[j,i]))))) {
 
 							err <- 1
 
@@ -119,7 +119,6 @@ runElementR <- function(){ # nocov start
 		} 
 		return(df)
 	}
-calibrat
 	##################################################################################################
 	# Name: geneR
 	# function: gener randomly a vector of character string all differents from each other
@@ -141,7 +140,7 @@ calibrat
 			tkmessageBox(message = "Saturated memory. Please re-launch elementR.", icon = "error", type = "ok")
 
 			stop()
-calibrat
+
 		} else {
 
 			while(length(temp) != NBComb){
@@ -162,7 +161,7 @@ calibrat
 
 
 	}
-calibrat
+		
 	##################################################################################################
 	# Name: dir.exists (from https://github.com/hadley/staticdocs/issues/33)
 	# function: check if a directory exists
@@ -185,7 +184,7 @@ calibrat
 				    p(icon("star-half-o"),"element-R",
 				      style = "font-size: 200%; padding-left:50px;padding-top:5px")),
 
-				menuItem("Project setup", tabName = "start",calibrat
+				menuItem("Project setup", tabName = "start",
 					   icon = icon("thermometer-0", class=menuIconClass),
 					   badgeLabel="Step 1", badgeColor="blue"),
 
@@ -216,7 +215,7 @@ calibrat
 				menuItem("Average samples", tabName = "realign",
 					   icon = icon("thermometer-4", class=menuIconClass),
 					   badgeLabel="Optional", badgeColor="orange"),
-
+calibr
 				uiOutput("renderProgress5"),
 
 				hr(style ="width: 70%; color: white; align: center"),
