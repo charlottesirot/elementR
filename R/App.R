@@ -333,7 +333,7 @@ runElementR <- function(){ # nocov start
 		        )
 		    )
 		)
-	)#dashboardBody
+	)#dashboardBodycalibrat
 
 	header <- dashboardHeader(
 		title = list(icon("star-half-o"),"element-R"), disable = TRUE, titleWidth = 260
@@ -4052,9 +4052,9 @@ runElementR <- function(){ # nocov start
 									temp <- choose.files(default = paste0(projChar$temp[[3]], "/calibration file"))
 
 								} else  {
-
+									
 									temp <- tk_choose.files(default = paste0(projChar$temp[[3]], "/calibration file"), caption = "Select files",multi = FALSE, filters = Filters, index = 1)
-
+									print(temp)
 								}
 
 								if(length(temp) != 0){
