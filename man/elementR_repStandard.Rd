@@ -7,11 +7,11 @@ Object elementR_repStandard
 \description{
 The \code{R6Class} object \code{elementR_repStandard} contains the main information needed for the filtration of a batch of standard replicates. 
 }
-\usage{delementR_repStandard}
+\usage{elementR_repStandard}
 \format{
 An \code{R6Class} generator object
 }
-\section{Inheritance}{The \code{delementR_repStandard} object inherits from the \code{elementR_rep}.}
+\section{Inheritance}{The \code{elementR_repStandard} object inherits from the \code{elementR_rep}.}
 
 \section{Fields}{
 \describe{\item{\code{rep_type}}{A character string indicating the type of the batch considered (here, "standard")}}

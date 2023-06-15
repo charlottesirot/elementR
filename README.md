@@ -2,8 +2,7 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elementR)](https://cran.r-project.org/package=elementR)
 [![Download_badge](http://cranlogs.r-pkg.org/badges/grand-total/elementR?color=brightgreen)](https://cran.r-project.org/package=elementR)
-  [![Build Status](https://api.travis-ci.org/charlottesirot/elementR.svg?branch=master)](https://travis-ci.org/charlottesirot/elementR.svg?branch=master)
-[![codecov](https://codecov.io/gh/charlottesirot/elementR/branch/master/graph/badge.svg)](https://codecov.io/gh/charlottesirot/elementR)
+[![codecov](https://app.codecov.io/gh/charlottesirot/elementR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/charlottesirot/elementR)
 
 <br/>
 
@@ -27,7 +26,7 @@ For more details on the project or on elementR, see [elementR website](https://c
 - a set of classes to handle LA-ICPMS data
 - a reactive user friendly interface running in the web browser to conduct all steps needed for an optimal data reduction while leaving maximum control to the user.
 
-**elementR** implements [R6 R classes](https://github.com/wch/R6/) and is based on [Shiny](http://shiny.rstudio.com/) for it's GUI.
+**elementR** implements [R6 R classes](https://github.com/r-lib/R6) and is based on [Shiny](https://shiny.posit.co/) for it's GUI.
 
 #### Before installation
 
@@ -48,7 +47,7 @@ Alternatively, you can install the development version (not yet pushed on cran) 
 
 ```
 #Install elementR's dependencies
-pkgs <- c("gdata", "shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard",
+pkgs <- c("shiny","devtools", "shinyjs", "gnumeric", "R6", "shinydashboard",
 	"abind", "stringr", "lmtest", "tcltk", "tcltk2", "reader", "readODS", "readxl", "outliers", "climtrends",
 	"EnvStats", "colourpicker", "zoo", "httpuv")
 
