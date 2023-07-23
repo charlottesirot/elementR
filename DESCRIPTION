@@ -10,7 +10,7 @@ Description: Aims to facilitate the reduction of elemental microchemistry data f
 Repository: CRAN
 Depends: R (>= 3.2.3)
 Imports: gdata, shiny,devtools, shinyjs, gnumeric, R6, shinydashboard,
-        abind, stringr, lmtest, tcltk,tcltk2, reader, readODS, readxl,
+        abind, stringr, lmtest, tcltk,tcltk2, reader, readODS (>= 1.7.0), readxl,
         EnvStats, outliers, zoo, colourpicker, stats, graphics, utils,
         httpuv
 License: GPL (>=2)

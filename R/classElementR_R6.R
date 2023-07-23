@@ -18,44 +18,7 @@ readData <- function(x, sep = ";", dec = "."){
   } else {}
   
   if(str_detect(x, ".ods")){
-    
-    df <- read.ods(x)[[1]]
-    
-    colnames(df) <- df[1,]
-    df <- df[-1,]
-    
-    col <- seq(from = 1, to = ncol(df), by = 1)
-    
-    err <- 0
-    
-    for(i in col){
-      
-      for(j in seq(from = 1, to = nrow(df), by = 1)){
-        
-        if(is.na(df[j,i]) | is.null(df[j,i])) {
-          
-        } else {
-          
-          if(suppressWarnings(is.na(as.numeric(as.character(df[j,i]))))) {
-            
-            err <- 1
-            
-          } else {
-            
-          }
-          
-        }
-        
-      }
-      
-    }
-    
-    if(err == 0){
-      df <- as.matrix(as.data.frame(lapply(df, as.numeric)))
-    } else {
-      
-    }
-    
+    df <- read_ods(x)
   } else {}
   return(df)
 }
