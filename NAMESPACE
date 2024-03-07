@@ -10,10 +10,9 @@ importFrom(shinyjs, delay, useShinyjs, addClass)
 importFrom(gnumeric, read.gnumeric.sheet)
 importFrom(abind, abind)
 importFrom(tcltk2, tk2text)
-importFrom(gdata, read.xls)
 importFrom(lmtest, dwtest, hmctest)
 importFrom(colourpicker, colourInput)
-importFrom("readODS", read.ods)
+importFrom("readODS", read_ods)
 importFrom("grDevices", "bmp", "colorRampPalette", "dev.off", "jpeg",
              "png", "rainbow", "tiff")
 importFrom("graphics", "abline", "layout", "legend", "mtext", "par",
