@@ -1,6 +1,6 @@
 ##############################################################
 #
-# elementR 1.3.3
+# elementR 1.3.8
 #
 # charlott.sirot@gmail.com
 # francois.guilhaumon@ird.fr
@@ -79,7 +79,7 @@ runElementR <- function(){ # nocov start
 		} 
 		if(str_detect(x, ".ods")){
 
-			df <- read.ods(x)[[1]]
+			df <- read_ods(x)[[1]]
 
 			colnames(df) <- df[1,]
 			df <- df[-1,]
